@@ -35,5 +35,13 @@ public class PlayerAnimator : NhoxBehaviour
         anim.SetBool("isRunning", playRunAnimation);
     }
 
+    public void SwitchAnimationLayer(int layerIndex)
+    {
+        for (int i = 1; i < anim.layerCount; i++)
+            anim.SetLayerWeight(i, 0);
+        
+        anim.SetLayerWeight(layerIndex, 1);
+    }
+
     public void ShootAnim() => anim.SetTrigger("fire");
 }

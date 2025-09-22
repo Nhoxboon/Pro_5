@@ -91,7 +91,6 @@ public class PlayerMovement : NhoxBehaviour
             
         transform.parent.forward = lookingDirection;
             
-        aim.position = new Vector3(hitInfo.point.x, transform.parent.position.y, hitInfo.point.z);
+        aim.position = new Vector3(hitInfo.point.x, transform.parent.position.y + 1, hitInfo.point.z);
     }
-
 }

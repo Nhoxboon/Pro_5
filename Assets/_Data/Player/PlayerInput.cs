@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInput : NhoxBehaviour
 {
@@ -18,12 +19,12 @@ public class PlayerInput : NhoxBehaviour
     protected void OnEnable() => controls.Enable();
     
     protected void OnDisable() => controls.Disable();
-    
+
     protected void SetupInputEvents()
     {
         var instance = PlayerCtrl.Instance;
-        
-        controls.Player.Fire.performed += ctx => instance.PlayerAnim.ShootAnim();
+
+        controls.Player.Fire.performed += ctx => ShootInput();
         
         controls.Player.Movement.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => MoveInput = Vector2.zero;
@@ -33,5 +34,18 @@ public class PlayerInput : NhoxBehaviour
 
         controls.Player.Run.performed += ctx => instance.PlayerMovement.SetRunning(true);
         controls.Player.Run.canceled += ctx => instance.PlayerMovement.SetRunning(false);
+        
+        // controls.Player.SwitchWeapon.performed += OnSwitchWeapon;
     }
+
+    protected void ShootInput()
+    {
+        PlayerCtrl.Instance.PlayerAnim.ShootAnim();
+    }
+    
+    // protected void OnSwitchWeapon(InputAction.CallbackContext ctx)
+    // {
+    //     if (int.TryParse(ctx.control.name, out int weaponIndex))
+    //         weaponVisual.SwitchGun(weaponIndex - 1);
+    // }
 }
