@@ -35,6 +35,7 @@ public class PlayerInput : NhoxBehaviour
         controls.Player.Run.performed += ctx => instance.PlayerMovement.SetRunning(true);
         controls.Player.Run.canceled += ctx => instance.PlayerMovement.SetRunning(false);
         
+        controls.Player.Reload.performed += ctx => instance.PlayerAnim.ReloadAnim();
         // controls.Player.SwitchWeapon.performed += OnSwitchWeapon;
     }
 

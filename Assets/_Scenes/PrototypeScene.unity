@@ -1720,7 +1720,7 @@ MonoBehaviour:
   - {fileID: 708727326}
   - {fileID: 711628403}
   - {fileID: 1607270459}
-  leftHand: {fileID: 1479165879}
+  leftHandIK_Target: {fileID: 1479165879}
 --- !u!1 &1423487920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2333,6 +2333,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 7854627148135848894}
+  rig: {fileID: 646111402}
+  rigIncreaseRate: 2.75
+  leftHandIK: {fileID: 841203479}
+  leftHandIKIncreaseRate: 2.5
 --- !u!1 &1956168194
 GameObject:
   m_ObjectHideFlags: 0
@@ -4791,6 +4795,7 @@ GameObject:
   - component: {fileID: 7854627148135848894}
   - component: {fileID: 7854627148135848896}
   - component: {fileID: 7854627148135848895}
+  - component: {fileID: 7854627148135848897}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -4885,6 +4890,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 646111402}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &7854627148135848897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7854627148135848893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1602ed145f54450b291fa8b20e769c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7897437605434278514
 Transform:
   m_ObjectHideFlags: 0

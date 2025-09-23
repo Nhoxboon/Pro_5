@@ -1,14 +1,15 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
-public class WeaponVisual : NhoxBehaviour
+public class PlayerWeaponVisual : NhoxBehaviour
 {
     [SerializeField] protected Transform[] gunTransforms;
     [SerializeField] protected Transform[] leftHandTargets;
 
     protected Transform currentGun;
-    [SerializeField] protected Transform leftHand;
+    [Header("Left Hand IK")]
+    [SerializeField] protected Transform leftHandIK_Target;
 
     protected override void Start()
     {
@@ -18,13 +19,7 @@ public class WeaponVisual : NhoxBehaviour
 
     protected void Update()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            if (!Input.GetKeyDown(KeyCode.Alpha1 + i)) continue;
-            SwitchGun(i);
-            int layer = i < 3 ? 1 : i - 1;
-            PlayerCtrl.Instance.PlayerAnim.SwitchAnimationLayer(layer);
-        }
+        WeaponSwitch();
     }
 
     protected override void LoadComponents()
@@ -32,7 +27,7 @@ public class WeaponVisual : NhoxBehaviour
         base.LoadComponents();
         LoadGunTransform();
         LoadLeftHandTargetTrans();
-        LoadLeftHandIK();
+        LoadLeftHandIKTarget();
     }
 
     protected void LoadGunTransform()
@@ -55,10 +50,10 @@ public class WeaponVisual : NhoxBehaviour
         Debug.Log(transform.name + "LoadLeftHandTargetTrans", gameObject);
     }
 
-    protected void LoadLeftHandIK()
+    protected void LoadLeftHandIKTarget()
     {
-        if(leftHand != null) return;
-        leftHand = gunTransforms[0].parent.parent.Find("LeftHand_IK_target");
+        if(leftHandIK_Target != null) return;
+        leftHandIK_Target = gunTransforms[0].parent.parent.Find("LeftHand_IK_target");
         Debug.Log(transform.name + "LoadLeftHandIK", gameObject);
     }
 
@@ -87,7 +82,20 @@ public class WeaponVisual : NhoxBehaviour
     protected void AttachLeftHand(int index)
     {
         Transform targetTransform = leftHandTargets[index];
-        leftHand.localPosition = targetTransform.localPosition;
-        leftHand.localRotation = targetTransform.localRotation;
+        leftHandIK_Target.localPosition = targetTransform.localPosition;
+        leftHandIK_Target.localRotation = targetTransform.localRotation;
+    }
+    
+    protected void WeaponSwitch()
+    {
+        var anim = PlayerCtrl.Instance.PlayerAnim;
+        for (int i = 0; i < 5; i++)
+        {
+            if (!Input.GetKeyDown(KeyCode.Alpha1 + i)) continue;
+            SwitchGun(i);
+            int layer = i < 3 ? 1 : i - 1;
+            anim.SwitchAnimationLayer(layer);
+            anim.WeaponGrabAnim(i < 2 ? GrabType.SideGrab : GrabType.BackGrab);
+        }
     }
 }
