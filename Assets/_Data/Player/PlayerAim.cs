@@ -4,20 +4,26 @@ using UnityEngine;
 public class PlayerAim : NhoxBehaviour
 {
     [SerializeField] protected Camera mainCamera;
+    [SerializeField] protected Transform cameraTarget;
 
-    [Header("Aim Info")] [Range(0.5f, 1f)] [SerializeField]
+    [Header("Camera Info")] [Range(0.5f, 1f)] [SerializeField]
     protected float minCameraDistance = 1f;
 
     [Range(1f, 3f)] [SerializeField] protected float maxCameraDistance = 3f;
+    [Range(3f, 5f)] [SerializeField] protected float camSensitivity = 4f;
 
-    [Range(3f, 5f)] [SerializeField] protected float aimSensitivity = 4f;
+    [Header("Aim Info")] [SerializeField] protected Transform aim;
 
-    [SerializeField] protected Transform aim;
     [SerializeField] protected LayerMask aimLayerMask;
+    protected RaycastHit lastKnownMouseHit;
 
     protected void Update()
     {
-        aim.position = Vector3.Lerp(aim.position, DesiredAimPos(), aimSensitivity * Time.deltaTime);
+        aim.position = GetMouseHitInfo().point;
+        aim.position = new Vector3(aim.position.x, transform.parent.position.y + 1f, aim.position.z);
+
+        cameraTarget.position =
+            Vector3.Lerp(cameraTarget.position, DesiredCameraPos(), camSensitivity * Time.deltaTime);
     }
 
     protected override void LoadComponents()
@@ -25,6 +31,7 @@ public class PlayerAim : NhoxBehaviour
         base.LoadComponents();
         LoadMainCamera();
         LoadAimLayer();
+        LoadCamTarget();
         LoadAimPoint();
     }
 
@@ -42,32 +49,42 @@ public class PlayerAim : NhoxBehaviour
         Debug.Log(transform.name + " LoadAimLayer", gameObject);
     }
 
+    protected void LoadCamTarget()
+    {
+        if (cameraTarget != null) return;
+        cameraTarget = GameObject.Find("CameraTarget").transform;
+        Debug.Log(transform.name + " LoadCamTarget", gameObject);
+    }
+
     protected void LoadAimPoint()
     {
         if (aim != null) return;
-        aim = GameObject.Find("Aim").transform;
+        aim = GameObject.Find("AimPoint").transform;
         Debug.Log(transform.name + " LoadAimPoint", gameObject);
     }
 
-    protected Vector3 DesiredAimPos()
+    protected Vector3 DesiredCameraPos()
     {
-        bool movingDownwards = PlayerCtrl.Instance.PlayerInput.MoveInput.y < -0.5f;
-        
-        float actualMaxCameraDistance = movingDownwards ? minCameraDistance : maxCameraDistance;
-        
-        Vector3 desiredAimPos = GetMousePosition();
-        Vector3 aimDirection = (desiredAimPos - transform.parent.position).normalized;
-        float distanceToDesiredPos = Vector3.Distance(transform.parent.position, desiredAimPos);
+        float actualMaxCameraDistance =
+            PlayerCtrl.Instance.PlayerInput.MoveInput.y < -0.5f ? minCameraDistance : maxCameraDistance;
+
+        Vector3 desiredCamPos = GetMouseHitInfo().point;
+        Vector3 aimDirection = (desiredCamPos - transform.parent.position).normalized;
+        float distanceToDesiredPos = Vector3.Distance(transform.parent.position, desiredCamPos);
         float clampedDistance = Mathf.Clamp(distanceToDesiredPos, minCameraDistance, actualMaxCameraDistance);
 
-        desiredAimPos = transform.parent.position + aimDirection * clampedDistance;
-        desiredAimPos.y = transform.parent.position.y + 1;
-        return desiredAimPos;
+        desiredCamPos = transform.parent.position + aimDirection * clampedDistance;
+        desiredCamPos.y = transform.parent.position.y + 1;
+        return desiredCamPos;
     }
 
-    public Vector3 GetMousePosition()
+    public RaycastHit GetMouseHitInfo()
     {
         Ray ray = mainCamera.ScreenPointToRay(PlayerCtrl.Instance.PlayerInput.AimInput);
-        return Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask) ? hitInfo.point : Vector3.zero;
+
+        if (!Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
+            return lastKnownMouseHit;
+        lastKnownMouseHit = hitInfo;
+        return hitInfo;
     }
 }

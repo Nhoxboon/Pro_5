@@ -23,7 +23,7 @@ public class PlayerInput : NhoxBehaviour
     {
         var instance = PlayerCtrl.Instance;
 
-        controls.Player.Fire.performed += ctx => ShootInput();
+         ShootInput();
 
         SetupMovementInput(instance);
         SetupAimInput();
@@ -49,7 +49,11 @@ public class PlayerInput : NhoxBehaviour
 
     protected void ShootInput()
     {
-        PlayerCtrl.Instance.PlayerAnim.ShootAnim();
+        controls.Player.Fire.performed += ctx =>
+        {
+            PlayerCtrl.Instance.PlayerAnim.ShootAnim();
+            PlayerCtrl.Instance.PlayerAttack.ShootBullet();
+        };
     }
 
     // protected void OnSwitchWeapon(InputAction.CallbackContext ctx)
