@@ -6,7 +6,7 @@ public class PlayerInput : NhoxBehaviour
     protected PlayerControls controls;
 
     public Vector2 MoveInput { get; protected set; }
-    public Vector2 AimInput { get; protected set; }
+    public Vector2 MouseInput { get; protected set; }
 
     protected override void Awake()
     {
@@ -22,13 +22,12 @@ public class PlayerInput : NhoxBehaviour
     protected void SetupInputEvents()
     {
         var instance = PlayerCtrl.Instance;
-
-         ShootInput();
-
+        ShootInput();
         SetupMovementInput(instance);
         SetupAimInput();
 
         controls.Player.Reload.performed += ctx => instance.PlayerAnim.ReloadAnim();
+        controls.Player.LockTarget.performed += ctx => instance.PlayerAim.Aim.SwitchLockTarget();
         // controls.Player.SwitchWeapon.performed += OnSwitchWeapon;
     }
 
@@ -43,8 +42,8 @@ public class PlayerInput : NhoxBehaviour
 
     protected void SetupAimInput()
     {
-        controls.Player.Aim.performed += ctx => AimInput = ctx.ReadValue<Vector2>();
-        controls.Player.Aim.canceled += ctx => AimInput = Vector2.zero;
+        controls.Player.Aim.performed += ctx => MouseInput = ctx.ReadValue<Vector2>();
+        controls.Player.Aim.canceled += ctx => MouseInput = Vector2.zero;
     }
 
     protected void ShootInput()

@@ -62,7 +62,7 @@ public class PlayerMovement : NhoxBehaviour
 
     protected void ApplyRotation()
     {
-        Vector3 lookingDirection = PlayerCtrl.Instance.PlayerAim.GetMouseHitInfo().point - transform.parent.position;
+        Vector3 lookingDirection = PlayerCtrl.Instance.PlayerAim.Aim.GetMouseHitInfo().point - transform.parent.position;
         lookingDirection.y = 0;
         lookingDirection.Normalize();
 
