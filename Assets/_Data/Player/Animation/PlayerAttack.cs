@@ -5,7 +5,7 @@ public class PlayerAttack : NhoxBehaviour
 {
     protected string bulletName = "Bullet";
 
-    [SerializeField] protected float bulletSpeed = 10f;
+    [SerializeField] protected float bulletSpeed = 20f;
     [SerializeField] protected Transform gunPoint;
     public Transform GunPoint => gunPoint;
 

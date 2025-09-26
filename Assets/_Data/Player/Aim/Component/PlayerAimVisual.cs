@@ -15,7 +15,7 @@ public class PlayerAimVisual : AimComponent
     protected void LoadLineRenderer()
     {
         if (aimLaser != null) return;
-        aimLaser = transform.parent.parent.GetComponentInChildren<LineRenderer>();
+        aimLaser = GetComponent<LineRenderer>();
         Debug.Log(transform.name + " LoadLineRenderer", gameObject);
     }
     

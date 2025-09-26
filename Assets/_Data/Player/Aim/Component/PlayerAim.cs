@@ -63,7 +63,7 @@ public class PlayerAim : AimComponent
         var target = Target();
         if (target is not null && isLockTarget)
         {
-            aimPoint.position = target.position;
+            aimPoint.position = target.TryGetComponent(out Renderer rend) ? rend.bounds.center : target.position;
             return;
         }
         
