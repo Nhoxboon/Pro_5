@@ -28,6 +28,8 @@ public class PlayerInput : NhoxBehaviour
 
         controls.Player.Reload.performed += ctx => instance.PlayerAnim.ReloadAnim();
         controls.Player.LockTarget.performed += ctx => instance.PlayerAim.Aim.SwitchLockTarget();
+
+        SetupEquipInput(instance);
         // controls.Player.SwitchWeapon.performed += OnSwitchWeapon;
     }
 
@@ -48,11 +50,14 @@ public class PlayerInput : NhoxBehaviour
 
     protected void ShootInput()
     {
-        controls.Player.Fire.performed += ctx =>
-        {
-            PlayerCtrl.Instance.PlayerAnim.ShootAnim();
-            PlayerCtrl.Instance.PlayerAttack.ShootBullet();
-        };
+        controls.Player.Fire.performed += _ => PlayerCtrl.Instance.PlayerAttack.ShootBullet();
+    }
+
+    protected void SetupEquipInput(PlayerCtrl instance)
+    {
+        controls.Player.EquipSlot1.performed += _ => instance.PlayerAttack.EquipWeapon(0);
+        controls.Player.EquipSlot2.performed += _ => instance.PlayerAttack.EquipWeapon(1);
+        controls.Player.DropCurrentWeapon.performed += _ => instance.PlayerAttack.DropWeapon();
     }
 
     // protected void OnSwitchWeapon(InputAction.CallbackContext ctx)

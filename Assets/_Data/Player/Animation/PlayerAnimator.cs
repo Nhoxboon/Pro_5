@@ -7,6 +7,7 @@ public class PlayerAnimator : NhoxBehaviour
 {
     [SerializeField] protected Animator anim;
     protected bool busyGrabWeapon;
+    public bool BusyGrabWeapon => busyGrabWeapon;
     
     [Header("Rig")]
     [SerializeField] protected Rig rig;

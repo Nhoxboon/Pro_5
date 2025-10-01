@@ -52,11 +52,12 @@ public class PlayerAim : AimComponent
 
     public Transform Target()
     {
-        Transform target = null;
-        if (GetMouseHitInfo().transform.TryGetComponent(out Target type))
-            target = GetMouseHitInfo().transform;
-        return target;
+        var hitInfo = GetMouseHitInfo();
+        if (hitInfo.transform is not null && hitInfo.transform.TryGetComponent(out Target _))
+            return hitInfo.transform;
+        return null;
     }
+
     
     public void UpdateAimPos()
     {

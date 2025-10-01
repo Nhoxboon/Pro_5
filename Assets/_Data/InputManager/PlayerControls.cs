@@ -154,6 +154,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip Slot - 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f71839e-0e52-4f36-8182-110d7583b4e8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip Slot - 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa9ca37c-36d7-447a-a80a-cac1be385957"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop Current Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""a58c07fd-747e-440b-99e7-5d8deb13e03d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -376,6 +403,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""LockTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be313806-c505-4b33-b4fc-387178cb03b7"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot - 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64639bee-06ea-4d26-9d45-be18ffc196e0"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot - 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61a8ea20-f89e-4d9a-aedc-491f9b5333e4"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop Current Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -452,6 +512,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_LockTarget = m_Player.FindAction("LockTarget", throwIfNotFound: true);
+        m_Player_EquipSlot1 = m_Player.FindAction("Equip Slot - 1", throwIfNotFound: true);
+        m_Player_EquipSlot2 = m_Player.FindAction("Equip Slot - 2", throwIfNotFound: true);
+        m_Player_DropCurrentWeapon = m_Player.FindAction("Drop Current Weapon", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -539,6 +602,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchWeapon;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_LockTarget;
+    private readonly InputAction m_Player_EquipSlot1;
+    private readonly InputAction m_Player_EquipSlot2;
+    private readonly InputAction m_Player_DropCurrentWeapon;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -578,6 +644,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/LockTarget".
         /// </summary>
         public InputAction @LockTarget => m_Wrapper.m_Player_LockTarget;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/EquipSlot1".
+        /// </summary>
+        public InputAction @EquipSlot1 => m_Wrapper.m_Player_EquipSlot1;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/EquipSlot2".
+        /// </summary>
+        public InputAction @EquipSlot2 => m_Wrapper.m_Player_EquipSlot2;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/DropCurrentWeapon".
+        /// </summary>
+        public InputAction @DropCurrentWeapon => m_Wrapper.m_Player_DropCurrentWeapon;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -625,6 +703,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LockTarget.started += instance.OnLockTarget;
             @LockTarget.performed += instance.OnLockTarget;
             @LockTarget.canceled += instance.OnLockTarget;
+            @EquipSlot1.started += instance.OnEquipSlot1;
+            @EquipSlot1.performed += instance.OnEquipSlot1;
+            @EquipSlot1.canceled += instance.OnEquipSlot1;
+            @EquipSlot2.started += instance.OnEquipSlot2;
+            @EquipSlot2.performed += instance.OnEquipSlot2;
+            @EquipSlot2.canceled += instance.OnEquipSlot2;
+            @DropCurrentWeapon.started += instance.OnDropCurrentWeapon;
+            @DropCurrentWeapon.performed += instance.OnDropCurrentWeapon;
+            @DropCurrentWeapon.canceled += instance.OnDropCurrentWeapon;
         }
 
         /// <summary>
@@ -657,6 +744,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LockTarget.started -= instance.OnLockTarget;
             @LockTarget.performed -= instance.OnLockTarget;
             @LockTarget.canceled -= instance.OnLockTarget;
+            @EquipSlot1.started -= instance.OnEquipSlot1;
+            @EquipSlot1.performed -= instance.OnEquipSlot1;
+            @EquipSlot1.canceled -= instance.OnEquipSlot1;
+            @EquipSlot2.started -= instance.OnEquipSlot2;
+            @EquipSlot2.performed -= instance.OnEquipSlot2;
+            @EquipSlot2.canceled -= instance.OnEquipSlot2;
+            @DropCurrentWeapon.started -= instance.OnDropCurrentWeapon;
+            @DropCurrentWeapon.performed -= instance.OnDropCurrentWeapon;
+            @DropCurrentWeapon.canceled -= instance.OnDropCurrentWeapon;
         }
 
         /// <summary>
@@ -811,5 +907,26 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLockTarget(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Equip Slot - 1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEquipSlot1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Equip Slot - 2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEquipSlot2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Drop Current Weapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDropCurrentWeapon(InputAction.CallbackContext context);
     }
 }
