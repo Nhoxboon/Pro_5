@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponGrab-Back(Not-ReadOnly)
+  m_Name: WeaponEquip-Back(Not-ReadOnly)
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -47631,6 +47631,13 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.6666667
+    functionName: SwitchOnWeaponModel
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.3333334
     functionName: RestoreWeight
     data: 

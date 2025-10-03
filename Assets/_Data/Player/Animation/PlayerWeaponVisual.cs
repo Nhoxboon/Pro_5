@@ -4,99 +4,94 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerWeaponVisual : NhoxBehaviour
 {
-    [SerializeField] protected Transform[] gunTransforms;
-    [SerializeField] protected Transform[] leftHandTargets;
+    [SerializeField] protected WeaponModel[] weaponModels;
+    [SerializeField] protected BackupWeaponModel[] backupWeaponModels;
 
-    protected Transform currentGun;
-
-    [Header("Left Hand IK")] [SerializeField]
-    protected Transform leftHandIK_Target;
-
-    protected override void Start()
-    {
-        base.Start();
-        SwitchGun(0);
-    }
-
-    protected void Update()
-    {
-        WeaponSwitch();
-    }
+    [Header("Left Hand IK")] 
+    [SerializeField] protected Transform leftHandIK_Target;
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        LoadGunTransform();
-        LoadLeftHandTargetTrans();
+        LoadWeaponModel();
+        LoadBackupWeapon();
         LoadLeftHandIKTarget();
     }
 
-    protected void LoadGunTransform()
+    protected void LoadWeaponModel()
     {
-        if (gunTransforms is { Length: > 0 }) return;
-        var weapons = transform.parent.GetComponentsInChildren<WeaponDetect>(true);
-        gunTransforms = new Transform[weapons.Length];
-        for (int i = 0; i < weapons.Length; i++)
-            gunTransforms[i] = weapons[i].transform;
-        Debug.Log(transform.name + "LoadGunTransform", gameObject);
+        if (weaponModels is { Length: > 0 }) return;
+        weaponModels = transform.parent.GetComponentsInChildren<WeaponModel>(true);
+        Debug.Log(transform.name + "LoadWeaponModel", gameObject);
     }
-
-    protected void LoadLeftHandTargetTrans()
+    
+    
+    protected void LoadBackupWeapon()
     {
-        if (leftHandTargets is { Length: > 0 }) return;
-        leftHandTargets = new Transform[gunTransforms.Length];
-        for (int i = 0; i < gunTransforms.Length; i++)
-            leftHandTargets[i] = gunTransforms[i].Find("LeftHand_TargetTrans");
-
-        Debug.Log(transform.name + "LoadLeftHandTargetTrans", gameObject);
+        if(backupWeaponModels is {Length: > 0}) return;
+        backupWeaponModels = transform.parent.GetComponentsInChildren<BackupWeaponModel>(true);
+        Debug.Log(transform.name + "LoadBackupWeapon", gameObject);
     }
 
     protected void LoadLeftHandIKTarget()
     {
         if (leftHandIK_Target != null) return;
-        leftHandIK_Target = gunTransforms[0].parent.parent.Find("LeftHand_IK_target");
+        leftHandIK_Target = weaponModels[0].transform.parent.parent.Find("LeftHand_IK_target");
         Debug.Log(transform.name + "LoadLeftHandIK", gameObject);
     }
 
-    protected void SwitchOn(Transform gun)
+    public void SwitchOnCurrentWeapon()
     {
-        SwitchOffGuns();
-        gun.gameObject.SetActive(true);
-
-        currentGun = gun;
-        int index = Array.IndexOf(gunTransforms, gun);
-        if (index >= 0) AttachLeftHand(index);
+        PlayerCtrl.Instance.PlayerAnim.SwitchAnimationLayer((int)CurrentWeaponModel().holdType);
+        
+        SwitchOffWeaponModels();
+        
+        SwitchOffBackupWeapons();
+        if(!PlayerCtrl.Instance.PlayerAttack.HasOnlyOneWeapon())
+            SwitchOnBackupWeapon();
+        
+        CurrentWeaponModel().gameObject.SetActive(true);
+        AttachLeftHand();
     }
 
-    protected void SwitchOffGuns()
+    protected void SwitchOffWeaponModels()
     {
-        foreach (var gun in gunTransforms)
+        foreach (var gun in weaponModels)
             gun.gameObject.SetActive(false);
     }
 
-    public void SwitchGun(int index)
+    protected void SwitchOffBackupWeapons()
     {
-        if (index < 0 || index >= gunTransforms.Length) return;
-        SwitchOn(gunTransforms[index]);
+        foreach(BackupWeaponModel weapon in backupWeaponModels)
+            weapon.gameObject.SetActive(false);
     }
 
-    protected void AttachLeftHand(int index)
+    public void SwitchOnBackupWeapon()
     {
-        Transform targetTransform = leftHandTargets[index];
+        WeaponType weaponType = PlayerCtrl.Instance.PlayerAttack.BackupWeapon().weaponType;
+        
+        foreach(BackupWeaponModel weapon in backupWeaponModels)
+            if(weapon.weaponType == weaponType)
+                weapon.gameObject.SetActive(true);
+    }
+
+    protected void AttachLeftHand()
+    {
+        Transform targetTransform = CurrentWeaponModel().holdPoint;
         leftHandIK_Target.localPosition = targetTransform.localPosition;
         leftHandIK_Target.localRotation = targetTransform.localRotation;
     }
-
-    protected void WeaponSwitch()
+    
+    public WeaponModel CurrentWeaponModel()
     {
-        var anim = PlayerCtrl.Instance.PlayerAnim;
-        for (int i = 0; i < 5; i++)
+        WeaponModel weaponModel = null;
+        WeaponType weaponType = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.weaponType;
+
+        foreach (var weapon in weaponModels)
         {
-            if (!Input.GetKeyDown(KeyCode.Alpha1 + i)) continue;
-            SwitchGun(i);
-            int layer = i < 3 ? 1 : i - 1;
-            anim.SwitchAnimationLayer(layer);
-            anim.WeaponGrabAnim(i < 2 ? GrabType.SideGrab : GrabType.BackGrab);
+            if (weapon.weaponType == weaponType) 
+                weaponModel = weapon;
         }
+        return weaponModel;
     }
 }

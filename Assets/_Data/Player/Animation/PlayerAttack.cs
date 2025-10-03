@@ -7,6 +7,7 @@ public class PlayerAttack : NhoxBehaviour
     protected string bulletName = "Bullet";
 
     [SerializeField] protected Weapon currentWeapon;
+    public Weapon CurrentWeapon => currentWeapon;
 
     [SerializeField] protected float bulletSpeed = 20f;
     [SerializeField] protected Transform gunPoint;
@@ -19,7 +20,7 @@ public class PlayerAttack : NhoxBehaviour
     protected override void Awake()
     {
         base.Awake();
-        currentWeapon.ammo = currentWeapon.maxAmmo;
+        Invoke(nameof(EquipStartingWeapon), 0.1f);
     }
 
     protected override void LoadComponents()
@@ -38,7 +39,7 @@ public class PlayerAttack : NhoxBehaviour
     public void ShootBullet()
     {
         var playerAnim = PlayerCtrl.Instance.PlayerAnim;
-        if (playerAnim.BusyGrabWeapon) return;
+        if (playerAnim.IsEquipingWeapon) return;
         if (!currentWeapon.CanShoot()) return;
 
         var prefab =
@@ -65,22 +66,39 @@ public class PlayerAttack : NhoxBehaviour
         return dir;
     }
 
+    protected void EquipStartingWeapon() => EquipWeapon(0);
+
     public void EquipWeapon(int i)
     {
         if (i > weaponSlots.Count - 1) return;
+        
         currentWeapon = weaponSlots[i];
+        PlayerCtrl.Instance.PlayerAnim.WeaponEquipAnim();
     }
 
     public void PickupWeapon(Weapon newWeapon)
     {
         if (weaponSlots.Count >= maxSlots) return;
         weaponSlots.Add(newWeapon);
+        PlayerCtrl.Instance.PlayerWeaponVisual.SwitchOnBackupWeapon();
     }
+
+    public Weapon BackupWeapon()
+    {
+        foreach (Weapon weapon in weaponSlots)
+        {
+            if(weapon != currentWeapon)
+                return weapon;
+        }
+        return null;
+    }
+
+    public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
 
     public void DropWeapon()
     {
-        if (weaponSlots.Count <= 1) return;
+        if (HasOnlyOneWeapon()) return;
         weaponSlots.Remove(currentWeapon);
-        currentWeapon = weaponSlots[0];
+        EquipWeapon(0);
     }
 }

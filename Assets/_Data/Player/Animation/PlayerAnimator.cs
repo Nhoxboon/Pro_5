@@ -6,8 +6,8 @@ using UnityEngine.Animations.Rigging;
 public class PlayerAnimator : NhoxBehaviour
 {
     [SerializeField] protected Animator anim;
-    protected bool busyGrabWeapon;
-    public bool BusyGrabWeapon => busyGrabWeapon;
+    protected bool isEquipingWeapon;
+    public bool IsEquipingWeapon => isEquipingWeapon;
     
     [Header("Rig")]
     [SerializeField] protected Rig rig;
@@ -68,14 +68,6 @@ public class PlayerAnimator : NhoxBehaviour
         bool playRunAnimation = movement.IsRunning && movement.MovementDirection.magnitude > 0;
         anim.SetBool("isRunning", playRunAnimation);
     }
-
-    public void SwitchAnimationLayer(int layerIndex)
-    {
-        for (int i = 1; i < anim.layerCount; i++)
-            anim.SetLayerWeight(i, 0);
-        
-        anim.SetLayerWeight(layerIndex, 1);
-    }
     
     protected void AdjustRigWeight()
     {
@@ -95,32 +87,48 @@ public class PlayerAnimator : NhoxBehaviour
     
     protected void ReduceRigWeight() => rig.weight = 0.15f;
     
+    public void SwitchAnimationLayer(int layerIndex)
+    {
+        for (int i = 1; i < anim.layerCount; i++)
+            anim.SetLayerWeight(i, 0);
+        
+        anim.SetLayerWeight(layerIndex, 1);
+    }
+    
     public void ReloadAnim()
     {
-        if(busyGrabWeapon) return;
-        ReduceRigWeight();
+        if(isEquipingWeapon) return;
+        float reloadSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.reloadSpeed;
+        
+        anim.SetFloat("reloadSpeed", reloadSpeed);
         anim.SetTrigger("reload");
+        ReduceRigWeight();
     }
     
     public void RestoreRigWeight() => rigShouldIncrease = true;
     public void RestoreLeftHandIKWeight() => leftHandIKShouldIncrease = true;
     public void NotBusyGrab() => SetBusyGrabWeapon(false);
 
-    public void WeaponGrabAnim(GrabType grabType)
-    {
-        leftHandIK.weight = 0;
-        ReduceRigWeight();
-        anim.SetFloat("grabType", (float)grabType);
-        anim.SetTrigger("weaponGrab");
-        
-        SetBusyGrabWeapon(true);
-    }
-
     protected void SetBusyGrabWeapon(bool value)
     {
-        busyGrabWeapon = value;
-        anim.SetBool("busyGrab", busyGrabWeapon);
+        isEquipingWeapon = value;
+        anim.SetBool("busyEquiping", isEquipingWeapon);
     }
 
     public void ShootAnim() => anim.SetTrigger("fire");
+    
+    public void WeaponEquipAnim()
+    {
+        EquipType equipType = PlayerCtrl.Instance.PlayerWeaponVisual.CurrentWeaponModel().equipType;
+        
+        float equipmentSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.equipmentSpeed;
+        
+        leftHandIK.weight = 0;
+        ReduceRigWeight();
+        anim.SetFloat("equipType", (float)equipType);
+        anim.SetTrigger("equipWeapon");
+        anim.SetFloat("equipSpeed", equipmentSpeed);
+        
+        SetBusyGrabWeapon(true);
+    }
 }
