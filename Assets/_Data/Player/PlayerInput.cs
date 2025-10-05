@@ -22,7 +22,7 @@ public class PlayerInput : NhoxBehaviour
     protected void SetupInputEvents()
     {
         var instance = PlayerCtrl.Instance;
-        ShootInput();
+        ShootInput(instance);
         SetupMovementInput(instance);
         SetupAimInput();
 
@@ -30,7 +30,6 @@ public class PlayerInput : NhoxBehaviour
         controls.Player.LockTarget.performed += ctx => instance.PlayerAim.Aim.SwitchLockTarget();
 
         SetupEquipInput(instance);
-        // controls.Player.SwitchWeapon.performed += OnSwitchWeapon;
     }
 
     protected void SetupMovementInput(PlayerCtrl instance)
@@ -48,30 +47,34 @@ public class PlayerInput : NhoxBehaviour
         controls.Player.Aim.canceled += ctx => MouseInput = Vector2.zero;
     }
 
-    protected void ShootInput()
+    protected void ShootInput(PlayerCtrl instance)
     {
-        controls.Player.Fire.performed += _ => PlayerCtrl.Instance.PlayerAttack.ShootBullet();
+        controls.Player.Fire.performed += _ => instance.PlayerAttack.SetIsShooting(true);
+        controls.Player.Fire.canceled += _ => instance.PlayerAttack.SetIsShooting(false);
+
+        controls.Player.BurstMode.performed += _ => instance.PlayerAttack.CurrentWeapon.ToggleBurst();
     }
 
     protected void SetupReloadInput(PlayerCtrl instance)
     {
-        controls.Player.Reload.performed += _ =>
-        {
-            if (instance.PlayerAttack.CurrentWeapon.CanReload())
-                instance.PlayerAnim.ReloadAnim();
-        };
+        controls.Player.Reload.performed += _ => ReloadAction(instance);
     }
 
     protected void SetupEquipInput(PlayerCtrl instance)
     {
         controls.Player.EquipSlot1.performed += _ => instance.PlayerAttack.EquipWeapon(0);
         controls.Player.EquipSlot2.performed += _ => instance.PlayerAttack.EquipWeapon(1);
+        controls.Player.EquipSlot3.performed += _ => instance.PlayerAttack.EquipWeapon(2);
+        controls.Player.EquipSlot4.performed += _ => instance.PlayerAttack.EquipWeapon(3);
+        controls.Player.EquipSlot5.performed += _ => instance.PlayerAttack.EquipWeapon(4);
+
         controls.Player.DropCurrentWeapon.performed += _ => instance.PlayerAttack.DropWeapon();
     }
 
-    // protected void OnSwitchWeapon(InputAction.CallbackContext ctx)
-    // {
-    //     if (int.TryParse(ctx.control.name, out int weaponIndex))
-    //         weaponVisual.SwitchGun(weaponIndex - 1);
-    // }
+    protected void ReloadAction(PlayerCtrl instance)
+    {
+        if (!instance.PlayerAttack.CurrentWeapon.CanReload() || !instance.PlayerAttack.WeaponReady) return;
+        instance.PlayerAttack.SetWeaponReady(false);
+        instance.PlayerAnim.ReloadAnim();
+    }
 }

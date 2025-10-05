@@ -1,10 +1,11 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 
 public class BackupWeaponModel : NhoxBehaviour
 {
     public WeaponType weaponType;
+    [SerializeField] protected HangType hangType;
+
 
     protected override void LoadComponents()
     {
@@ -19,4 +20,8 @@ public class BackupWeaponModel : NhoxBehaviour
         weaponType = result;
         Debug.Log(transform.name + "LoadWeaponType", gameObject);
     }
+
+    public void Activate(bool activated) => gameObject.SetActive(activated);
+
+    public bool HangTypeIs(HangType type) => hangType == type;
 }

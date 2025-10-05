@@ -4,8 +4,10 @@ public class PlayerAnimationEvent : NhoxBehaviour
 {
     public void ReloadIsOver()
     {
-        PlayerCtrl.Instance.PlayerAnim.RestoreRigWeight();
-        PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.RefillBullets();
+        var instance = PlayerCtrl.Instance;
+        instance.PlayerAnim.RestoreRigWeight();
+        instance.PlayerAttack.CurrentWeapon.RefillBullets();
+        instance.PlayerAttack.SetWeaponReady(true);
     }
 
     public void RestoreWeight()
@@ -14,7 +16,7 @@ public class PlayerAnimationEvent : NhoxBehaviour
         PlayerCtrl.Instance.PlayerAnim.RestoreLeftHandIKWeight();
     }
 
-    public void WeaponGrabIsOver() => PlayerCtrl.Instance.PlayerAnim.NotBusyGrab();
+    public void WeaponEquipIsOver() => PlayerCtrl.Instance.PlayerAttack.SetWeaponReady(true);
     
     public void SwitchOnWeaponModel() => PlayerCtrl.Instance.PlayerWeaponVisual.SwitchOnCurrentWeapon();
 }

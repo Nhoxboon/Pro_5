@@ -47646,7 +47646,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.7
-    functionName: WeaponGrabIsOver
+    functionName: WeaponEquipIsOver
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

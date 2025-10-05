@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Bullet : NhoxBehaviour
@@ -7,15 +8,31 @@ public class Bullet : NhoxBehaviour
     private const float ReferenceBulletSpeed = 20f;
     
     [SerializeField] protected Rigidbody rb;
+    [SerializeField] protected SphereCollider col;
+    [SerializeField] protected MeshRenderer mr;
     [SerializeField] protected TrailRenderer tr;
+    
+    protected bool bulletDisabled;
+    
     protected string fxName = "BulletImpactFX";
     
+    protected Vector3 startPosition;
+    protected float flyDistance;
+    
     protected void OnEnable() => ResetBullet();
+
+    protected void Update()
+    {
+        FadeTrail();
+        DisableBullet();
+    }
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
         LoadRigidbody();
+        LoadSphereCollider();
+        LoadMeshRenderer();
         LoadTrailRenderer();
     }
 
@@ -24,6 +41,20 @@ public class Bullet : NhoxBehaviour
         if (rb != null) return;
         rb = GetComponent<Rigidbody>();
         Debug.Log(transform.name + " LoadRigidbody", gameObject);
+    }
+    
+    protected void LoadSphereCollider()
+    {
+        if (col != null) return;
+        col = GetComponent<SphereCollider>();
+        Debug.Log(transform.name + " LoadSphereCollider", gameObject);
+    }
+    
+    protected void LoadMeshRenderer()
+    {
+        if (mr != null) return;
+        mr = GetComponent<MeshRenderer>();
+        Debug.Log(transform.name + " LoadMeshRenderer", gameObject);
     }
 
     protected void LoadTrailRenderer()
@@ -39,12 +70,35 @@ public class Bullet : NhoxBehaviour
         BulletSpawner.Instance.Despawn(gameObject);
     }
 
+    public void BulletSetup(float flyDistance)
+    {
+        startPosition = transform.position;
+        this.flyDistance = flyDistance + 0.5f; //Number based on laserTipLength in PlayerAimVisual
+    }
+
     public void Fire(Vector3 direction, float speed)
     {
         rb.mass = ReferenceBulletSpeed / speed;
         rb.linearVelocity = direction * speed;
     }
     
+    protected void DisableBullet()
+    {
+        if (!(Vector3.Distance(startPosition, transform.position) > flyDistance) || bulletDisabled) return;
+        col.enabled = false;
+        mr.enabled = false;
+        bulletDisabled = true;
+        
+        if(tr.time < 0) 
+            BulletSpawner.Instance.Despawn(gameObject);
+    }
+
+    protected void FadeTrail()
+    {
+        if (Vector3.Distance(startPosition, transform.position) > flyDistance - 1.5f)
+            tr.time -= 2 * Time.deltaTime;
+    }
+
     protected void SpawnFX(Collision other)
     {
         if (other.contacts.Length <= 0) return;
@@ -55,7 +109,11 @@ public class Bullet : NhoxBehaviour
 
     protected void ResetBullet()
     {
+        bulletDisabled = false;
+        col.enabled = true;
+        mr.enabled = true;
         tr.Clear();
+        tr.time = 0.25f;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }

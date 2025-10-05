@@ -21,14 +21,20 @@ public class PlayerAimVisual : AimComponent
     
     public void UpdateAimVisuals()
     {
-        if (!aimLaser.enabled) aimLaser.enabled = true;
-        
         var playerAtk = PlayerCtrl.Instance.PlayerAttack;
-        Transform gunPoint = playerAtk.GunPoint;
+        aimLaser.enabled = playerAtk.WeaponReady;
+        
+        if(!aimLaser.enabled) return;
+        
+        WeaponModel weaponModel = PlayerCtrl.Instance.PlayerWeaponVisual.CurrentWeaponModel();
+        weaponModel.transform.LookAt(aimCtrl.Aim.AimPoint);
+        weaponModel.gunPoint.LookAt(aimCtrl.Aim.AimPoint);
+        
+        Transform gunPoint = playerAtk.GunPoint();
         Vector3 laserDir = playerAtk.BulletDirection();
         
         float laserTipLength = 0.5f;
-        float gunDistance = 4f;
+        float gunDistance = playerAtk.CurrentWeapon.gunDistance;
         
         Vector3 endPoint = gunPoint.position + laserDir * gunDistance;
         if(Physics.Raycast(gunPoint.position, laserDir, out RaycastHit hit, gunDistance))

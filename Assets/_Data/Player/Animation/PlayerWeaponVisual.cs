@@ -63,16 +63,34 @@ public class PlayerWeaponVisual : NhoxBehaviour
     protected void SwitchOffBackupWeapons()
     {
         foreach(BackupWeaponModel weapon in backupWeaponModels)
-            weapon.gameObject.SetActive(false);
+            weapon.Activate(false);
     }
 
     public void SwitchOnBackupWeapon()
     {
-        WeaponType weaponType = PlayerCtrl.Instance.PlayerAttack.BackupWeapon().weaponType;
-        
-        foreach(BackupWeaponModel weapon in backupWeaponModels)
-            if(weapon.weaponType == weaponType)
-                weapon.gameObject.SetActive(true);
+        SwitchOffBackupWeapons();
+        BackupWeaponModel lowHangWeapon = null;
+        BackupWeaponModel backHangWeapon = null;
+        BackupWeaponModel sideHangWeapon = null;
+
+        foreach (BackupWeaponModel weapon in backupWeaponModels)
+        {
+            if(weapon.weaponType == PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.weaponType) 
+                continue;
+            
+            if (PlayerCtrl.Instance.PlayerAttack.HasWeaponTypeInInventory(weapon.weaponType))
+            {
+                if(weapon.HangTypeIs(HangType.LowBackHang))
+                    lowHangWeapon = weapon;
+                if (weapon.HangTypeIs(HangType.BackHang))
+                    backHangWeapon = weapon;
+                if(weapon.HangTypeIs(HangType.SideHang))
+                    sideHangWeapon = weapon;
+            }
+        }
+        lowHangWeapon?.Activate(true);
+        backHangWeapon?.Activate(true);
+        sideHangWeapon?.Activate(true);
     }
 
     protected void AttachLeftHand()

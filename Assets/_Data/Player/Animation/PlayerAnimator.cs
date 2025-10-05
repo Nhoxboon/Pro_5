@@ -6,8 +6,6 @@ using UnityEngine.Animations.Rigging;
 public class PlayerAnimator : NhoxBehaviour
 {
     [SerializeField] protected Animator anim;
-    protected bool isEquipingWeapon;
-    public bool IsEquipingWeapon => isEquipingWeapon;
     
     [Header("Rig")]
     [SerializeField] protected Rig rig;
@@ -97,7 +95,6 @@ public class PlayerAnimator : NhoxBehaviour
     
     public void ReloadAnim()
     {
-        if(isEquipingWeapon) return;
         float reloadSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.reloadSpeed;
         
         anim.SetFloat("reloadSpeed", reloadSpeed);
@@ -107,13 +104,6 @@ public class PlayerAnimator : NhoxBehaviour
     
     public void RestoreRigWeight() => rigShouldIncrease = true;
     public void RestoreLeftHandIKWeight() => leftHandIKShouldIncrease = true;
-    public void NotBusyGrab() => SetBusyGrabWeapon(false);
-
-    protected void SetBusyGrabWeapon(bool value)
-    {
-        isEquipingWeapon = value;
-        anim.SetBool("busyEquiping", isEquipingWeapon);
-    }
 
     public void ShootAnim() => anim.SetTrigger("fire");
     
@@ -128,7 +118,5 @@ public class PlayerAnimator : NhoxBehaviour
         anim.SetFloat("equipType", (float)equipType);
         anim.SetTrigger("equipWeapon");
         anim.SetFloat("equipSpeed", equipmentSpeed);
-        
-        SetBusyGrabWeapon(true);
     }
 }
