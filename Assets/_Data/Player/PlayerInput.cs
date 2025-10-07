@@ -62,13 +62,13 @@ public class PlayerInput : NhoxBehaviour
 
     protected void SetupEquipInput(PlayerCtrl instance)
     {
-        controls.Player.EquipSlot1.performed += _ => instance.PlayerAttack.EquipWeapon(0);
-        controls.Player.EquipSlot2.performed += _ => instance.PlayerAttack.EquipWeapon(1);
-        controls.Player.EquipSlot3.performed += _ => instance.PlayerAttack.EquipWeapon(2);
-        controls.Player.EquipSlot4.performed += _ => instance.PlayerAttack.EquipWeapon(3);
-        controls.Player.EquipSlot5.performed += _ => instance.PlayerAttack.EquipWeapon(4);
+        controls.Player.EquipSlot1.performed += _ => instance.PlayerInventory.EquipWeapon(0);
+        controls.Player.EquipSlot2.performed += _ => instance.PlayerInventory.EquipWeapon(1);
+        controls.Player.EquipSlot3.performed += _ => instance.PlayerInventory.EquipWeapon(2);
+        controls.Player.EquipSlot4.performed += _ => instance.PlayerInventory.EquipWeapon(3);
+        controls.Player.EquipSlot5.performed += _ => instance.PlayerInventory.EquipWeapon(4);
 
-        controls.Player.DropCurrentWeapon.performed += _ => instance.PlayerAttack.DropWeapon();
+        controls.Player.DropCurrentWeapon.performed += _ => instance.PlayerInventory.DropWeapon();
     }
 
     protected void ReloadAction(PlayerCtrl instance)

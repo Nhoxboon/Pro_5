@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] protected Weapon weapon;
+    [SerializeField] protected WeaponDataSO weaponData;
 
     protected void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponentInChildren(out PlayerAttack atk))
-            atk.PickupWeapon(weapon);
+        if (other.TryGetComponentInChildren(out PlayerInventory inventory))
+            inventory.PickupWeapon(weaponData);
     }
 }

@@ -34,7 +34,7 @@ public class PlayerAimVisual : AimComponent
         Vector3 laserDir = playerAtk.BulletDirection();
         
         float laserTipLength = 0.5f;
-        float gunDistance = playerAtk.CurrentWeapon.gunDistance;
+        float gunDistance = playerAtk.CurrentWeapon.GunDistance;
         
         Vector3 endPoint = gunPoint.position + laserDir * gunDistance;
         if(Physics.Raycast(gunPoint.position, laserDir, out RaycastHit hit, gunDistance))

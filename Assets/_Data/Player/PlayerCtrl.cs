@@ -22,6 +22,9 @@ public class PlayerCtrl : NhoxBehaviour
 
     [SerializeField] protected PlayerWeaponVisual playerWeaponVisual;
     public PlayerWeaponVisual PlayerWeaponVisual => playerWeaponVisual;
+    
+    [SerializeField] protected PlayerInventory playerInventory;
+    public PlayerInventory PlayerInventory => playerInventory;
 
     protected override void Awake()
     {
@@ -44,6 +47,7 @@ public class PlayerCtrl : NhoxBehaviour
         LoadPlayerAtk();
         LoadPlayerAnim();
         LoadPlayerWeaponVisual();
+        LoadPlayerInventory();
     }
 
     protected void LoadPlayerInput()
@@ -86,6 +90,12 @@ public class PlayerCtrl : NhoxBehaviour
         if(playerWeaponVisual != null) return;
         playerWeaponVisual = GetComponentInChildren<PlayerWeaponVisual>();
         Debug.Log(transform.name + " LoadPlayerWeaponVisual", gameObject);
-
+    }
+    
+    protected void LoadPlayerInventory()
+    {
+        if(playerInventory != null) return;
+        playerInventory = GetComponentInChildren<PlayerInventory>();
+        Debug.Log(transform.name + " LoadPlayerInventory", gameObject);
     }
 }

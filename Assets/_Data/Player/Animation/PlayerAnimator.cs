@@ -95,7 +95,7 @@ public class PlayerAnimator : NhoxBehaviour
     
     public void ReloadAnim()
     {
-        float reloadSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.reloadSpeed;
+        float reloadSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.ReloadSpeed;
         
         anim.SetFloat("reloadSpeed", reloadSpeed);
         anim.SetTrigger("reload");
@@ -111,7 +111,7 @@ public class PlayerAnimator : NhoxBehaviour
     {
         EquipType equipType = PlayerCtrl.Instance.PlayerWeaponVisual.CurrentWeaponModel().equipType;
         
-        float equipmentSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.equipmentSpeed;
+        float equipmentSpeed = PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.EquipmentSpeed;
         
         leftHandIK.weight = 0;
         ReduceRigWeight();

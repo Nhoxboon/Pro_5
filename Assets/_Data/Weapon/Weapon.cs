@@ -7,42 +7,72 @@ public class Weapon
 {
     public WeaponType weaponType;
     
-    [Header("Shooting Specifics")]
+    #region Regular Mode Variables
     public ShootType shootType;
-    public int bulletsPerShot = 1;
-    public float defaultFireRate = 1;
-    public float fireRate = 1; //Bullets per second
+    public int BulletsPerShot { get; private set; }
+    private float defaultFireRate;
+    public float fireRate;
     private float lastShootTime;
+    #endregion
 
-    [Header("Burst Fire")] 
-    public bool burstAvailable;
+    #region Burst Mode Variables
+    private bool burstAvailable;
     public bool burstActive;
-    public int bulletsPerBurst = 1;
-    public float burstFireRate = 1;
-    public float burstFireDelay = 0.1f;
+    private int bulletsPerBurst;
+    private float burstFireRate;
+    public float BurstFireDelay {get; private set;}
+    #endregion
     
-    [Header("Magazine Details")]
+    #region Magazine Variables
     public int bulletsInMagazine;
-    public int magazineCapacity;
-    public int totalReserveAmmo;
-    [Range(1, 2)]
-    public float reloadSpeed = 1;
-    [Range(1, 2)]
-    public float equipmentSpeed = 1;
-    [Range(2, 12)] 
-    public float gunDistance = 4;
+    private int magazineCapacity;
+    private int totalReserveAmmo;
+    #endregion
 
-    [Range(3, 8)] 
-    public float cameraDistance = 6;
+    #region Weapon Generics Variables
+    public float ReloadSpeed { get; private set; }
+    public float EquipmentSpeed { get; private set; }
+    public float GunDistance { get; private set; }
+    public float CameraDistance { get; private set; }
+    #endregion
 
-    [Header("Spread")] 
-    public float baseSpread = 1;
-    public float maximumSpread = 3;
+    #region Weapon Spread Variables
+    private float baseSpread = 1;
+    private float maximumSpread = 3;
     private float currentSpread = 2;
-    public float spreadIncreaseRate = 0.15f;
-    
-    private float lastSpreadUpdateTime;
+    private float spreadIncreaseRate = 0.15f;
     private float spreadCooldown = 0.5f;
+    private float lastSpreadUpdateTime;
+    #endregion
+
+    public Weapon(WeaponDataSO weaponData)
+    {
+        weaponType = weaponData.weaponType;
+        shootType = weaponData.shootType;
+        BulletsPerShot = weaponData.bulletsPerShot;
+
+        bulletsInMagazine = weaponData.bulletsInMagazine;
+        magazineCapacity = weaponData.magazineCapacity;
+        totalReserveAmmo = weaponData.totalReserveAmmo;
+        
+        fireRate = weaponData.fireRate;
+        defaultFireRate = fireRate;
+        
+        burstAvailable = weaponData.burstAvailable;
+        burstActive = weaponData.burstActive;
+        bulletsPerBurst = weaponData.bulletsPerBurst;
+        burstFireRate = weaponData.burstFireRate;
+        BurstFireDelay = weaponData.burstFireDelay;
+        
+        baseSpread = weaponData.baseSpread;
+        maximumSpread = weaponData.maximumSpread;
+        spreadIncreaseRate = weaponData.spreadIncreaseRate;
+
+        ReloadSpeed = weaponData.reloadSpeed;
+        EquipmentSpeed = weaponData.equipmentSpeed;
+        GunDistance = weaponData.gunDistance;
+        CameraDistance = weaponData.cameraDistance;
+    }
     
     public bool CanShoot() => HasEnoughBullet() && ReadyToFire();
 
@@ -98,7 +128,7 @@ public class Weapon
     public bool BurstActivated()
     {
         if (weaponType != WeaponType.Shotgun) return burstActive;
-        burstFireDelay = 0;
+        BurstFireDelay = 0;
         return true;
     }
     
@@ -109,12 +139,12 @@ public class Weapon
         
         if (burstActive)
         {
-            bulletsPerShot = bulletsPerBurst;
+            BulletsPerShot = bulletsPerBurst;
             fireRate = burstFireRate;
         }
         else
         {
-            bulletsPerShot = 1;
+            BulletsPerShot = 1;
             fireRate = defaultFireRate;
         }
     }

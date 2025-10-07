@@ -47,7 +47,7 @@ public class PlayerWeaponVisual : NhoxBehaviour
         SwitchOffWeaponModels();
         
         SwitchOffBackupWeapons();
-        if(!PlayerCtrl.Instance.PlayerAttack.HasOnlyOneWeapon())
+        if(!PlayerCtrl.Instance.PlayerInventory.HasOnlyOneWeapon())
             SwitchOnBackupWeapon();
         
         CurrentWeaponModel().gameObject.SetActive(true);
@@ -78,7 +78,7 @@ public class PlayerWeaponVisual : NhoxBehaviour
             if(weapon.weaponType == PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.weaponType) 
                 continue;
             
-            if (PlayerCtrl.Instance.PlayerAttack.HasWeaponTypeInInventory(weapon.weaponType))
+            if (PlayerCtrl.Instance.PlayerInventory.HasWeaponTypeInInventory(weapon.weaponType))
             {
                 if(weapon.HangTypeIs(HangType.LowBackHang))
                     lowHangWeapon = weapon;
