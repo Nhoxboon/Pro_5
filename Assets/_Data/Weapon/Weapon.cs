@@ -6,44 +6,56 @@ using Random = UnityEngine.Random;
 public class Weapon
 {
     public WeaponType weaponType;
-    
+
     #region Regular Mode Variables
+
     public ShootType shootType;
     public int BulletsPerShot { get; private set; }
     private float defaultFireRate;
     public float fireRate;
     private float lastShootTime;
+
     #endregion
 
     #region Burst Mode Variables
+
     private bool burstAvailable;
     public bool burstActive;
     private int bulletsPerBurst;
     private float burstFireRate;
-    public float BurstFireDelay {get; private set;}
+    public float BurstFireDelay { get; private set; }
+
     #endregion
-    
+
     #region Magazine Variables
+
     public int bulletsInMagazine;
     private int magazineCapacity;
-    private int totalReserveAmmo;
+    public int totalReserveAmmo;
+
     #endregion
 
     #region Weapon Generics Variables
+
     public float ReloadSpeed { get; private set; }
     public float EquipmentSpeed { get; private set; }
     public float GunDistance { get; private set; }
     public float CameraDistance { get; private set; }
+
     #endregion
 
     #region Weapon Spread Variables
+
     private float baseSpread = 1;
     private float maximumSpread = 3;
     private float currentSpread = 2;
     private float spreadIncreaseRate = 0.15f;
     private float spreadCooldown = 0.5f;
     private float lastSpreadUpdateTime;
+
     #endregion
+
+    public WeaponDataSO weaponData { get; private set; } //Serves as default weapon data
 
     public Weapon(WeaponDataSO weaponData)
     {
@@ -54,16 +66,16 @@ public class Weapon
         bulletsInMagazine = weaponData.bulletsInMagazine;
         magazineCapacity = weaponData.magazineCapacity;
         totalReserveAmmo = weaponData.totalReserveAmmo;
-        
+
         fireRate = weaponData.fireRate;
         defaultFireRate = fireRate;
-        
+
         burstAvailable = weaponData.burstAvailable;
         burstActive = weaponData.burstActive;
         bulletsPerBurst = weaponData.bulletsPerBurst;
         burstFireRate = weaponData.burstFireRate;
         BurstFireDelay = weaponData.burstFireDelay;
-        
+
         baseSpread = weaponData.baseSpread;
         maximumSpread = weaponData.maximumSpread;
         spreadIncreaseRate = weaponData.spreadIncreaseRate;
@@ -72,8 +84,10 @@ public class Weapon
         EquipmentSpeed = weaponData.equipmentSpeed;
         GunDistance = weaponData.gunDistance;
         CameraDistance = weaponData.cameraDistance;
+
+        this.weaponData = weaponData;
     }
-    
+
     public bool CanShoot() => HasEnoughBullet() && ReadyToFire();
 
     private bool ReadyToFire()
@@ -101,9 +115,9 @@ public class Weapon
 
         if (totalReserveAmmo < 0) totalReserveAmmo = 0;
     }
-    
+
     private bool HasEnoughBullet() => bulletsInMagazine > 0;
-    
+
     public Vector3 ApplySpread(Vector3 originalDirection)
     {
         UpdateSpread();
@@ -114,11 +128,11 @@ public class Weapon
 
     private void UpdateSpread()
     {
-        if(Time.time > lastSpreadUpdateTime + spreadCooldown)
+        if (Time.time > lastSpreadUpdateTime + spreadCooldown)
             currentSpread = baseSpread;
         else
             IncreaseSpread();
-        
+
         lastSpreadUpdateTime = Time.time;
     }
 
@@ -131,12 +145,12 @@ public class Weapon
         BurstFireDelay = 0;
         return true;
     }
-    
+
     public void ToggleBurst()
     {
-        if(!burstAvailable) return;
+        if (!burstAvailable) return;
         burstActive = !burstActive;
-        
+
         if (burstActive)
         {
             BulletsPerShot = bulletsPerBurst;

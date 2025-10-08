@@ -22,9 +22,12 @@ public class PlayerCtrl : NhoxBehaviour
 
     [SerializeField] protected PlayerWeaponVisual playerWeaponVisual;
     public PlayerWeaponVisual PlayerWeaponVisual => playerWeaponVisual;
-    
+
     [SerializeField] protected PlayerInventory playerInventory;
     public PlayerInventory PlayerInventory => playerInventory;
+
+    [SerializeField] protected PlayerInteraction playerInteraction;
+    public PlayerInteraction PlayerInteraction => playerInteraction;
 
     protected override void Awake()
     {
@@ -48,6 +51,7 @@ public class PlayerCtrl : NhoxBehaviour
         LoadPlayerAnim();
         LoadPlayerWeaponVisual();
         LoadPlayerInventory();
+        LoadPlayerInteraction();
     }
 
     protected void LoadPlayerInput()
@@ -73,7 +77,7 @@ public class PlayerCtrl : NhoxBehaviour
 
     protected void LoadPlayerAtk()
     {
-        if(playerAttack != null) return;
+        if (playerAttack != null) return;
         playerAttack = GetComponentInChildren<PlayerAttack>();
         Debug.Log(transform.name + " LoadPlayerAtk", gameObject);
     }
@@ -87,15 +91,22 @@ public class PlayerCtrl : NhoxBehaviour
 
     protected void LoadPlayerWeaponVisual()
     {
-        if(playerWeaponVisual != null) return;
+        if (playerWeaponVisual != null) return;
         playerWeaponVisual = GetComponentInChildren<PlayerWeaponVisual>();
         Debug.Log(transform.name + " LoadPlayerWeaponVisual", gameObject);
     }
-    
+
     protected void LoadPlayerInventory()
     {
-        if(playerInventory != null) return;
+        if (playerInventory != null) return;
         playerInventory = GetComponentInChildren<PlayerInventory>();
         Debug.Log(transform.name + " LoadPlayerInventory", gameObject);
+    }
+
+    protected void LoadPlayerInteraction()
+    {
+        if (playerInteraction != null) return;
+        playerInteraction = GetComponentInChildren<PlayerInteraction>();
+        Debug.Log(transform.name + " LoadPlayerInteraction", gameObject);
     }
 }

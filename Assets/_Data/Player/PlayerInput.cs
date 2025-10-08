@@ -28,6 +28,7 @@ public class PlayerInput : NhoxBehaviour
 
         SetupReloadInput(instance);
         controls.Player.LockTarget.performed += ctx => instance.PlayerAim.Aim.SwitchLockTarget();
+        controls.Player.Interaction.performed += _ => instance.PlayerInteraction.InteractWithClosest();
 
         SetupEquipInput(instance);
     }

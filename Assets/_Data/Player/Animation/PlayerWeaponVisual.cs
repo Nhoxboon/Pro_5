@@ -7,8 +7,8 @@ public class PlayerWeaponVisual : NhoxBehaviour
     [SerializeField] protected WeaponModel[] weaponModels;
     [SerializeField] protected BackupWeaponModel[] backupWeaponModels;
 
-    [Header("Left Hand IK")] 
-    [SerializeField] protected Transform leftHandIK_Target;
+    [Header("Left Hand IK")] [SerializeField]
+    protected Transform leftHandIK_Target;
 
     protected override void LoadComponents()
     {
@@ -24,11 +24,11 @@ public class PlayerWeaponVisual : NhoxBehaviour
         weaponModels = transform.parent.GetComponentsInChildren<WeaponModel>(true);
         Debug.Log(transform.name + "LoadWeaponModel", gameObject);
     }
-    
-    
+
+
     protected void LoadBackupWeapon()
     {
-        if(backupWeaponModels is {Length: > 0}) return;
+        if (backupWeaponModels is { Length: > 0 }) return;
         backupWeaponModels = transform.parent.GetComponentsInChildren<BackupWeaponModel>(true);
         Debug.Log(transform.name + "LoadBackupWeapon", gameObject);
     }
@@ -43,18 +43,18 @@ public class PlayerWeaponVisual : NhoxBehaviour
     public void SwitchOnCurrentWeapon()
     {
         PlayerCtrl.Instance.PlayerAnim.SwitchAnimationLayer((int)CurrentWeaponModel().holdType);
-        
+
         SwitchOffWeaponModels();
-        
+
         SwitchOffBackupWeapons();
-        if(!PlayerCtrl.Instance.PlayerInventory.HasOnlyOneWeapon())
+        if (!PlayerCtrl.Instance.PlayerInventory.HasOnlyOneWeapon())
             SwitchOnBackupWeapon();
-        
+
         CurrentWeaponModel().gameObject.SetActive(true);
         AttachLeftHand();
     }
 
-    protected void SwitchOffWeaponModels()
+    public void SwitchOffWeaponModels()
     {
         foreach (var gun in weaponModels)
             gun.gameObject.SetActive(false);
@@ -62,7 +62,7 @@ public class PlayerWeaponVisual : NhoxBehaviour
 
     protected void SwitchOffBackupWeapons()
     {
-        foreach(BackupWeaponModel weapon in backupWeaponModels)
+        foreach (BackupWeaponModel weapon in backupWeaponModels)
             weapon.Activate(false);
     }
 
@@ -75,19 +75,20 @@ public class PlayerWeaponVisual : NhoxBehaviour
 
         foreach (BackupWeaponModel weapon in backupWeaponModels)
         {
-            if(weapon.weaponType == PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.weaponType) 
+            if (weapon.weaponType == PlayerCtrl.Instance.PlayerAttack.CurrentWeapon.weaponType)
                 continue;
-            
+
             if (PlayerCtrl.Instance.PlayerInventory.HasWeaponTypeInInventory(weapon.weaponType))
             {
-                if(weapon.HangTypeIs(HangType.LowBackHang))
+                if (weapon.HangTypeIs(HangType.LowBackHang))
                     lowHangWeapon = weapon;
                 if (weapon.HangTypeIs(HangType.BackHang))
                     backHangWeapon = weapon;
-                if(weapon.HangTypeIs(HangType.SideHang))
+                if (weapon.HangTypeIs(HangType.SideHang))
                     sideHangWeapon = weapon;
             }
         }
+
         lowHangWeapon?.Activate(true);
         backHangWeapon?.Activate(true);
         sideHangWeapon?.Activate(true);
@@ -99,7 +100,7 @@ public class PlayerWeaponVisual : NhoxBehaviour
         leftHandIK_Target.localPosition = targetTransform.localPosition;
         leftHandIK_Target.localRotation = targetTransform.localRotation;
     }
-    
+
     public WeaponModel CurrentWeaponModel()
     {
         WeaponModel weaponModel = null;
@@ -107,9 +108,10 @@ public class PlayerWeaponVisual : NhoxBehaviour
 
         foreach (var weapon in weaponModels)
         {
-            if (weapon.weaponType == weaponType) 
+            if (weapon.weaponType == weaponType)
                 weaponModel = weapon;
         }
+
         return weaponModel;
     }
 }
