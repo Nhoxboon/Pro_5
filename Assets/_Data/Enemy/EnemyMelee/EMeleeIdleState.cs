@@ -1,11 +1,10 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EnemyMeleeIdleState : EnemyState
+public class EMeleeIdleState : EnemyState
 {
     protected EnemyMelee enemy;
     
-    public EnemyMeleeIdleState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+    public EMeleeIdleState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyMelee;
     }
@@ -24,6 +23,12 @@ public class EnemyMeleeIdleState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if(enemy.PlayerInAggroRange())
+        {
+            stateMachine.ChangeState(enemy.RecoveryState);
+            return;
+        }
+        
         if(startTimer < 0)
             stateMachine.ChangeState(enemy.MoveState);
     }

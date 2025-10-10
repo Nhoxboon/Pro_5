@@ -1,16 +1,19 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyMelee : Enemy
 {
-    public EnemyMeleeIdleState IdleState { get; protected set; }
-    public EnemyMeleeMoveState MoveState { get; protected set; }
+    public EMeleeIdleState IdleState { get; protected set; }
+    public EMeleeMoveState MoveState { get; protected set; }
+    public EMeleeRecoveryState RecoveryState { get; protected set; }
+    public EMeleeChaseState ChaseState { get; protected set; }
 
     protected override void Awake()
     {
         base.Awake();
-        IdleState = new EnemyMeleeIdleState(this, StateMachine, "idle");
-        MoveState = new EnemyMeleeMoveState(this, StateMachine, "move");
+        IdleState = new EMeleeIdleState(this, StateMachine, "idle");
+        MoveState = new EMeleeMoveState(this, StateMachine, "move");
+        RecoveryState = new EMeleeRecoveryState(this, StateMachine, "recovery");
+        ChaseState = new EMeleeChaseState(this, StateMachine, "chase");
     }
 
     protected override void Start()
@@ -22,6 +25,6 @@ public class EnemyMelee : Enemy
     protected override void Update()
     {
         base.Update();
-        StateMachine.currentState.LogicUpdate();    
+        StateMachine.currentState.LogicUpdate();
     }
 }

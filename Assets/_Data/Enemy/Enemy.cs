@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class Enemy : NhoxBehaviour
 {
-    [Header("Idle Data")]
+    [Header("Data")]
     public float idleTime = 2f;
+    public float aggroRange = 10f;
 
-    [Header("Move Data")] 
     [SerializeField] protected EnemyMove enemyMove;
     public EnemyMove EnemyMove => enemyMove;
+
+    [SerializeField] protected EnemyAnimation enemyAnimation;
+    public EnemyAnimation EnemyAnimation => enemyAnimation;
     
     public EnemyStateMachine StateMachine { get; protected set; }
     
@@ -27,6 +30,7 @@ public class Enemy : NhoxBehaviour
     {
         base.LoadComponents();
         LoadEnemyMove();
+        LoadEnemyAnimation();
     }
 
     protected void LoadEnemyMove()
@@ -34,5 +38,21 @@ public class Enemy : NhoxBehaviour
         if(enemyMove != null) return;
         enemyMove = GetComponentInChildren<EnemyMove>();
         Debug.Log(transform.name + " LoadEnemyMove", gameObject);
+    }
+    
+    protected void LoadEnemyAnimation()
+    {
+        if(enemyAnimation != null) return;
+        enemyAnimation = GetComponentInChildren<EnemyAnimation>();
+        Debug.Log(transform.name + " LoadEnemyAnimation", gameObject);
+    }
+    
+    public bool PlayerInAggroRange() => Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
+
+    public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
+
+    protected void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
 }
