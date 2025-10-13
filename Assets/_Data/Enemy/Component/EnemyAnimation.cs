@@ -22,4 +22,9 @@ public class EnemyAnimation : NhoxBehaviour
     {
         anim.SetBool(state, isPlay);
     }
+    
+    public void AnimationSetFloat(string state, float value)
+    {
+        anim.SetFloat(state, value);
+    }
 }

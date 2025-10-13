@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class Enemy : NhoxBehaviour
 {
-    [Header("Data")]
-    public float idleTime = 2f;
-    public float aggroRange = 10f;
+    [Header("Data")] public float idleTime = 2f;
+    public float aggroRange = 4f;
 
     [SerializeField] protected EnemyMove enemyMove;
     public EnemyMove EnemyMove => enemyMove;
 
     [SerializeField] protected EnemyAnimation enemyAnimation;
     public EnemyAnimation EnemyAnimation => enemyAnimation;
-    
+
+    [SerializeField] protected EnemyAttack enemyAttack;
+    public EnemyAttack EnemyAttack => enemyAttack;
+
     public EnemyStateMachine StateMachine { get; protected set; }
-    
+
     protected override void Awake()
     {
         base.Awake();
@@ -23,7 +25,6 @@ public class Enemy : NhoxBehaviour
 
     protected virtual void Update()
     {
-        
     }
 
     protected override void LoadComponents()
@@ -31,23 +32,32 @@ public class Enemy : NhoxBehaviour
         base.LoadComponents();
         LoadEnemyMove();
         LoadEnemyAnimation();
+        LoadEnemyAttack();
     }
 
     protected void LoadEnemyMove()
     {
-        if(enemyMove != null) return;
+        if (enemyMove != null) return;
         enemyMove = GetComponentInChildren<EnemyMove>();
         Debug.Log(transform.name + " LoadEnemyMove", gameObject);
     }
-    
+
     protected void LoadEnemyAnimation()
     {
-        if(enemyAnimation != null) return;
+        if (enemyAnimation != null) return;
         enemyAnimation = GetComponentInChildren<EnemyAnimation>();
         Debug.Log(transform.name + " LoadEnemyAnimation", gameObject);
     }
-    
-    public bool PlayerInAggroRange() => Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
+
+    protected void LoadEnemyAttack()
+    {
+        if (enemyAttack != null) return;
+        enemyAttack = GetComponentInChildren<EnemyAttack>();
+        Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
+    }
+
+    public bool PlayerInAggroRange() =>
+        Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
 
     public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
 

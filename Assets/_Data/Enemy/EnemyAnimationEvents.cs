@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAnimationEvents : NhoxBehaviour
 {
@@ -13,10 +12,16 @@ public class EnemyAnimationEvents : NhoxBehaviour
 
     protected void LoadEnemy()
     {
-        if(enemy != null) return;
+        if (enemy != null) return;
         enemy = GetComponentInParent<Enemy>();
         Debug.Log(transform.name + " LoadEnemy", gameObject);
     }
-    
+
     public void AnimationTrigger() => enemy.AnimationTrigger();
+
+    public void StartManualMovement() => enemy.EnemyMove.ActivateManualMovement(true);
+    public void StopManualMovement() => enemy.EnemyMove.ActivateManualMovement(false);
+    
+    public void StartManualRotation() => enemy.EnemyMove.ActivateManualRotation(true);
+    public void StopManualRotation() => enemy.EnemyMove.ActivateManualRotation(false);
 }

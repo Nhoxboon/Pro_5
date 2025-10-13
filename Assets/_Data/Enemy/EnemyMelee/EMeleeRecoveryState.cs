@@ -25,8 +25,11 @@ public class EMeleeRecoveryState : EnemyState
     {
         base.LogicUpdate();
         enemy.transform.rotation = enemy.EnemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
-        
-        if(triggerCalled)
+
+        if (!triggerCalled) return;
+        if(enemy.EnemyAttack.PlayerInAttackRange())
+            stateMachine.ChangeState(enemy.AttackState);
+        else
             stateMachine.ChangeState(enemy.ChaseState);
     }
 }

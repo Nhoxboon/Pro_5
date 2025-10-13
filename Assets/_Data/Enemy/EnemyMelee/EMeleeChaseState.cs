@@ -28,6 +28,13 @@ public class EMeleeChaseState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        if (enemy.EnemyAttack.PlayerInAttackRange())
+        {
+            stateMachine.ChangeState(enemy.AttackState);
+            return;
+        }
+
         enemy.transform.rotation = enemyMove.FaceTarget(GetNextPathPoint());
 
         if (CanUpdateDestination())
