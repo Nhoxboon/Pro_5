@@ -14,6 +14,7 @@ public class PlayerAttack : NhoxBehaviour
     protected bool isShooting;
 
     [SerializeField] protected float bulletSpeed = 20f;
+    [SerializeField] protected float bulletImpact = 100f;
 
     protected void Update()
     {
@@ -55,7 +56,7 @@ public class PlayerAttack : NhoxBehaviour
         Vector3 bulletDir = CurrentWeapon.ApplySpread(BulletDirection());
 
         if (!prefab.TryGetComponent(out Bullet bullet)) return;
-        bullet.BulletSetup(CurrentWeapon.GunDistance);
+        bullet.BulletSetup(CurrentWeapon.GunDistance, bulletImpact);
         bullet.Fire(bulletDir, bulletSpeed);
     }
 

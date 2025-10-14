@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class EMeleeAttackState : EnemyState
 {
@@ -21,9 +22,8 @@ public class EMeleeAttackState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        SetAttackProperties();
-
         enemy.PullWeapon();
+        SetAttackProperties();
 
         enemyMove.Agent.isStopped = true;
         enemyMove.Agent.velocity = Vector3.zero;
@@ -34,21 +34,18 @@ public class EMeleeAttackState : EnemyState
     public override void Exit()
     {
         base.Exit();
-        enemy.EnemyAnimation.AnimationSetFloat("recoveryIndex", 0);
-        
-        if(enemyAttack.PlayerInAttackRange())
-            enemy.EnemyAnimation.AnimationSetFloat("recoveryIndex", 1);
+        SetupNextAttack();
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(enemyMove.ManualRotation)
+        if (enemyMove.ManualRotation)
         {
             enemy.transform.rotation = enemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
             attackDirection = enemy.transform.position + (enemy.transform.forward * MAX_ATTACK_DISTANCE);
         }
-        
+
         if (enemyMove.ManualMovement)
         {
             enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, attackDirection,
@@ -56,16 +53,38 @@ public class EMeleeAttackState : EnemyState
         }
 
         if (!triggerCalled) return;
-        if(enemyAttack.PlayerInAttackRange())
+        if (enemyAttack.PlayerInAttackRange())
             stateMachine.ChangeState(enemy.RecoveryState);
         else
             stateMachine.ChangeState(enemy.ChaseState);
     }
-    
+
+    protected void SetupNextAttack()
+    {
+        int recoveryIndex = PlayerClose() ? 1 : 0;
+        enemy.EnemyAnimation.AnimationSetFloat("recoveryIndex", recoveryIndex);
+
+        enemyAttack.attackData = UpdateAttackData();
+    }
+
     protected void SetAttackProperties()
     {
         attackMoveSpeed = enemyAttack.attackData.moveSpeed;
         enemy.EnemyAnimation.AnimationSetFloat("attackAnimationSpeed", enemyAttack.attackData.animationSpeed);
         enemy.EnemyAnimation.AnimationSetFloat("attackIndex", enemyAttack.attackData.attackIndex);
+        enemy.EnemyAnimation.AnimationSetFloat("slashAttackIndex", Random.Range(0, 5));
+    }
+
+    protected bool PlayerClose() =>
+        Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position) <= 1f;
+
+    protected AttackData UpdateAttackData()
+    {
+        List<AttackData> validAttacks = new List<AttackData>(enemyAttack.AttackList);
+        if (PlayerClose())
+            validAttacks.RemoveAll(parameter => parameter.attackType == AttackTypeMelee.Charge);
+        int random = Random.Range(0, validAttacks.Count);
+
+        return validAttacks[random];
     }
 }

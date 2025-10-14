@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : NhoxBehaviour
@@ -54,6 +55,19 @@ public class Enemy : NhoxBehaviour
         if (enemyAttack != null) return;
         enemyAttack = GetComponentInChildren<EnemyAttack>();
         Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
+    }
+
+    public virtual void GetHit()
+    {
+    }
+
+    public virtual void HitImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
+        StartCoroutine(HitImpactCoroutine(force, hitPoint, rb));
+
+    protected IEnumerator HitImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    {
+        yield return new WaitForSeconds(0.1f);
+        rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
 
     public bool PlayerInAggroRange() =>

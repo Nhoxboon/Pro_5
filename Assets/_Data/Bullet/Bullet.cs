@@ -6,19 +6,20 @@ public class Bullet : NhoxBehaviour
 {
     //NOTE: Default bullet speed from which our mass formula is derived
     private const float ReferenceBulletSpeed = 20f;
-    
+
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected SphereCollider col;
     [SerializeField] protected MeshRenderer mr;
     [SerializeField] protected TrailRenderer tr;
-    
+
     protected bool bulletDisabled;
-    
+
     protected string fxName = "BulletImpactFX";
-    
+
     protected Vector3 startPosition;
     protected float flyDistance;
-    
+    protected float impactForce = 5f;
+
     protected void OnEnable() => ResetBullet();
 
     protected void Update()
@@ -42,14 +43,14 @@ public class Bullet : NhoxBehaviour
         rb = GetComponent<Rigidbody>();
         Debug.Log(transform.name + " LoadRigidbody", gameObject);
     }
-    
+
     protected void LoadSphereCollider()
     {
         if (col != null) return;
         col = GetComponent<SphereCollider>();
         Debug.Log(transform.name + " LoadSphereCollider", gameObject);
     }
-    
+
     protected void LoadMeshRenderer()
     {
         if (mr != null) return;
@@ -59,21 +60,32 @@ public class Bullet : NhoxBehaviour
 
     protected void LoadTrailRenderer()
     {
-        if(tr != null ) return;
+        if (tr != null) return;
         tr = GetComponentInChildren<TrailRenderer>(true);
         Debug.Log(transform.name + " LoadTrailRenderer", gameObject);
     }
 
     protected void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.TryGetComponentInParent(out Enemy enemy))
+        {
+            Vector3 force = rb.linearVelocity.normalized * impactForce;
+            Rigidbody hitRb = other.collider.attachedRigidbody;
+            
+            enemy.GetHit();
+            enemy.HitImpact(force, other.contacts[0].point, hitRb);
+        }
+
         SpawnFX(other);
         BulletSpawner.Instance.Despawn(gameObject);
     }
 
-    public void BulletSetup(float flyDistance)
+    public void BulletSetup(float flyDis, float impactForce)
     {
+        this.impactForce = impactForce;
+        
         startPosition = transform.position;
-        this.flyDistance = flyDistance + 0.5f; //Number based on laserTipLength in PlayerAimVisual
+        flyDistance = flyDis + 0.5f; //Number based on laserTipLength in PlayerAimVisual
     }
 
     public void Fire(Vector3 direction, float speed)
@@ -81,15 +93,15 @@ public class Bullet : NhoxBehaviour
         rb.mass = ReferenceBulletSpeed / speed;
         rb.linearVelocity = direction * speed;
     }
-    
+
     protected void DisableBullet()
     {
         if (!(Vector3.Distance(startPosition, transform.position) > flyDistance) || bulletDisabled) return;
         col.enabled = false;
         mr.enabled = false;
         bulletDisabled = true;
-        
-        if(tr.time < 0) 
+
+        if (tr.time < 0)
             BulletSpawner.Instance.Despawn(gameObject);
     }
 

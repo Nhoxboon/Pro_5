@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAnimation : NhoxBehaviour
 {
@@ -10,7 +9,7 @@ public class EnemyAnimation : NhoxBehaviour
         base.LoadComponents();
         LoadAnimator();
     }
-    
+
     protected void LoadAnimator()
     {
         if (anim != null) return;
@@ -18,11 +17,13 @@ public class EnemyAnimation : NhoxBehaviour
         Debug.Log(transform.name + " LoadAnimator", gameObject);
     }
 
+    public void SetAnimator(bool value) => anim.enabled = value;
+
     public void AnimationState(string state, bool isPlay = true)
     {
         anim.SetBool(state, isPlay);
     }
-    
+
     public void AnimationSetFloat(string state, float value)
     {
         anim.SetFloat(state, value);

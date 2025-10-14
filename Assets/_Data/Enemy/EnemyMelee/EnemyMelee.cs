@@ -7,6 +7,7 @@ public class EnemyMelee : Enemy
     public EMeleeRecoveryState RecoveryState { get; protected set; }
     public EMeleeChaseState ChaseState { get; protected set; }
     public EMeleeAttackState AttackState { get; protected set; }
+    public EMeleeDeadState DeadState { get; protected set; }
 
     [SerializeField] protected Transform hiddenWeapon;
     [SerializeField] protected Transform pulledWeapon;
@@ -19,6 +20,7 @@ public class EnemyMelee : Enemy
         RecoveryState = new EMeleeRecoveryState(this, StateMachine, "recovery");
         ChaseState = new EMeleeChaseState(this, StateMachine, "chase");
         AttackState = new EMeleeAttackState(this, StateMachine, "attack");
+        DeadState = new EMeleeDeadState(this, StateMachine, "idle"); //Idle anim is just a placeholder, we use rag doll
     }
 
     protected override void Start()
@@ -62,5 +64,11 @@ public class EnemyMelee : Enemy
     {
         hiddenWeapon.gameObject.SetActive(false);
         pulledWeapon.gameObject.SetActive(true);
+    }
+
+    public override void GetHit()
+    {
+        base.GetHit();
+        StateMachine.ChangeState(DeadState);
     }
 }
