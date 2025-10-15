@@ -30,13 +30,8 @@ public class EMeleeMoveState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (enemy.PlayerInAggroRange())
-        {
-            stateMachine.ChangeState(enemy.RecoveryState);
-            return;
-        }
 
-        enemy.transform.rotation = enemyMove.FaceTarget(GetNextPathPoint());
+        enemyMove.FaceTarget(GetNextPathPoint());
 
         if (enemyMove.Agent.remainingDistance <= enemyMove.Agent.stoppingDistance + 0.05f)
             stateMachine.ChangeState(enemy.IdleState);

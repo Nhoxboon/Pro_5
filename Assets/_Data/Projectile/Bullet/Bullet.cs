@@ -67,23 +67,27 @@ public class Bullet : NhoxBehaviour
 
     protected void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.TryGetComponentInParent(out Enemy enemy))
+        SpawnFX(other);
+        ProjectileSpawner.Instance.Despawn(gameObject);
+
+        if (other.gameObject.TryGetComponent(out EnemyShield shield))
         {
-            Vector3 force = rb.linearVelocity.normalized * impactForce;
-            Rigidbody hitRb = other.collider.attachedRigidbody;
-            
-            enemy.GetHit();
-            enemy.HitImpact(force, other.contacts[0].point, hitRb);
+            shield.GetDamage(1);
+            return;
         }
 
-        SpawnFX(other);
-        BulletSpawner.Instance.Despawn(gameObject);
+        if (!other.gameObject.TryGetComponentInParent(out Enemy enemy)) return;
+        Vector3 force = rb.linearVelocity.normalized * impactForce;
+        Rigidbody hitRb = other.collider.attachedRigidbody;
+
+        enemy.Core.DamageReceiver.TakeDamage(1);
+        enemy.DeadImpact(force, other.contacts[0].point, hitRb);
     }
 
     public void BulletSetup(float flyDis, float impactForce)
     {
         this.impactForce = impactForce;
-        
+
         startPosition = transform.position;
         flyDistance = flyDis + 0.5f; //Number based on laserTipLength in PlayerAimVisual
     }
@@ -102,7 +106,7 @@ public class Bullet : NhoxBehaviour
         bulletDisabled = true;
 
         if (tr.time < 0)
-            BulletSpawner.Instance.Despawn(gameObject);
+            ProjectileSpawner.Instance.Despawn(gameObject);
     }
 
     protected void FadeTrail()

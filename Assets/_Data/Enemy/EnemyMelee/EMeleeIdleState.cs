@@ -23,11 +23,6 @@ public class EMeleeIdleState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(enemy.PlayerInAggroRange())
-        {
-            stateMachine.ChangeState(enemy.RecoveryState);
-            return;
-        }
         
         if(startTimer < 0)
             stateMachine.ChangeState(enemy.MoveState);

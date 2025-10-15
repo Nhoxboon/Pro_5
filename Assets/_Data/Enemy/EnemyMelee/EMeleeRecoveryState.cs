@@ -1,13 +1,15 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EMeleeRecoveryState : EnemyState
 {
     protected EnemyMelee enemy;
-    
-    public EMeleeRecoveryState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+    protected EMeleeAttack enemyAttack;
+
+    public EMeleeRecoveryState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
+        stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyMelee;
+        enemyAttack = enemy?.EnemyAttack as EMeleeAttack;
     }
 
     public override void Enter()
@@ -24,10 +26,12 @@ public class EMeleeRecoveryState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        enemy.transform.rotation = enemy.EnemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
+        enemy.EnemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
 
         if (!triggerCalled) return;
-        if(enemy.EnemyAttack.PlayerInAttackRange())
+        if(enemyAttack.CanThrowAxe())
+            stateMachine.ChangeState(enemy.AbilityState);
+        else if(enemyAttack.PlayerInAttackRange())
             stateMachine.ChangeState(enemy.AttackState);
         else
             stateMachine.ChangeState(enemy.ChaseState);

@@ -2,14 +2,25 @@
 
 public class EnemyMelee : Enemy
 {
+    #region State
     public EMeleeIdleState IdleState { get; protected set; }
     public EMeleeMoveState MoveState { get; protected set; }
     public EMeleeRecoveryState RecoveryState { get; protected set; }
     public EMeleeChaseState ChaseState { get; protected set; }
     public EMeleeAttackState AttackState { get; protected set; }
+    public EMeleeAbilityState AbilityState { get; protected set; }
     public EMeleeDeadState DeadState { get; protected set; }
+    #endregion
 
+    [Header("Enemy Settings")] 
+    public EnemyMeleeType meleeType;
+    [SerializeField] protected Transform shieldTransform;
+    public float dodgeCooldown = 2f;
+    protected float lastDodgeTime = -10f;
+
+    [Header("Weapon Transform")] 
     [SerializeField] protected Transform hiddenWeapon;
+
     [SerializeField] protected Transform pulledWeapon;
 
     protected override void Awake()
@@ -20,32 +31,52 @@ public class EnemyMelee : Enemy
         RecoveryState = new EMeleeRecoveryState(this, StateMachine, "recovery");
         ChaseState = new EMeleeChaseState(this, StateMachine, "chase");
         AttackState = new EMeleeAttackState(this, StateMachine, "attack");
+        AbilityState = new EMeleeAbilityState(this, StateMachine, "axeThrow");
         DeadState = new EMeleeDeadState(this, StateMachine, "idle"); //Idle anim is just a placeholder, we use rag doll
+
+        core.Stats.Health.OnCurrentValueZero += EnemyDead;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        core.Stats.Health.OnCurrentValueZero -= EnemyDead;
     }
 
     protected override void Start()
     {
         base.Start();
         StateMachine.Initialize(IdleState);
+        InitializeSpeciality();
     }
 
     protected override void Update()
     {
         base.Update();
         StateMachine.currentState.LogicUpdate();
+        if(ShouldEnterBattleMode())
+            EnterBattleMode();
     }
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadShield();
         LoadHiddenWeapon();
         LoadPulledWeapon();
+    }
+
+    protected void LoadShield()
+    {
+        if (shieldTransform != null) return;
+        shieldTransform = GetComponentInChildren<EnemyShield>(true).transform;
+        Debug.Log(transform.name + " LoadShield", gameObject);
     }
 
     protected void LoadHiddenWeapon()
     {
         if (hiddenWeapon != null) return;
-        var detects = GetComponentsInChildren<DetectTransform>();
+        var detects = GetComponentsInChildren<DetectTransform>(true);
         if (detects.Length > 0)
             hiddenWeapon = detects[0].transform;
         Debug.Log(transform.name + " LoadHiddenWeapon", gameObject);
@@ -54,10 +85,31 @@ public class EnemyMelee : Enemy
     protected void LoadPulledWeapon()
     {
         if (pulledWeapon != null) return;
-        var detects = GetComponentsInChildren<DetectTransform>();
+        var detects = GetComponentsInChildren<DetectTransform>(true);
         if (detects.Length > 1)
             pulledWeapon = detects[1].transform;
         Debug.Log(transform.name + " LoadPulledWeapon", gameObject);
+    }
+
+    public override void EnterBattleMode()
+    {
+        if(InBattleMode) return;
+        base.EnterBattleMode();
+        StateMachine.ChangeState(RecoveryState);
+    }
+
+    public override void AbilityTrigger()
+    {
+        base.AbilityTrigger();
+        enemyMove.SetMoveSpeed(enemyMove.MoveSpeed * 0.6f);
+        pulledWeapon.gameObject.SetActive(false);
+    }
+
+    protected void InitializeSpeciality()
+    {
+        if (meleeType != EnemyMeleeType.Shield) return;
+        enemyAnimation.AnimationSetFloat("chaseIndex", 1);
+        shieldTransform.gameObject.SetActive(true);
     }
 
     public void PullWeapon()
@@ -66,9 +118,22 @@ public class EnemyMelee : Enemy
         pulledWeapon.gameObject.SetActive(true);
     }
 
-    public override void GetHit()
+    public void ActivateDodge()
     {
-        base.GetHit();
+        if (meleeType != EnemyMeleeType.Dodge) return;
+        if (StateMachine.currentState != ChaseState) return;
+        if (Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < 2f) return;
+        
+        if (Time.time > dodgeCooldown + lastDodgeTime + enemyAnimation.GetAnimationClipDuration("enemy1_DodgeRoll") )
+        {
+            lastDodgeTime = Time.time;
+            enemyAnimation.AnimationTrigger("dodge");
+        }
+    }
+
+    protected override void EnemyDead()
+    {
+        base.EnemyDead();
         StateMachine.ChangeState(DeadState);
     }
 }

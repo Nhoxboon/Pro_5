@@ -35,7 +35,7 @@ public class EMeleeChaseState : EnemyState
             return;
         }
 
-        enemy.transform.rotation = enemyMove.FaceTarget(GetNextPathPoint());
+        enemyMove.FaceTarget(GetNextPathPoint());
 
         if (CanUpdateDestination())
         {

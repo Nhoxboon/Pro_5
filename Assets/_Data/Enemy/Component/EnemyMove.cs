@@ -10,6 +10,7 @@ public class EnemyMove : NhoxBehaviour
     [SerializeField] protected float turnSpeed = 5f;
 
     [SerializeField] protected Transform[] patrolPoints;
+    protected Vector3[] patrolPointsPos;
     protected int currentPatrolIndex;
     [SerializeField] protected NavMeshAgent agent;
     public NavMeshAgent Agent => agent;
@@ -28,7 +29,18 @@ public class EnemyMove : NhoxBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadPatrolsPoint();
         LoadNavMeshAgent();
+    }
+
+    protected void LoadPatrolsPoint()
+    {
+        if (patrolPoints is { Length: > 0 }) return;
+        var patrolPointComponents = GetComponentsInChildren<EnemyPatrolPoint>();
+        patrolPoints = new Transform[patrolPointComponents.Length];
+        for (int i = 0; i < patrolPointComponents.Length; i++)
+            patrolPoints[i] = patrolPointComponents[i].transform;
+        Debug.Log(gameObject.name + " LoadPatrolsPoint", gameObject);
     }
 
     protected void LoadNavMeshAgent()
@@ -40,7 +52,7 @@ public class EnemyMove : NhoxBehaviour
 
     public Vector3 GetPatrolDestination()
     {
-        Vector3 destination = patrolPoints[currentPatrolIndex].position;
+        Vector3 destination = patrolPointsPos[currentPatrolIndex];
         currentPatrolIndex++;
         if (currentPatrolIndex >= patrolPoints.Length)
             currentPatrolIndex = 0;
@@ -49,19 +61,25 @@ public class EnemyMove : NhoxBehaviour
 
     protected void InitializePatrolPoints()
     {
-        foreach (Transform point in patrolPoints)
-            point.parent = null;
+        patrolPointsPos = new Vector3[patrolPoints.Length];
+        for (int i = 0; i < patrolPoints.Length; i++)
+        {
+            patrolPointsPos[i] = patrolPoints[i].position;
+            patrolPoints[i].gameObject.SetActive(false);
+        }
     }
 
-    public Quaternion FaceTarget(Vector3 target)
+    public void FaceTarget(Vector3 target)
     {
         Quaternion targetRotation = Quaternion.LookRotation(target - transform.parent.position);
         Vector3 currentEulerAngles = transform.parent.rotation.eulerAngles;
         float yRotation =
             Mathf.LerpAngle(currentEulerAngles.y, targetRotation.eulerAngles.y, turnSpeed * Time.deltaTime);
 
-        return Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
+        transform.parent.rotation =  Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
     }
+
+    public void SetMoveSpeed(float speed) => moveSpeed = speed;
 
     public void ActivateManualMovement(bool manualMove) => manualMovement = manualMove;
     public void ActivateManualRotation(bool manualRotate) => manualRotation = manualRotate;

@@ -6,9 +6,8 @@ using UnityEngine;
 public class PlayerAttack : NhoxBehaviour
 {
     protected string bulletName = "Bullet";
-
     public Weapon CurrentWeapon => PlayerCtrl.Instance.PlayerInventory.CurrentWeapon;
-    
+
     protected bool weaponReady;
     public bool WeaponReady => weaponReady;
     protected bool isShooting;
@@ -16,6 +15,8 @@ public class PlayerAttack : NhoxBehaviour
     [SerializeField] protected float bulletSpeed = 20f;
     [SerializeField] protected float bulletImpact = 100f;
 
+    protected Dictionary<Collider, EnemyMelee> enemyMeleeCache = new ();
+    
     protected void Update()
     {
         if (isShooting)
@@ -43,6 +44,7 @@ public class PlayerAttack : NhoxBehaviour
         }
 
         SpawnBullet();
+        TriggerEnemyDodge();
     }
 
     protected void SpawnBullet()
@@ -50,7 +52,8 @@ public class PlayerAttack : NhoxBehaviour
         CurrentWeapon.bulletsInMagazine--;
 
         var prefab =
-            BulletSpawner.Instance.Spawn(bulletName, GunPoint().position, Quaternion.LookRotation(GunPoint().forward));
+            ProjectileSpawner.Instance.Spawn(bulletName, GunPoint().position,
+                Quaternion.LookRotation(GunPoint().forward));
         prefab.gameObject.SetActive(true);
 
         Vector3 bulletDir = CurrentWeapon.ApplySpread(BulletDirection());
@@ -81,6 +84,27 @@ public class PlayerAttack : NhoxBehaviour
             dir.y = 0;
 
         return dir;
+    }
+    
+    protected void TriggerEnemyDodge()
+    {
+        Vector3 rayOrigin = GunPoint().position;
+        Vector3 rayDirection = BulletDirection();
+        if (!Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, Mathf.Infinity)) return;
+    
+        if (!enemyMeleeCache.TryGetValue(hit.collider, out EnemyMelee enemyMelee))
+        {
+            Transform current = hit.collider.transform;
+            while (current is not null)
+            {
+                if (current.TryGetComponent(out enemyMelee))
+                    break;
+                current = current.parent;
+            }
+            if(enemyMelee is not null)
+                enemyMeleeCache[hit.collider] = enemyMelee;
+        }
+        enemyMelee?.ActivateDodge();
     }
 
     public void SetWeaponReady(bool ready) => weaponReady = ready;

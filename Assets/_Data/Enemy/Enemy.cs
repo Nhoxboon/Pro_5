@@ -7,6 +7,9 @@ public class Enemy : NhoxBehaviour
     [Header("Data")] public float idleTime = 2f;
     public float aggroRange = 4f;
 
+    [SerializeField] protected Core core;
+    public Core Core => core;
+
     [SerializeField] protected EnemyMove enemyMove;
     public EnemyMove EnemyMove => enemyMove;
 
@@ -15,14 +18,18 @@ public class Enemy : NhoxBehaviour
 
     [SerializeField] protected EnemyAttack enemyAttack;
     public EnemyAttack EnemyAttack => enemyAttack;
-
+    
+    public bool InBattleMode {  get; protected set; }
     public EnemyStateMachine StateMachine { get; protected set; }
 
     protected override void Awake()
     {
         base.Awake();
         StateMachine = new EnemyStateMachine();
+        core.DamageReceiver.GetDamage += EnterBattleMode;
     }
+
+    protected virtual void OnDestroy() => core.DamageReceiver.GetDamage -= EnterBattleMode;
 
     protected virtual void Update()
     {
@@ -31,9 +38,17 @@ public class Enemy : NhoxBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadCore();
         LoadEnemyMove();
         LoadEnemyAnimation();
         LoadEnemyAttack();
+    }
+
+    protected void LoadCore()
+    {
+        if (core != null) return;
+        core = GetComponentInChildren<Core>();
+        Debug.Log(transform.name + " LoadCore", gameObject);
     }
 
     protected void LoadEnemyMove()
@@ -57,21 +72,33 @@ public class Enemy : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
     }
 
-    public virtual void GetHit()
+    protected bool ShouldEnterBattleMode()
+    {
+        bool inAggroRange = Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
+        if (!inAggroRange || InBattleMode) return false;
+        EnterBattleMode();
+        return true;
+    }
+    
+    public virtual void EnterBattleMode() => InBattleMode = true;
+
+    public virtual void AbilityTrigger()
+    {
+        StateMachine.currentState.AbilityTrigger();
+    }
+
+    protected virtual void EnemyDead()
     {
     }
 
-    public virtual void HitImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
-        StartCoroutine(HitImpactCoroutine(force, hitPoint, rb));
+    public virtual void DeadImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
+        StartCoroutine(DeadImpactCoroutine(force, hitPoint, rb));
 
-    protected IEnumerator HitImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    protected IEnumerator DeadImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
         yield return new WaitForSeconds(0.1f);
         rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
-
-    public bool PlayerInAggroRange() =>
-        Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
 
     public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
 

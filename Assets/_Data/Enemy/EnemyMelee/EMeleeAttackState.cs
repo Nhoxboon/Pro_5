@@ -5,7 +5,9 @@ public class EMeleeAttackState : EnemyState
 {
     protected EnemyMelee enemy;
     protected EnemyMove enemyMove;
+    protected EnemyAnimation enemyAnimation;
     protected EnemyAttack enemyAttack;
+    
     protected Vector3 attackDirection;
     protected float attackMoveSpeed;
 
@@ -16,6 +18,7 @@ public class EMeleeAttackState : EnemyState
     {
         enemy = enemyBase as EnemyMelee;
         enemyMove = enemy?.EnemyMove;
+        enemyAnimation = enemy?.EnemyAnimation;
         enemyAttack = enemy?.EnemyAttack;
     }
 
@@ -42,7 +45,7 @@ public class EMeleeAttackState : EnemyState
         base.LogicUpdate();
         if (enemyMove.ManualRotation)
         {
-            enemy.transform.rotation = enemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
+            enemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
             attackDirection = enemy.transform.position + (enemy.transform.forward * MAX_ATTACK_DISTANCE);
         }
 
@@ -62,7 +65,7 @@ public class EMeleeAttackState : EnemyState
     protected void SetupNextAttack()
     {
         int recoveryIndex = PlayerClose() ? 1 : 0;
-        enemy.EnemyAnimation.AnimationSetFloat("recoveryIndex", recoveryIndex);
+        enemyAnimation.AnimationSetFloat("recoveryIndex", recoveryIndex);
 
         enemyAttack.attackData = UpdateAttackData();
     }
@@ -70,9 +73,9 @@ public class EMeleeAttackState : EnemyState
     protected void SetAttackProperties()
     {
         attackMoveSpeed = enemyAttack.attackData.moveSpeed;
-        enemy.EnemyAnimation.AnimationSetFloat("attackAnimationSpeed", enemyAttack.attackData.animationSpeed);
-        enemy.EnemyAnimation.AnimationSetFloat("attackIndex", enemyAttack.attackData.attackIndex);
-        enemy.EnemyAnimation.AnimationSetFloat("slashAttackIndex", Random.Range(0, 5));
+        enemyAnimation.AnimationSetFloat("attackAnimationSpeed", enemyAttack.attackData.animationSpeed);
+        enemyAnimation.AnimationSetFloat("attackIndex", enemyAttack.attackData.attackIndex);
+        enemyAnimation.AnimationSetFloat("slashAttackIndex", Random.Range(0, 5));
     }
 
     protected bool PlayerClose() =>

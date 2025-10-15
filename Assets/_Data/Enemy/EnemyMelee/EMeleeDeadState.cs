@@ -36,10 +36,15 @@ public class EMeleeDeadState : EnemyState
     {
         base.LogicUpdate();
         
-        //Note: Uncomment if need to disable interaction with enem
-        // if (!(startTimer < 0) || interactionDisable) return;
-        // interactionDisable = true;
-        // ragdoll.RagdollActive(false);
-        // ragdoll.ColliderActive(false);
+        //Note: Uncomment if need to disable interaction with enemy
+        // DisableInteraction();
+    }
+
+    protected void DisableInteraction()
+    {
+        if (!(startTimer < 0) || interactionDisable) return;
+        interactionDisable = true;
+        ragdoll.RagdollActive(false);
+        ragdoll.ColliderActive(false);
     }
 }

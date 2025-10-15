@@ -21,7 +21,9 @@ public class EnemyAnimationEvents : NhoxBehaviour
 
     public void StartManualMovement() => enemy.EnemyMove.ActivateManualMovement(true);
     public void StopManualMovement() => enemy.EnemyMove.ActivateManualMovement(false);
-    
+
     public void StartManualRotation() => enemy.EnemyMove.ActivateManualRotation(true);
     public void StopManualRotation() => enemy.EnemyMove.ActivateManualRotation(false);
+
+    public void AbilityEvent() => enemy.AbilityTrigger();
 }
