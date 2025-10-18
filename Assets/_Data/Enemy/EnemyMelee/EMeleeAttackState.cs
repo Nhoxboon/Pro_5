@@ -25,7 +25,7 @@ public class EMeleeAttackState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        enemy.PullWeapon();
+        enemy.EnableWeaponModel(true);
         SetAttackProperties();
 
         enemyMove.Agent.isStopped = true;

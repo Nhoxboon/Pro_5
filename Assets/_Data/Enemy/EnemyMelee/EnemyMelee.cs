@@ -3,6 +3,7 @@
 public class EnemyMelee : Enemy
 {
     #region State
+
     public EMeleeIdleState IdleState { get; protected set; }
     public EMeleeMoveState MoveState { get; protected set; }
     public EMeleeRecoveryState RecoveryState { get; protected set; }
@@ -10,18 +11,13 @@ public class EnemyMelee : Enemy
     public EMeleeAttackState AttackState { get; protected set; }
     public EMeleeAbilityState AbilityState { get; protected set; }
     public EMeleeDeadState DeadState { get; protected set; }
+
     #endregion
 
-    [Header("Enemy Settings")] 
-    public EnemyMeleeType meleeType;
+    [Header("Enemy Settings")] public EnemyMeleeType meleeType;
     [SerializeField] protected Transform shieldTransform;
     public float dodgeCooldown = 2f;
     protected float lastDodgeTime = -10f;
-
-    [Header("Weapon Transform")] 
-    [SerializeField] protected Transform hiddenWeapon;
-
-    [SerializeField] protected Transform pulledWeapon;
 
     protected override void Awake()
     {
@@ -48,13 +44,14 @@ public class EnemyMelee : Enemy
         base.Start();
         StateMachine.Initialize(IdleState);
         InitializeSpeciality();
+        enemyVisuals.SetupLook();
     }
 
     protected override void Update()
     {
         base.Update();
         StateMachine.currentState.LogicUpdate();
-        if(ShouldEnterBattleMode())
+        if (ShouldEnterBattleMode())
             EnterBattleMode();
     }
 
@@ -62,8 +59,6 @@ public class EnemyMelee : Enemy
     {
         base.LoadComponents();
         LoadShield();
-        LoadHiddenWeapon();
-        LoadPulledWeapon();
     }
 
     protected void LoadShield()
@@ -73,27 +68,9 @@ public class EnemyMelee : Enemy
         Debug.Log(transform.name + " LoadShield", gameObject);
     }
 
-    protected void LoadHiddenWeapon()
-    {
-        if (hiddenWeapon != null) return;
-        var detects = GetComponentsInChildren<DetectTransform>(true);
-        if (detects.Length > 0)
-            hiddenWeapon = detects[0].transform;
-        Debug.Log(transform.name + " LoadHiddenWeapon", gameObject);
-    }
-
-    protected void LoadPulledWeapon()
-    {
-        if (pulledWeapon != null) return;
-        var detects = GetComponentsInChildren<DetectTransform>(true);
-        if (detects.Length > 1)
-            pulledWeapon = detects[1].transform;
-        Debug.Log(transform.name + " LoadPulledWeapon", gameObject);
-    }
-
     public override void EnterBattleMode()
     {
-        if(InBattleMode) return;
+        if (InBattleMode) return;
         base.EnterBattleMode();
         StateMachine.ChangeState(RecoveryState);
     }
@@ -102,29 +79,29 @@ public class EnemyMelee : Enemy
     {
         base.AbilityTrigger();
         enemyMove.SetMoveSpeed(enemyMove.MoveSpeed * 0.6f);
-        pulledWeapon.gameObject.SetActive(false);
+        EnableWeaponModel(false);
     }
 
     protected void InitializeSpeciality()
     {
+        if (meleeType == EnemyMeleeType.AxeThrow)
+            enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.Thrown);
+        
         if (meleeType != EnemyMeleeType.Shield) return;
         enemyAnimation.AnimationSetFloat("chaseIndex", 1);
         shieldTransform.gameObject.SetActive(true);
+        enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.OneHand);
     }
 
-    public void PullWeapon()
-    {
-        hiddenWeapon.gameObject.SetActive(false);
-        pulledWeapon.gameObject.SetActive(true);
-    }
+    public void EnableWeaponModel(bool active) => enemyVisuals.CurrentWeaponModel.gameObject.SetActive(active);
 
     public void ActivateDodge()
     {
         if (meleeType != EnemyMeleeType.Dodge) return;
         if (StateMachine.currentState != ChaseState) return;
         if (Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < 2f) return;
-        
-        if (Time.time > dodgeCooldown + lastDodgeTime + enemyAnimation.GetAnimationClipDuration("enemy1_DodgeRoll") )
+
+        if (Time.time > dodgeCooldown + lastDodgeTime + enemyAnimation.GetAnimationClipDuration("enemy1_DodgeRoll"))
         {
             lastDodgeTime = Time.time;
             enemyAnimation.AnimationTrigger("dodge");

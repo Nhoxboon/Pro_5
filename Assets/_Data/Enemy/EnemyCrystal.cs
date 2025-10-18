@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DetectTransform : MonoBehaviour
+public class EnemyCrystal : NhoxBehaviour
 {
     //Just for detecting transform
 }

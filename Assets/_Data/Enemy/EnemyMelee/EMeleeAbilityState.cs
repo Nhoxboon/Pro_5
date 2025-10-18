@@ -22,7 +22,7 @@ public class EMeleeAbilityState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        enemy.PullWeapon();
+        enemy.EnableWeaponModel(true);
         moveSpeed = enemyMove.MoveSpeed;
         movementDirection = enemy.transform.position + (enemy.transform.forward * MAX_MOVEMENT_DISTANCE);
     }

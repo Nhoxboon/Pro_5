@@ -18,8 +18,11 @@ public class Enemy : NhoxBehaviour
 
     [SerializeField] protected EnemyAttack enemyAttack;
     public EnemyAttack EnemyAttack => enemyAttack;
-    
-    public bool InBattleMode {  get; protected set; }
+
+    [SerializeField] protected EnemyVisuals enemyVisuals;
+    public EnemyVisuals EnemyVisuals => enemyVisuals;
+
+    public bool InBattleMode { get; protected set; }
     public EnemyStateMachine StateMachine { get; protected set; }
 
     protected override void Awake()
@@ -42,6 +45,7 @@ public class Enemy : NhoxBehaviour
         LoadEnemyMove();
         LoadEnemyAnimation();
         LoadEnemyAttack();
+        LoadEnemyVisuals();
     }
 
     protected void LoadCore()
@@ -72,6 +76,13 @@ public class Enemy : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
     }
 
+    protected void LoadEnemyVisuals()
+    {
+        if (enemyVisuals != null) return;
+        enemyVisuals = GetComponentInChildren<EnemyVisuals>();
+        Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
+    }
+
     protected bool ShouldEnterBattleMode()
     {
         bool inAggroRange = Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
@@ -79,7 +90,7 @@ public class Enemy : NhoxBehaviour
         EnterBattleMode();
         return true;
     }
-    
+
     public virtual void EnterBattleMode() => InBattleMode = true;
 
     public virtual void AbilityTrigger()
