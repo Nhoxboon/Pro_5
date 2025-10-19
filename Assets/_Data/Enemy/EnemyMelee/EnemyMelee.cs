@@ -43,8 +43,10 @@ public class EnemyMelee : Enemy
     {
         base.Start();
         StateMachine.Initialize(IdleState);
+        
         InitializeSpeciality();
         enemyVisuals.SetupLook();
+        enemyAttack.UpdateAttackData();
     }
 
     protected override void Update()
@@ -91,6 +93,9 @@ public class EnemyMelee : Enemy
         enemyAnimation.AnimationSetFloat("chaseIndex", 1);
         shieldTransform.gameObject.SetActive(true);
         enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.OneHand);
+        
+        if(meleeType == EnemyMeleeType.Dodge) 
+            enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.Unarmed);
     }
 
     public void EnableWeaponModel(bool active) => enemyVisuals.CurrentWeaponModel.gameObject.SetActive(active);
@@ -101,13 +106,12 @@ public class EnemyMelee : Enemy
         if (StateMachine.currentState != ChaseState) return;
         if (Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < 2f) return;
 
-        if (Time.time > dodgeCooldown + lastDodgeTime + enemyAnimation.GetAnimationClipDuration("enemy1_DodgeRoll"))
-        {
-            lastDodgeTime = Time.time;
-            enemyAnimation.AnimationTrigger("dodge");
-        }
+        if (!(Time.time >
+              dodgeCooldown + lastDodgeTime + enemyAnimation.GetAnimationClipDuration("enemy1_DodgeRoll"))) return;
+        lastDodgeTime = Time.time;
+        enemyAnimation.AnimationTrigger("dodge");
     }
-
+    
     protected override void EnemyDead()
     {
         base.EnemyDead();

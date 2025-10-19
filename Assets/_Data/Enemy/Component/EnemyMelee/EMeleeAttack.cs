@@ -13,6 +13,12 @@ public class EMeleeAttack : EnemyAttack
     
     public float AxeThrowCooldown => axeThrowCooldown;
 
+    protected override void Start()
+    {
+        base.Start();
+        lastTimeAxeThrown -= axeThrowCooldown;
+    }
+
     protected override void LoadComponents()
     {
         base.LoadComponents();

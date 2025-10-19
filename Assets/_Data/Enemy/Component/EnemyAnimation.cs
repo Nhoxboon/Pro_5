@@ -3,6 +3,7 @@
 public class EnemyAnimation : NhoxBehaviour
 {
     [SerializeField] protected Animator anim;
+    public Animator Animator => anim;
 
     protected override void LoadComponents()
     {

@@ -26,6 +26,7 @@ public class EMeleeAttackState : EnemyState
     {
         base.Enter();
         enemy.EnableWeaponModel(true);
+        enemy.EnemyVisuals.EnableWeaponTrail(true);
         SetAttackProperties();
 
         enemyMove.Agent.isStopped = true;
@@ -38,6 +39,7 @@ public class EMeleeAttackState : EnemyState
     {
         base.Exit();
         SetupNextAttack();
+        enemy.EnemyVisuals.EnableWeaponTrail(false);
     }
 
     public override void LogicUpdate()
@@ -81,9 +83,9 @@ public class EMeleeAttackState : EnemyState
     protected bool PlayerClose() =>
         Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position) <= 1f;
 
-    protected AttackData UpdateAttackData()
+    protected AttackData_EnemyMelee UpdateAttackData()
     {
-        List<AttackData> validAttacks = new List<AttackData>(enemyAttack.AttackList);
+        List<AttackData_EnemyMelee> validAttacks = new List<AttackData_EnemyMelee>(enemyAttack.AttackList);
         if (PlayerClose())
             validAttacks.RemoveAll(parameter => parameter.attackType == AttackTypeMelee.Charge);
         int random = Random.Range(0, validAttacks.Count);

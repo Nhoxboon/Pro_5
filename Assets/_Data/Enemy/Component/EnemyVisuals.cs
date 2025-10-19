@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyVisuals : NhoxBehaviour
 {
+    [SerializeField] protected Enemy enemy;
+    
     [Header("Weapon Visuals")] 
     [SerializeField] protected EnemyWeaponModel[] weaponModels;
     [SerializeField] protected EnemyMeleeWeaponType weaponType;
@@ -17,18 +19,20 @@ public class EnemyVisuals : NhoxBehaviour
     [SerializeField] protected Texture[] colorTextures;
     [SerializeField] protected SkinnedMeshRenderer skinnedMR;
 
-    protected override void Start()
-    {
-        base.Start();
-        InvokeRepeating(nameof(SetupLook), 0, 1.5f);
-    }
-
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadEnemy();
         LoadCorruptionCrystals();
         LoadWeaponModels();
         LoadSkinnedMeshRenderer();
+    }
+
+    protected void LoadEnemy()
+    {
+        if(enemy != null) return;
+        enemy = GetComponentInParent<Enemy>();
+        Debug.Log(transform.name + " LoadEnemy", gameObject);
     }
 
     protected void LoadCorruptionCrystals()
@@ -74,6 +78,16 @@ public class EnemyVisuals : NhoxBehaviour
         int randomIndex = Random.Range(0, filteredModels.Count);
         CurrentWeaponModel = filteredModels[randomIndex].gameObject;
         CurrentWeaponModel.SetActive(true);
+
+        OverrideAnimatorController();
+    }
+
+    protected void OverrideAnimatorController()
+    {
+        AnimatorOverrideController overrideController =
+            CurrentWeaponModel.GetComponent<EnemyWeaponModel>().overrideController;
+        if (overrideController != null)
+            enemy.EnemyAnimation.Animator.runtimeAnimatorController = overrideController;
     }
 
     protected void SetupRandomCrystal()
@@ -101,5 +115,11 @@ public class EnemyVisuals : NhoxBehaviour
         Material newMat = new Material(skinnedMR.material);
         newMat.mainTexture = colorTextures[randomIndex];
         skinnedMR.material = newMat;
+    }
+
+    public void EnableWeaponTrail(bool enable)
+    {
+        if(CurrentWeaponModel.TryGetComponent(out EnemyWeaponModel weaponModel))
+            weaponModel.EnableTrail(enable);
     }
 }

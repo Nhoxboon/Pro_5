@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public struct AttackData
+public struct AttackData_EnemyMelee
 {
     public string attackName;
     public float attackRange;

@@ -80,6 +80,7 @@ public class EnemyMove : NhoxBehaviour
     }
 
     public void SetMoveSpeed(float speed) => moveSpeed = speed;
+    public void SetTurnSpeed(float speed) => turnSpeed = speed;
 
     public void ActivateManualMovement(bool manualMove) => manualMovement = manualMove;
     public void ActivateManualRotation(bool manualRotate) => manualRotation = manualRotate;

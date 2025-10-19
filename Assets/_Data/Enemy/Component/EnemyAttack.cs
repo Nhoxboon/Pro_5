@@ -5,16 +5,9 @@ public class EnemyAttack : NhoxBehaviour
 {
     [SerializeField] protected EnemyMelee enemy;
     
-    public AttackData attackData;
-    [SerializeField] protected List<AttackData> attackList;
-    public List<AttackData> AttackList => attackList;
-    
-    protected override void Awake()
-    {
-        base.Awake();
-        if (attackList is { Count: > 0 })
-            attackData = attackList[0];
-    }
+    public AttackData_EnemyMelee attackData;
+    [SerializeField] protected List<AttackData_EnemyMelee> attackList;
+    public List<AttackData_EnemyMelee> AttackList => attackList;
 
     protected override void LoadComponents()
     {
@@ -27,6 +20,18 @@ public class EnemyAttack : NhoxBehaviour
         if(enemy != null) return;
         enemy = GetComponentInParent<EnemyMelee>();
         Debug.Log(transform.name + " LoadEnemyMelee", gameObject);
+    }
+
+    public void UpdateAttackData()
+    {
+        EnemyWeaponModel currentWeapon = enemy.EnemyVisuals.CurrentWeaponModel.GetComponent<EnemyWeaponModel>();
+        if (currentWeapon != null)
+        {
+            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
+            enemy.EnemyMove.SetTurnSpeed(currentWeapon.weaponData.turnSpeed);
+        }
+        if (attackList is { Count: > 0 })
+            attackData = attackList[0];
     }
 
     public bool PlayerInAttackRange() =>

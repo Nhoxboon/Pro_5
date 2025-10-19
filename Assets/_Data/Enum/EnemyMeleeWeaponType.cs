@@ -2,4 +2,5 @@
 {
     OneHand,
     Thrown,
+    Unarmed,
 }
