@@ -4,10 +4,11 @@ using UnityEngine;
 public class EMeleeAttackState : EnemyState
 {
     protected EnemyMelee enemy;
+    protected EMeleeAttack enemyAttack;
+
     protected EnemyMove enemyMove;
-    protected EnemyAnimation enemyAnimation;
-    protected EnemyAttack enemyAttack;
-    
+    protected EnemyAnimator enemyAnimator;
+
     protected Vector3 attackDirection;
     protected float attackMoveSpeed;
 
@@ -18,8 +19,8 @@ public class EMeleeAttackState : EnemyState
     {
         enemy = enemyBase as EnemyMelee;
         enemyMove = enemy?.EnemyMove;
-        enemyAnimation = enemy?.EnemyAnimation;
-        enemyAttack = enemy?.EnemyAttack;
+        enemyAnimator = enemy?.EnemyAnimator;
+        enemyAttack = enemy?.EnemyAttack as EMeleeAttack;
     }
 
     public override void Enter()
@@ -67,7 +68,7 @@ public class EMeleeAttackState : EnemyState
     protected void SetupNextAttack()
     {
         int recoveryIndex = PlayerClose() ? 1 : 0;
-        enemyAnimation.AnimationSetFloat("recoveryIndex", recoveryIndex);
+        enemyAnimator.AnimationSetFloat("recoveryIndex", recoveryIndex);
 
         enemyAttack.attackData = UpdateAttackData();
     }
@@ -75,9 +76,9 @@ public class EMeleeAttackState : EnemyState
     protected void SetAttackProperties()
     {
         attackMoveSpeed = enemyAttack.attackData.moveSpeed;
-        enemyAnimation.AnimationSetFloat("attackAnimationSpeed", enemyAttack.attackData.animationSpeed);
-        enemyAnimation.AnimationSetFloat("attackIndex", enemyAttack.attackData.attackIndex);
-        enemyAnimation.AnimationSetFloat("slashAttackIndex", Random.Range(0, 5));
+        enemyAnimator.AnimationSetFloat("attackAnimationSpeed", enemyAttack.attackData.animationSpeed);
+        enemyAnimator.AnimationSetFloat("attackIndex", enemyAttack.attackData.attackIndex);
+        enemyAnimator.AnimationSetFloat("slashAttackIndex", Random.Range(0, 5));
     }
 
     protected bool PlayerClose() =>

@@ -13,8 +13,8 @@ public class Enemy : NhoxBehaviour
     [SerializeField] protected EnemyMove enemyMove;
     public EnemyMove EnemyMove => enemyMove;
 
-    [SerializeField] protected EnemyAnimation enemyAnimation;
-    public EnemyAnimation EnemyAnimation => enemyAnimation;
+    [SerializeField] protected EnemyAnimator enemyAnimator;
+    public EnemyAnimator EnemyAnimator => enemyAnimator;
 
     [SerializeField] protected EnemyAttack enemyAttack;
     public EnemyAttack EnemyAttack => enemyAttack;
@@ -36,6 +36,8 @@ public class Enemy : NhoxBehaviour
 
     protected virtual void Update()
     {
+        if (ShouldEnterBattleMode())
+            EnterBattleMode();
     }
 
     protected override void LoadComponents()
@@ -64,8 +66,8 @@ public class Enemy : NhoxBehaviour
 
     protected void LoadEnemyAnimation()
     {
-        if (enemyAnimation != null) return;
-        enemyAnimation = GetComponentInChildren<EnemyAnimation>();
+        if (enemyAnimator != null) return;
+        enemyAnimator = GetComponentInChildren<EnemyAnimator>();
         Debug.Log(transform.name + " LoadEnemyAnimation", gameObject);
     }
 

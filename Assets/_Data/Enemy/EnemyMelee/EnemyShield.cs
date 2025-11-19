@@ -38,7 +38,7 @@ public class EnemyShield : NhoxBehaviour
 
     protected void DisableShield()
     {
-        enemy.EnemyAnimation.AnimationSetFloat("chaseIndex", 0);
+        enemy.EnemyAnimator.AnimationSetFloat("chaseIndex", 0);
         gameObject.SetActive(false);
     }
 }

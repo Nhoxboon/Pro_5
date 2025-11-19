@@ -20,14 +20,14 @@ public class EnemyState
 
     public virtual void Enter()
     {
-        enemyBase.EnemyAnimation.AnimationState(animBoolName);
+        enemyBase.EnemyAnimator.AnimationState(animBoolName);
 
         triggerCalled = false;
     }
 
     public virtual void Exit()
     {
-        enemyBase.EnemyAnimation.AnimationState(animBoolName, false);
+        enemyBase.EnemyAnimator.AnimationState(animBoolName, false);
     }
 
     public virtual void LogicUpdate()

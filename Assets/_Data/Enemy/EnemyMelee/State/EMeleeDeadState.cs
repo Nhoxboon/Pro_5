@@ -19,7 +19,7 @@ public class EMeleeDeadState : EnemyState
         base.Enter();
         interactionDisable = false;
         
-        enemy.EnemyAnimation.SetAnimator(false);
+        enemy.EnemyAnimator.SetAnimator(false);
         enemy.EnemyMove.Agent.isStopped = true;
         
         ragdoll.RagdollActive(true);

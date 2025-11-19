@@ -31,7 +31,7 @@ public class EMeleeAbilityState : EnemyState
     {
         base.Exit();
         enemyMove.SetMoveSpeed(moveSpeed);
-        enemy.EnemyAnimation.AnimationSetFloat("recoveryIndex", 0);
+        enemy.EnemyAnimator.AnimationSetFloat("recoveryIndex", 0);
     }
 
     public override void LogicUpdate()

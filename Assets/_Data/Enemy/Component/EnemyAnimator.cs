@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyAnimation : NhoxBehaviour
+public class EnemyAnimator : NhoxBehaviour
 {
     [SerializeField] protected Animator anim;
     public Animator Animator => anim;
@@ -33,6 +33,14 @@ public class EnemyAnimation : NhoxBehaviour
     public void AnimationSetFloat(string state, float value)
     {
         anim.SetFloat(state, value);
+    }
+    
+    public void SwitchAnimationLayer(int layerIndex)
+    {
+        for (int i = 1; i < anim.layerCount; i++)
+            anim.SetLayerWeight(i, 0);
+        
+        anim.SetLayerWeight(layerIndex, 1);
     }
 
     public float GetAnimationClipDuration(string clipName)

@@ -15,6 +15,8 @@ public class EnemyMelee : Enemy
     #endregion
 
     [Header("Enemy Settings")] public EnemyMeleeType meleeType;
+    public EnemyMeleeWeaponType weaponType;
+
     [SerializeField] protected Transform shieldTransform;
     public float dodgeCooldown = 2f;
     protected float lastDodgeTime = -10f;
@@ -43,7 +45,7 @@ public class EnemyMelee : Enemy
     {
         base.Start();
         StateMachine.Initialize(IdleState);
-        
+
         InitializeSpeciality();
         enemyVisuals.SetupLook();
         enemyAttack.UpdateAttackData();
@@ -53,8 +55,6 @@ public class EnemyMelee : Enemy
     {
         base.Update();
         StateMachine.currentState.LogicUpdate();
-        if (ShouldEnterBattleMode())
-            EnterBattleMode();
     }
 
     protected override void LoadComponents()
@@ -87,15 +87,15 @@ public class EnemyMelee : Enemy
     protected void InitializeSpeciality()
     {
         if (meleeType == EnemyMeleeType.AxeThrow)
-            enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.Thrown);
-        
+            weaponType = EnemyMeleeWeaponType.Thrown;
+
         if (meleeType != EnemyMeleeType.Shield) return;
-        enemyAnimation.AnimationSetFloat("chaseIndex", 1);
+        enemyAnimator.AnimationSetFloat("chaseIndex", 1);
         shieldTransform.gameObject.SetActive(true);
-        enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.OneHand);
-        
-        if(meleeType == EnemyMeleeType.Dodge) 
-            enemyVisuals.SetupWeaponType(EnemyMeleeWeaponType.Unarmed);
+        weaponType = EnemyMeleeWeaponType.OneHand;
+
+        if (meleeType == EnemyMeleeType.Dodge)
+            weaponType = EnemyMeleeWeaponType.Unarmed;
     }
 
     public void EnableWeaponModel(bool active) => enemyVisuals.CurrentWeaponModel.gameObject.SetActive(active);
@@ -107,11 +107,11 @@ public class EnemyMelee : Enemy
         if (Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < 2f) return;
 
         if (!(Time.time >
-              dodgeCooldown + lastDodgeTime + enemyAnimation.GetAnimationClipDuration("enemy1_DodgeRoll"))) return;
+              dodgeCooldown + lastDodgeTime + enemyAnimator.GetAnimationClipDuration("enemy1_DodgeRoll"))) return;
         lastDodgeTime = Time.time;
-        enemyAnimation.AnimationTrigger("dodge");
+        enemyAnimator.AnimationTrigger("dodge");
     }
-    
+
     protected override void EnemyDead()
     {
         base.EnemyDead();

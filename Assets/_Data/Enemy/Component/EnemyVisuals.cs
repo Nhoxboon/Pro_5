@@ -5,18 +5,14 @@ using UnityEngine;
 public class EnemyVisuals : NhoxBehaviour
 {
     [SerializeField] protected Enemy enemy;
-    
-    [Header("Weapon Visuals")] 
-    [SerializeField] protected EnemyWeaponModel[] weaponModels;
-    [SerializeField] protected EnemyMeleeWeaponType weaponType;
     public GameObject CurrentWeaponModel { get; protected set; }
-    
-    [Header("Corruption Visuals")]
-    [SerializeField] protected GameObject[] corruptionCrystals;
+
+    [Header("Corruption Visuals")] [SerializeField]
+    protected GameObject[] corruptionCrystals;
+
     [SerializeField] protected int corruptionAmount;
 
-    [Header("Color")] 
-    [SerializeField] protected Texture[] colorTextures;
+    [Header("Color")] [SerializeField] protected Texture[] colorTextures;
     [SerializeField] protected SkinnedMeshRenderer skinnedMR;
 
     protected override void LoadComponents()
@@ -24,13 +20,12 @@ public class EnemyVisuals : NhoxBehaviour
         base.LoadComponents();
         LoadEnemy();
         LoadCorruptionCrystals();
-        LoadWeaponModels();
         LoadSkinnedMeshRenderer();
     }
 
     protected void LoadEnemy()
     {
-        if(enemy != null) return;
+        if (enemy != null) return;
         enemy = GetComponentInParent<Enemy>();
         Debug.Log(transform.name + " LoadEnemy", gameObject);
     }
@@ -45,21 +40,12 @@ public class EnemyVisuals : NhoxBehaviour
         Debug.Log(transform.name + " LoadCorruptionCrystals", gameObject);
     }
 
-    protected void LoadWeaponModels()
-    {
-        if (weaponModels is { Length: > 0 }) return;
-        weaponModels = transform.parent.GetComponentsInChildren<EnemyWeaponModel>(true);
-        Debug.Log(transform.name + " LoadWeaponModels", gameObject);
-    }
-
     protected void LoadSkinnedMeshRenderer()
     {
         if (skinnedMR != null) return;
         skinnedMR = transform.parent.GetComponentInChildren<SkinnedMeshRenderer>();
         Debug.Log(transform.name + " LoadSkinnedMeshRenderer", gameObject);
     }
-
-    public void SetupWeaponType(EnemyMeleeWeaponType type) => weaponType = type;
 
     public void SetupLook()
     {
@@ -70,24 +56,51 @@ public class EnemyVisuals : NhoxBehaviour
 
     protected void SetupRandomWeapon()
     {
+        bool thisEnemyIsMelee = enemy is EnemyMelee;
+        bool thisEnemyIsRange = enemy is EnemyRange;
+        if (thisEnemyIsMelee)
+            CurrentWeaponModel = FindMeleeWeaponModel();
+        if (thisEnemyIsRange)
+            CurrentWeaponModel = FindRangeWeaponModel();
+
+        CurrentWeaponModel?.SetActive(true);
+        OverrideAnimatorController();
+    }
+
+    protected GameObject FindMeleeWeaponModel()
+    {
+        if (enemy is not EnemyMelee enemyMelee) return null;
+        EnemyWeaponModel[] weaponModels = transform.parent.GetComponentsInChildren<EnemyWeaponModel>(true);
         foreach (var model in weaponModels)
             model.gameObject.SetActive(false);
 
-        List<EnemyWeaponModel> filteredModels = weaponModels.Where(model => model.weaponType == weaponType).ToList();
+        List<EnemyWeaponModel> filteredModels =
+            weaponModels.Where(model => model.weaponType == enemyMelee.weaponType).ToList();
 
         int randomIndex = Random.Range(0, filteredModels.Count);
-        CurrentWeaponModel = filteredModels[randomIndex].gameObject;
-        CurrentWeaponModel.SetActive(true);
+        return filteredModels[randomIndex].gameObject;
+    }
 
-        OverrideAnimatorController();
+    protected GameObject FindRangeWeaponModel()
+    {
+        if (enemy is not EnemyRange enemyRange) return null;
+        EnemyRangeWeaponModel[] weaponModels = transform.parent.GetComponentsInChildren<EnemyRangeWeaponModel>(true);
+
+        foreach (var weaponModel in weaponModels)
+        {
+            if (weaponModel.weaponType != enemyRange.weaponType) continue;
+            enemyRange.EnemyAnimator.SwitchAnimationLayer((int)weaponModel.holdType);
+            return weaponModel.gameObject;
+        }
+        return null;
     }
 
     protected void OverrideAnimatorController()
     {
         AnimatorOverrideController overrideController =
-            CurrentWeaponModel.GetComponent<EnemyWeaponModel>().overrideController;
+            CurrentWeaponModel.GetComponent<EnemyWeaponModel>()?.overrideController;
         if (overrideController != null)
-            enemy.EnemyAnimation.Animator.runtimeAnimatorController = overrideController;
+            enemy.EnemyAnimator.Animator.runtimeAnimatorController = overrideController;
     }
 
     protected void SetupRandomCrystal()
@@ -119,7 +132,7 @@ public class EnemyVisuals : NhoxBehaviour
 
     public void EnableWeaponTrail(bool enable)
     {
-        if(CurrentWeaponModel.TryGetComponent(out EnemyWeaponModel weaponModel))
+        if (CurrentWeaponModel.TryGetComponent(out EnemyWeaponModel weaponModel))
             weaponModel.EnableTrail(enable);
     }
 }

@@ -22,7 +22,7 @@ public class Bullet : NhoxBehaviour
 
     protected void OnEnable() => ResetBullet();
 
-    protected void Update()
+    protected virtual void Update()
     {
         FadeTrail();
         DisableBullet();
@@ -65,7 +65,7 @@ public class Bullet : NhoxBehaviour
         Debug.Log(transform.name + " LoadTrailRenderer", gameObject);
     }
 
-    protected void OnCollisionEnter(Collision other)
+    protected virtual void OnCollisionEnter(Collision other)
     {
         SpawnFX(other);
         ProjectileSpawner.Instance.Despawn(gameObject);
@@ -84,7 +84,7 @@ public class Bullet : NhoxBehaviour
         enemy.DeadImpact(force, other.contacts[0].point, hitRb);
     }
 
-    public void BulletSetup(float flyDis, float impactForce)
+    public void BulletSetup(float flyDis = 100, float impactForce = 100)
     {
         this.impactForce = impactForce;
 
