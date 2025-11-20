@@ -23,7 +23,7 @@ public class EMeleeAbilityState : EnemyState
     {
         base.Enter();
         enemy.EnableWeaponModel(true);
-        moveSpeed = enemyMove.MoveSpeed;
+        moveSpeed = enemyMove.WalkSpeed;
         movementDirection = enemy.transform.position + (enemy.transform.forward * MAX_MOVEMENT_DISTANCE);
     }
 
@@ -45,7 +45,7 @@ public class EMeleeAbilityState : EnemyState
 
         if (enemyMove.ManualMovement)
             enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, movementDirection,
-                enemyMove.MoveSpeed * Time.deltaTime);
+                enemyMove.WalkSpeed * Time.deltaTime);
 
         if (triggerCalled)
             stateMachine.ChangeState(enemy.RecoveryState);

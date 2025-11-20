@@ -81,19 +81,7 @@ public class EnemyVisuals : NhoxBehaviour
         return filteredModels[randomIndex].gameObject;
     }
 
-    protected GameObject FindRangeWeaponModel()
-    {
-        if (enemy is not EnemyRange enemyRange) return null;
-        EnemyRangeWeaponModel[] weaponModels = transform.parent.GetComponentsInChildren<EnemyRangeWeaponModel>(true);
-
-        foreach (var weaponModel in weaponModels)
-        {
-            if (weaponModel.weaponType != enemyRange.weaponType) continue;
-            enemyRange.EnemyAnimator.SwitchAnimationLayer((int)weaponModel.holdType);
-            return weaponModel.gameObject;
-        }
-        return null;
-    }
+    protected virtual GameObject FindRangeWeaponModel() => null;
 
     protected void OverrideAnimatorController()
     {

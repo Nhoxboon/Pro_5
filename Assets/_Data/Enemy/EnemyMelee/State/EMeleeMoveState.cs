@@ -17,7 +17,7 @@ public class EMeleeMoveState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        enemyMove.Agent.speed = enemyMove.MoveSpeed;
+        enemyMove.Agent.speed = enemyMove.WalkSpeed;
         destination = enemyMove.GetPatrolDestination();
         enemyMove.Agent.SetDestination(destination);
     }

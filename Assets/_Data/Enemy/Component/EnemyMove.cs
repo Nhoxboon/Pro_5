@@ -3,10 +3,10 @@ using UnityEngine.AI;
 
 public class EnemyMove : NhoxBehaviour
 {
-    [SerializeField] protected float moveSpeed = 1.5f;
-    public float MoveSpeed => moveSpeed;
-    [SerializeField] protected float chaseSpeed = 3.5f;
-    public float ChaseSpeed => chaseSpeed;
+    [SerializeField] protected float walkSpeed = 1.5f;
+    public float WalkSpeed => walkSpeed;
+    [SerializeField] protected float runSpeed = 4f;
+    public float RunSpeed => runSpeed;
     [SerializeField] protected float turnSpeed = 5f;
 
     [SerializeField] protected Transform[] patrolPoints;
@@ -79,7 +79,7 @@ public class EnemyMove : NhoxBehaviour
         transform.parent.rotation =  Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
     }
 
-    public void SetMoveSpeed(float speed) => moveSpeed = speed;
+    public void SetMoveSpeed(float speed) => walkSpeed = speed;
     public void SetTurnSpeed(float speed) => turnSpeed = speed;
 
     public void ActivateManualMovement(bool manualMove) => manualMovement = manualMove;

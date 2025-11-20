@@ -16,7 +16,7 @@ public class EMeleeChaseState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        enemyMove.Agent.speed = enemyMove.ChaseSpeed;
+        enemyMove.Agent.speed = enemyMove.RunSpeed;
         enemyMove.Agent.isStopped = false;
     }
 

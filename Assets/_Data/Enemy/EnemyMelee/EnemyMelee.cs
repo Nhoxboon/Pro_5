@@ -80,7 +80,7 @@ public class EnemyMelee : Enemy
     public override void AbilityTrigger()
     {
         base.AbilityTrigger();
-        enemyMove.SetMoveSpeed(enemyMove.MoveSpeed * 0.6f);
+        enemyMove.SetMoveSpeed(enemyMove.WalkSpeed * 0.6f);
         EnableWeaponModel(false);
     }
 

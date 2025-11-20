@@ -4,7 +4,7 @@ public class EnemyWeaponModel : NhoxBehaviour
 {
     public EnemyMeleeWeaponType weaponType;
     public AnimatorOverrideController overrideController;
-    public EnemyWeaponDataSO weaponData;
+    public EMeleeWeaponDataSO weaponData;
 
     [SerializeField] protected TrailRenderer[] tr;
 
@@ -19,7 +19,7 @@ public class EnemyWeaponModel : NhoxBehaviour
         base.LoadComponents();
         LoadTrailRenderer();
     }
-    
+
     protected void LoadTrailRenderer()
     {
         if (tr is { Length: > 0 }) return;
