@@ -7,6 +7,11 @@ public class EnemyMove : NhoxBehaviour
     public float WalkSpeed => walkSpeed;
     [SerializeField] protected float runSpeed = 4f;
     public float RunSpeed => runSpeed;
+    [SerializeField] protected float advanceStoppingDistance = 5f;
+    public float AdvanceStoppingDistance => advanceStoppingDistance;
+    [SerializeField] protected float advanceTime = 2.5f;
+    public float AdvanceTime => advanceTime;
+    
     [SerializeField] protected float turnSpeed = 5f;
 
     [SerializeField] protected Transform[] patrolPoints;

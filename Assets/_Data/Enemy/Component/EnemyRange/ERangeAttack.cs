@@ -44,7 +44,7 @@ public class ERangeAttack : EnemyAttack
     public void FireSingleBullet()
     {
         enemyRange.EnemyAnimator.AnimationTrigger("attack");
-        Vector3 bulletDir = ((PlayerCtrl.Instance.transform.position + Vector3.up) - GunPoint.position).normalized;
+        Vector3 bulletDir = (enemyRange.EnemyAim.aim.position - GunPoint.position).normalized;
         Transform newBullet = ProjectileSpawner.Instance.Spawn(bulletPrefab, GunPoint.position,
             Quaternion.LookRotation(GunPoint.forward));
         newBullet.gameObject.SetActive(true);

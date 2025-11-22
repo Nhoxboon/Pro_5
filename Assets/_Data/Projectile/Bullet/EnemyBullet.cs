@@ -7,7 +7,7 @@ public class EnemyBullet : Bullet
         SpawnFX(other);
         ProjectileSpawner.Instance.Despawn(gameObject);
 
-        if (other.gameObject.TryGetComponentInParent(out PlayerCtrl player))
-            Debug.Log("Player Hit");
+        // if (other.gameObject.TryGetComponentInParent(out PlayerCtrl player))
+        //     Debug.Log("Player Hit");
     }
 }

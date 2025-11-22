@@ -87,8 +87,7 @@ public class Enemy : NhoxBehaviour
 
     protected bool ShouldEnterBattleMode()
     {
-        bool inAggroRange = Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
-        if (!inAggroRange || InBattleMode) return false;
+        if (!IsPlayerInAggressRange() || InBattleMode) return false;
         EnterBattleMode();
         return true;
     }
@@ -114,6 +113,8 @@ public class Enemy : NhoxBehaviour
     }
 
     public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
+    
+    public bool IsPlayerInAggressRange() => Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange; 
 
     protected void OnDrawGizmos()
     {

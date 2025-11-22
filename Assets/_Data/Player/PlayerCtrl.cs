@@ -28,6 +28,9 @@ public class PlayerCtrl : NhoxBehaviour
 
     [SerializeField] protected PlayerInteraction playerInteraction;
     public PlayerInteraction PlayerInteraction => playerInteraction;
+    
+    //Test purpose
+    public Transform playerBody;
 
     protected override void Awake()
     {
