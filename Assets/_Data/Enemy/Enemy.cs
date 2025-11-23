@@ -21,6 +21,9 @@ public class Enemy : NhoxBehaviour
 
     [SerializeField] protected EnemyVisuals enemyVisuals;
     public EnemyVisuals EnemyVisuals => enemyVisuals;
+    
+    [SerializeField] protected EnemyRagdoll ragdoll;
+    public EnemyRagdoll Ragdoll => ragdoll;
 
     public bool InBattleMode { get; protected set; }
     public EnemyStateMachine StateMachine { get; protected set; }
@@ -48,6 +51,7 @@ public class Enemy : NhoxBehaviour
         LoadEnemyAnimation();
         LoadEnemyAttack();
         LoadEnemyVisuals();
+        LoadRagDoll();
     }
 
     protected void LoadCore()
@@ -85,6 +89,13 @@ public class Enemy : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
     }
 
+    protected void LoadRagDoll()
+    {
+        if(ragdoll != null) return;
+        ragdoll = GetComponent<EnemyRagdoll>();
+        Debug.Log(transform.name + " LoadRagDoll", gameObject);
+    }
+
     protected bool ShouldEnterBattleMode()
     {
         if (!IsPlayerInAggressRange() || InBattleMode) return false;
@@ -94,13 +105,16 @@ public class Enemy : NhoxBehaviour
 
     public virtual void EnterBattleMode() => InBattleMode = true;
 
-    public virtual void AbilityTrigger()
+    protected virtual void InitializePerk()
     {
-        StateMachine.currentState.AbilityTrigger();
+        //For override
     }
 
+    public virtual void AbilityTrigger() => StateMachine.currentState.AbilityTrigger();
+    
     protected virtual void EnemyDead()
     {
+        //For override
     }
 
     public virtual void DeadImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
@@ -116,8 +130,5 @@ public class Enemy : NhoxBehaviour
     
     public bool IsPlayerInAggressRange() => Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange; 
 
-    protected void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, aggroRange);
-    }
+    protected void OnDrawGizmos() => Gizmos.DrawWireSphere(transform.position, aggroRange);
 }

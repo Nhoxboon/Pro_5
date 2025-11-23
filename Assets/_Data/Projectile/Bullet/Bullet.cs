@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class Bullet : NhoxBehaviour
+public class Bullet : Projectile
 {
     //NOTE: Default bullet speed from which our mass formula is derived
     private const float ReferenceBulletSpeed = 20f;
 
-    [SerializeField] protected Rigidbody rb;
     [SerializeField] protected SphereCollider col;
     [SerializeField] protected MeshRenderer mr;
     [SerializeField] protected TrailRenderer tr;
@@ -20,8 +19,6 @@ public class Bullet : NhoxBehaviour
     protected float flyDistance;
     protected float impactForce = 5f;
 
-    protected void OnEnable() => ResetBullet();
-
     protected virtual void Update()
     {
         FadeTrail();
@@ -31,17 +28,9 @@ public class Bullet : NhoxBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        LoadRigidbody();
         LoadSphereCollider();
         LoadMeshRenderer();
         LoadTrailRenderer();
-    }
-
-    protected void LoadRigidbody()
-    {
-        if (rb != null) return;
-        rb = GetComponent<Rigidbody>();
-        Debug.Log(transform.name + " LoadRigidbody", gameObject);
     }
 
     protected void LoadSphereCollider()
@@ -123,14 +112,13 @@ public class Bullet : NhoxBehaviour
         newFX.gameObject.SetActive(true);
     }
 
-    protected void ResetBullet()
+    protected override void ResetProjectile()
     {
+        base.ResetProjectile();
         bulletDisabled = false;
         col.enabled = true;
         mr.enabled = true;
         tr.Clear();
         tr.time = 0.25f;
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
     }
 }

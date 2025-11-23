@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-public class EnemyAxe : NhoxBehaviour
+public class EnemyAxe : Projectile
 {
-    [SerializeField] protected Rigidbody rb;
     [SerializeField] protected Transform axeModel;
 
     protected float flySpeed;
@@ -14,8 +13,6 @@ public class EnemyAxe : NhoxBehaviour
     
     protected string fxName = "AxeImpactFX";
     
-    protected void OnEnable() => ResetAxe();
-
     protected void Update()
     {
         axeModel.Rotate(Vector3.right * (rotationSpeed * Time.deltaTime));
@@ -31,15 +28,7 @@ public class EnemyAxe : NhoxBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        LoadRigidbody();
         LoadAxeModel();
-    }
-
-    protected void LoadRigidbody()
-    {
-        if (rb != null) return;
-        rb = GetComponent<Rigidbody>();
-        Debug.Log(transform.name + " LoadRigidbody", gameObject);
     }
 
     protected void LoadAxeModel()
@@ -66,10 +55,9 @@ public class EnemyAxe : NhoxBehaviour
         timer = time;
     }
     
-    protected void ResetAxe()
+    protected override void ResetProjectile()
     {
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        base.ResetProjectile();
         transform.rotation = Quaternion.identity;
     }
 }

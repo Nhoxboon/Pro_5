@@ -7,11 +7,12 @@ public class EnemyMove : NhoxBehaviour
     public float WalkSpeed => walkSpeed;
     [SerializeField] protected float runSpeed = 4f;
     public float RunSpeed => runSpeed;
+
     [SerializeField] protected float advanceStoppingDistance = 5f;
     public float AdvanceStoppingDistance => advanceStoppingDistance;
-    [SerializeField] protected float advanceTime = 2.5f;
-    public float AdvanceTime => advanceTime;
-    
+    [SerializeField] protected float advanceDuration = 2.5f;
+    public float AdvanceDuration => advanceDuration;
+
     [SerializeField] protected float turnSpeed = 5f;
 
     [SerializeField] protected Transform[] patrolPoints;
@@ -81,11 +82,12 @@ public class EnemyMove : NhoxBehaviour
         float yRotation =
             Mathf.LerpAngle(currentEulerAngles.y, targetRotation.eulerAngles.y, turnSpeed * Time.deltaTime);
 
-        transform.parent.rotation =  Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
+        transform.parent.rotation = Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
     }
 
     public void SetMoveSpeed(float speed) => walkSpeed = speed;
     public void SetTurnSpeed(float speed) => turnSpeed = speed;
+    public void SetAdvanceDuration(float duration) => advanceDuration = duration;
 
     public void ActivateManualMovement(bool manualMove) => manualMovement = manualMove;
     public void ActivateManualRotation(bool manualRotate) => manualRotation = manualRotate;

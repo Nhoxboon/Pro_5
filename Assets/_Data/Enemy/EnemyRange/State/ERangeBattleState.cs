@@ -3,8 +3,10 @@
 public class ERangeBattleState : EnemyState
 {
     protected EnemyRange enemy;
+    protected EnemyMove enemyMove;
     protected ERangeAttack enemyAttack;
     protected ERangeVisuals enemyVisuals;
+    protected EnemyCoverSystem enemyCover;
 
     protected float lastTimeShot = -10;
     protected int bulletsFired = 0;
@@ -12,46 +14,59 @@ public class ERangeBattleState : EnemyState
     protected float weaponCooldown;
 
     protected float coverCheckTimer;
+    protected bool firstTimeAttack = true;
 
     public ERangeBattleState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
         stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyRange;
+        enemyMove = enemy?.EnemyMove;
         enemyAttack = enemy?.EnemyAttack as ERangeAttack;
         enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
+        enemyCover = enemy?.EnemyCover;
     }
 
     public override void Enter()
     {
         base.Enter();
-        bulletsPerAttack = enemyAttack.WeaponData.GetBulletsPerAttack();
-        weaponCooldown = enemyAttack.WeaponData.GetWeaponCooldown();
+        SetupForFirstAttack();
 
-        enemy.EnemyMove.Agent.isStopped = true;
-        enemy.EnemyMove.Agent.velocity = Vector3.zero;
+        enemyMove.Agent.isStopped = true;
+        enemyMove.Agent.velocity = Vector3.zero;
         enemyVisuals.EnableIK(true, true);
+        stateTimer = enemyAttack.AttackDelay;
     }
 
     public override void Exit()
     {
         base.Exit();
-        enemyVisuals.EnableIK(false, false);
-        enemy.EnemyMove.Agent.isStopped = false;
+        // enemyVisuals.EnableIK(false, false);
+        enemyMove.Agent.isStopped = false;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(enemy.EnemyAim.IsSeeingPlayer())
-            enemy.EnemyMove.FaceTarget(enemy.EnemyAim.aim.position);
+        if (enemy.EnemyAim.IsSeeingPlayer())
+            enemyMove.FaceTarget(enemy.EnemyAim.aim.position);
         
-        if (!enemy.IsPlayerInAggressRange() && ReadyToLeaveCover())
+        if(enemyAttack.CanThrowGrenade())
+            stateMachine.ChangeState(enemy.ThrowGrenadeState);
+
+        if (AdvancePlayer())
             stateMachine.ChangeState(enemy.AdvancePlayerState);
-        
+
         ChangeCoverIfShould();
+        if (stateTimer > 0) return;
 
         if (WeaponOutOfBullet())
         {
+            if (enemyCover.IsUnstoppable() && UnstoppableWalkReady())
+            {
+                enemyMove.SetAdvanceDuration(weaponCooldown);
+                stateMachine.ChangeState(enemy.AdvancePlayerState);
+            }
+
             if (WeaponOnCooldown())
                 ResetBulletsFired();
             return;
@@ -61,28 +76,45 @@ public class ERangeBattleState : EnemyState
             Shoot();
     }
 
+    protected bool AdvancePlayer()
+    {
+        if (enemyCover.IsUnstoppable())
+            return false;
+
+        return !enemy.IsPlayerInAggressRange() && ReadyToLeaveCover();
+    }
+
+    protected bool UnstoppableWalkReady()
+    {
+        float distanceToPlayer = Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position);
+        bool outOfStoppingDistance = distanceToPlayer > enemyMove.AdvanceStoppingDistance;
+        bool unstoppableWalkOnCooldown =
+            Time.time < enemyAttack.WeaponData.minWeaponCooldown + enemy.AdvancePlayerState.LastTimeAdvanced;
+        return outOfStoppingDistance && !unstoppableWalkOnCooldown;
+    }
+
     #region Cover System
 
     protected bool ReadyToChangeCover()
     {
         bool inDanger = IsPlayerInClearSight() || IsPlayerClose();
-        bool advanceTimeIsOver = Time.time > enemy.AdvancePlayerState.LastTimeAdvanced + enemy.EnemyMove.AdvanceTime;
+        bool advanceTimeIsOver = Time.time > enemy.AdvancePlayerState.LastTimeAdvanced + enemyMove.AdvanceDuration;
         return inDanger && advanceTimeIsOver;
     }
 
     protected bool ReadyToLeaveCover() =>
-        Time.time > enemy.EnemyCover.MinCoverTime + enemy.RunToCoverState.LastTimeRunToCover;
+        Time.time > enemyCover.MinCoverTime + enemy.RunToCoverState.LastTimeRunToCover;
 
     protected bool IsPlayerClose() =>
         Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position) <
-        enemy.EnemyCover.SafeDistance;
+        enemyCover.SafeDistance;
 
     protected bool IsPlayerInClearSight()
     {
         Vector3 directionToPlayer = PlayerCtrl.Instance.transform.position - enemy.transform.position;
         if (Physics.Raycast(enemy.transform.position + new Vector3(0, 0.3f, 0), directionToPlayer, out RaycastHit hit))
         {
-            if (hit.collider.transform.parent is not null && 
+            if (hit.collider.transform.parent is not null &&
                 hit.collider.transform.parent.TryGetComponent(out PlayerCtrl _))
                 return true;
         }
@@ -92,18 +124,27 @@ public class ERangeBattleState : EnemyState
 
     protected void ChangeCoverIfShould()
     {
-        if(enemy.EnemyCover.coverPerk != CoverPerk.CanTakeAndChangeCover) return;
-        
+        if (enemyCover.coverPerk != CoverPerk.CanTakeAndChangeCover) return;
+
         coverCheckTimer -= Time.deltaTime;
         if (!(coverCheckTimer < 0)) return;
         coverCheckTimer = 0.5f;
         if (!ReadyToChangeCover()) return;
-        if (enemy.EnemyCover.CanGetCover())
+        if (enemyCover.CanGetCover())
             stateMachine.ChangeState(enemy.RunToCoverState);
     }
+
     #endregion
 
     #region Weapon
+
+    protected void SetupForFirstAttack()
+    {
+        if (!firstTimeAttack) return;
+        firstTimeAttack = false;
+        bulletsPerAttack = enemyAttack.WeaponData.GetBulletsPerAttack();
+        weaponCooldown = enemyAttack.WeaponData.GetWeaponCooldown();
+    }
 
     protected void ResetBulletsFired()
     {

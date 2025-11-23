@@ -26,4 +26,11 @@ public class EnemyAnimationEvents : NhoxBehaviour
     public void StopManualRotation() => enemy.EnemyMove.ActivateManualRotation(false);
 
     public void AbilityEvent() => enemy.AbilityTrigger();
+
+    public void EnableWeaponModel()
+    {
+        if (enemy.EnemyVisuals is not ERangeVisuals enemyVisuals) return;
+        enemyVisuals.EnableWeaponModel(true);
+        enemyVisuals.EnableSecondaryWeaponModel(false);
+    }
 }

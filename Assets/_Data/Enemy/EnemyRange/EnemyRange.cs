@@ -10,6 +10,8 @@ public class EnemyRange : Enemy
     public ERangeBattleState BattleState { get; protected set; }
     public ERangeRunToCoverState RunToCoverState { get; protected set; }
     public ERangeAdvancePlayerState AdvancePlayerState { get; protected set; }
+    public ERangeThrowGrenadeState ThrowGrenadeState { get; protected set; }
+    public ERangeDeadState DeadState { get; protected set; }
 
     #endregion
 
@@ -17,7 +19,7 @@ public class EnemyRange : Enemy
     public EnemyCoverSystem EnemyCover => enemyCover;
     [SerializeField] protected EnemyAim enemyAim;
     public EnemyAim EnemyAim => enemyAim;
- 
+
     public EnemyRangeWeaponType weaponType;
 
     protected override void Awake()
@@ -28,11 +30,22 @@ public class EnemyRange : Enemy
         BattleState = new ERangeBattleState(this, StateMachine, "battle");
         RunToCoverState = new ERangeRunToCoverState(this, StateMachine, "run");
         AdvancePlayerState = new ERangeAdvancePlayerState(this, StateMachine, "advance");
+        ThrowGrenadeState = new ERangeThrowGrenadeState(this, StateMachine, "throwGrenade");
+        DeadState = new ERangeDeadState(this, StateMachine, "idle");  //Idle anim is just a placeholder, we use rag doll
+        
+        core.Stats.Health.OnCurrentValueZero += EnemyDead;
+    }
+    
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        core.Stats.Health.OnCurrentValueZero -= EnemyDead;
     }
 
     protected override void Start()
     {
         base.Start();
+        InitializePerk();
         StateMachine.Initialize(IdleState);
         enemyVisuals.SetupLook();
         enemyAttack.UpdateAttackData();
@@ -53,14 +66,14 @@ public class EnemyRange : Enemy
 
     protected void LoadEnemyCover()
     {
-        if(enemyCover != null) return;
+        if (enemyCover != null) return;
         enemyCover = GetComponentInChildren<EnemyCoverSystem>();
         Debug.Log(transform.name + " LoadEnemyCover", gameObject);
     }
 
     protected void LoadEnemyAim()
     {
-        if(enemyAim != null) return;
+        if (enemyAim != null) return;
         enemyAim = GetComponentInChildren<EnemyAim>();
         Debug.Log(transform.name + " LoadEnemyAim", gameObject);
     }
@@ -69,9 +82,21 @@ public class EnemyRange : Enemy
     {
         if (InBattleMode) return;
         base.EnterBattleMode();
-        if(enemyCover.CanGetCover())
+        if (enemyCover.CanGetCover())
             StateMachine.ChangeState(RunToCoverState);
         else
             StateMachine.ChangeState(BattleState);
+    }
+
+    protected override void InitializePerk()
+    {
+        if (enemyCover.IsUnstoppable())
+            enemyAnimator.AnimationSetFloat("advanceIndex", 1);
+    }
+    
+    protected override void EnemyDead()
+    {
+        base.EnemyDead();
+        StateMachine.ChangeState(DeadState);
     }
 }

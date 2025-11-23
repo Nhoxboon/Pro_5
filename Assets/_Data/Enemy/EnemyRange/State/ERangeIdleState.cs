@@ -13,14 +13,14 @@ public class ERangeIdleState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        startTimer = enemy.idleTime;
+        stateTimer = enemy.idleTime;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        if (startTimer < 0)
+        if (stateTimer < 0)
             stateMachine.ChangeState(enemy.MoveState);
     }
 }

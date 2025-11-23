@@ -117,6 +117,8 @@ public class EnemyVisuals : NhoxBehaviour
         newMat.mainTexture = colorTextures[randomIndex];
         skinnedMR.material = newMat;
     }
+    
+    public void EnableWeaponModel(bool active) => CurrentWeaponModel?.gameObject.SetActive(active);
 
     public void EnableWeaponTrail(bool enable)
     {

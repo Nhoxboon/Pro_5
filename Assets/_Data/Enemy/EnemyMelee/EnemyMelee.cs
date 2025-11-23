@@ -46,7 +46,7 @@ public class EnemyMelee : Enemy
         base.Start();
         StateMachine.Initialize(IdleState);
 
-        InitializeSpeciality();
+        InitializePerk();
         enemyVisuals.SetupLook();
         enemyAttack.UpdateAttackData();
     }
@@ -81,10 +81,10 @@ public class EnemyMelee : Enemy
     {
         base.AbilityTrigger();
         enemyMove.SetMoveSpeed(enemyMove.WalkSpeed * 0.6f);
-        EnableWeaponModel(false);
+        enemyVisuals.EnableWeaponModel(false);
     }
 
-    protected void InitializeSpeciality()
+    protected override void InitializePerk()
     {
         if (meleeType == EnemyMeleeType.AxeThrow)
             weaponType = EnemyMeleeWeaponType.Thrown;
@@ -98,7 +98,6 @@ public class EnemyMelee : Enemy
             weaponType = EnemyMeleeWeaponType.Unarmed;
     }
 
-    public void EnableWeaponModel(bool active) => enemyVisuals.CurrentWeaponModel.gameObject.SetActive(active);
 
     public void ActivateDodge()
     {

@@ -3,8 +3,9 @@
 public class EMeleeIdleState : EnemyState
 {
     protected EnemyMelee enemy;
-    
-    public EMeleeIdleState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+
+    public EMeleeIdleState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
+        stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyMelee;
     }
@@ -12,7 +13,7 @@ public class EMeleeIdleState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        startTimer = enemyBase.idleTime;
+        stateTimer = enemyBase.idleTime;
     }
 
     public override void Exit()
@@ -23,8 +24,8 @@ public class EMeleeIdleState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        
-        if(startTimer < 0)
+
+        if (stateTimer < 0)
             stateMachine.ChangeState(enemy.MoveState);
     }
 }

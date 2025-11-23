@@ -8,7 +8,7 @@ public class EnemyState
     protected EnemyStateMachine stateMachine;
     protected string animBoolName;
 
-    protected float startTimer;
+    protected float stateTimer;
     protected bool triggerCalled;
 
     public EnemyState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName)
@@ -32,7 +32,7 @@ public class EnemyState
 
     public virtual void LogicUpdate()
     {
-        startTimer -= Time.deltaTime;
+        stateTimer -= Time.deltaTime;
     }
 
     protected Vector3 GetNextPathPoint()
@@ -54,5 +54,6 @@ public class EnemyState
 
     public virtual void AbilityTrigger()
     {
+        //For override
     }
 }

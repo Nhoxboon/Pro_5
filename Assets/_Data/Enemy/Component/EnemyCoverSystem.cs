@@ -4,7 +4,8 @@ using UnityEngine;
 public class EnemyCoverSystem : NhoxBehaviour
 {
     public CoverPerk coverPerk;
-    
+    public UnstoppablePerk unstoppablePerk;
+
     public CoverPoint CurrentCover { get; protected set; }
     public CoverPoint LastCover { get; protected set; }
 
@@ -12,6 +13,8 @@ public class EnemyCoverSystem : NhoxBehaviour
     public float MinCoverTime => minCoverTime;
     [SerializeField] protected float safeDistance = 2f;
     public float SafeDistance => safeDistance;
+
+    public bool IsUnstoppable() => unstoppablePerk == UnstoppablePerk.Unstoppable;
 
     public bool CanGetCover()
     {
@@ -29,7 +32,6 @@ public class EnemyCoverSystem : NhoxBehaviour
         // Debug.LogWarning("No cover found!");
         return false;
     }
-
 
     protected Transform AttemptToFindCover()
     {

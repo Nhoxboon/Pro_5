@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class ERangeVisuals : EnemyVisuals
@@ -9,11 +10,25 @@ public class ERangeVisuals : EnemyVisuals
     [SerializeField] protected TwoBoneIKConstraint leftHandIKConstraint;
     [SerializeField] protected MultiAimConstraint weaponAimConstraint;
 
+    [SerializeField] protected EnemySecondWeaponModel[] secondWeaponModels;
+    [SerializeField] protected GameObject grenadeModel;
+    
+    protected float leftHandTargetWeight;
+    protected float weaponAimTargetWeight;
+    protected float rigChangeRate;
+
+    protected void Update()
+    {
+        leftHandIKConstraint.weight = AdjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
+        weaponAimConstraint.weight = AdjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
+    }
+
     protected override void LoadComponents()
     {
         base.LoadComponents();
         LoadTwoBoneIKConstraint();
         LoadMultiAimConstraint();
+        LoadSecondWeaponModel();
     }
 
     protected void LoadTwoBoneIKConstraint()
@@ -30,6 +45,13 @@ public class ERangeVisuals : EnemyVisuals
         Debug.Log(transform.name + " LoadMultiAimConstraint", gameObject);
     }
 
+    protected void LoadSecondWeaponModel()
+    {
+        if(secondWeaponModels is { Length: > 0 }) return;
+        secondWeaponModels = transform.parent.GetComponentsInChildren<EnemySecondWeaponModel>(true);
+        Debug.Log(transform.name + " LoadSecondWeaponModel", gameObject);
+    }
+
     protected void SetupLeftHandIK(Transform leftHandTarget, Transform leftElbowTarget)
     {
         leftHandIK.localPosition = leftHandTarget.localPosition;
@@ -38,11 +60,23 @@ public class ERangeVisuals : EnemyVisuals
         leftElbowIK.localPosition = leftElbowTarget.localPosition;
         leftElbowIK.localRotation = leftElbowTarget.localRotation;
     }
+    
+    public void EnableGrenadeModel(bool active) => grenadeModel?.SetActive(active);
 
-    public void EnableIK(bool enableLeftHand, bool enableAim)
+    public void EnableSecondaryWeaponModel(bool active) => FindSecondaryWeaponModel()?.SetActive(active);
+
+    public void EnableIK(bool enableLeftHand, bool enableAim, float changeRate = 10f)
     {
-        leftHandIKConstraint.weight = enableLeftHand ? 1 : 0;
-        weaponAimConstraint.weight = enableAim ? 1 : 0;
+        rigChangeRate = changeRate;
+        leftHandTargetWeight = enableLeftHand ? 1 : 0;
+        weaponAimTargetWeight = enableAim ? 1 : 0;
+    }
+
+    protected float AdjustIKWeight(float currentWeight, float targetWeight)
+    {
+        return Mathf.Abs(currentWeight - targetWeight) > 0.05f
+            ? Mathf.Lerp(currentWeight, targetWeight, rigChangeRate * Time.deltaTime)
+            : targetWeight;
     }
 
     protected override GameObject FindRangeWeaponModel()
@@ -59,5 +93,19 @@ public class ERangeVisuals : EnemyVisuals
         }
 
         return base.FindRangeWeaponModel();
+    }
+
+    protected GameObject FindSecondaryWeaponModel()
+    {
+        if (enemy.EnemyAttack is not ERangeAttack enemyAttack) return null;
+    
+        EnemyRangeWeaponType weaponType = enemyAttack.WeaponType;
+        
+        foreach(var weaponModel in secondWeaponModels)
+        {
+            if (weaponModel.weaponType != weaponType) continue;
+            return weaponModel.gameObject;
+        }
+        return null;
     }
 }
