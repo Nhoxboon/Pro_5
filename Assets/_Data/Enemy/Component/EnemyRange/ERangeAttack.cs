@@ -22,10 +22,10 @@ public class ERangeAttack : EnemyAttack
     [SerializeField] protected float grenadeCooldown = 4f;
     [SerializeField] protected Transform grenadeSpawnPoint;
     protected float impactPower = 10f;
-    protected float lastTimeGrenadeThrown = -10f;
     public float timeToTarget = 1.2f;
     protected float explosionTimer = 0.75f;
     protected string grenadePrefab = "EnemyGrenade";
+    protected float lastTimeGrenadeThrown = -10f;
     
     protected override void Awake()
     {

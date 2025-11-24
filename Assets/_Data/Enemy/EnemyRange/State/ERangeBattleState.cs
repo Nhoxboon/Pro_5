@@ -114,9 +114,7 @@ public class ERangeBattleState : EnemyState
         Vector3 directionToPlayer = PlayerCtrl.Instance.transform.position - enemy.transform.position;
         if (Physics.Raycast(enemy.transform.position + new Vector3(0, 0.3f, 0), directionToPlayer, out RaycastHit hit))
         {
-            if (hit.collider.transform.parent is not null &&
-                hit.collider.transform.parent.TryGetComponent(out PlayerCtrl _))
-                return true;
+            return hit.transform.parent == PlayerCtrl.Instance.transform;
         }
 
         return false;
@@ -129,7 +127,7 @@ public class ERangeBattleState : EnemyState
         coverCheckTimer -= Time.deltaTime;
         if (!(coverCheckTimer < 0)) return;
         coverCheckTimer = 0.5f;
-        if (!ReadyToChangeCover()) return;
+        if (!ReadyToChangeCover() || !ReadyToLeaveCover()) return;
         if (enemyCover.CanGetCover())
             stateMachine.ChangeState(enemy.RunToCoverState);
     }

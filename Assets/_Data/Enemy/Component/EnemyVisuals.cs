@@ -75,7 +75,7 @@ public class EnemyVisuals : NhoxBehaviour
             model.gameObject.SetActive(false);
 
         List<EnemyWeaponModel> filteredModels =
-            weaponModels.Where(model => model.weaponType == enemyMelee.weaponType).ToList();
+            weaponModels.Where(model => model.weaponType == enemyMelee.WeaponType).ToList();
 
         int randomIndex = Random.Range(0, filteredModels.Count);
         return filteredModels[randomIndex].gameObject;

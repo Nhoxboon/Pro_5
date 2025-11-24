@@ -19,9 +19,7 @@ public class EnemyRange : Enemy
     public EnemyCoverSystem EnemyCover => enemyCover;
     [SerializeField] protected EnemyAim enemyAim;
     public EnemyAim EnemyAim => enemyAim;
-
-    public EnemyRangeWeaponType weaponType;
-
+    
     protected override void Awake()
     {
         base.Awake();

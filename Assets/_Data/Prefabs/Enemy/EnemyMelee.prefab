@@ -4458,7 +4458,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 67baec29345f1e149a649cca8395ff30, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -7335,9 +7335,10 @@ MonoBehaviour:
   aggroRange: 4
   core: {fileID: 6754832864707656193}
   enemyMove: {fileID: 6101484483308106555}
-  enemyAnimator: {fileID: 0}
+  enemyAnimator: {fileID: 8930485846933298078}
   enemyAttack: {fileID: 53184422637240040}
   enemyVisuals: {fileID: 8660047470624029519}
+  ragdoll: {fileID: 2686197945220216166}
   meleeType: 0
   weaponType: 0
   shieldTransform: {fileID: 1325602668353027837}
@@ -7622,8 +7623,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1e1ffa63064abcbbb1c243812db454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1.5
-  chaseSpeed: 4
+  walkSpeed: 1.5
+  runSpeed: 4
+  advanceStoppingDistance: 5
+  advanceDuration: 2.5
   turnSpeed: 5
   patrolPoints:
   - {fileID: 8122423265293735345}

@@ -81,12 +81,13 @@ public class ERangeVisuals : EnemyVisuals
 
     protected override GameObject FindRangeWeaponModel()
     {
-        if (enemy is not EnemyRange enemyRange) return null;
+        if (enemy is not EnemyRange { EnemyAttack: ERangeAttack rangeAttack } enemyRange) return null;
+        
         EnemyRangeWeaponModel[] weaponModels = transform.parent.GetComponentsInChildren<EnemyRangeWeaponModel>(true);
 
         foreach (var weaponModel in weaponModels)
         {
-            if (weaponModel.weaponType != enemyRange.weaponType) continue;
+            if (weaponModel.weaponType != rangeAttack.WeaponType) continue;
             enemyRange.EnemyAnimator.SwitchAnimationLayer((int)weaponModel.holdType);
             SetupLeftHandIK(weaponModel.leftHandTarget, weaponModel.leftElbowTarget);
             return weaponModel.gameObject;

@@ -15,7 +15,7 @@ public class EnemyMelee : Enemy
     #endregion
 
     [Header("Enemy Settings")] public EnemyMeleeType meleeType;
-    public EnemyMeleeWeaponType weaponType;
+    public EnemyMeleeWeaponType WeaponType { get; protected set; }
 
     [SerializeField] protected Transform shieldTransform;
     public float dodgeCooldown = 2f;
@@ -87,15 +87,17 @@ public class EnemyMelee : Enemy
     protected override void InitializePerk()
     {
         if (meleeType == EnemyMeleeType.AxeThrow)
-            weaponType = EnemyMeleeWeaponType.Thrown;
+            WeaponType = EnemyMeleeWeaponType.Thrown;
 
-        if (meleeType != EnemyMeleeType.Shield) return;
-        enemyAnimator.AnimationSetFloat("chaseIndex", 1);
-        shieldTransform.gameObject.SetActive(true);
-        weaponType = EnemyMeleeWeaponType.OneHand;
+        if (meleeType == EnemyMeleeType.Shield)
+        {
+            enemyAnimator.AnimationSetFloat("chaseIndex", 1);
+            shieldTransform.gameObject.SetActive(true);
+            WeaponType = EnemyMeleeWeaponType.OneHand;
+        }
 
         if (meleeType == EnemyMeleeType.Dodge)
-            weaponType = EnemyMeleeWeaponType.Unarmed;
+            WeaponType = EnemyMeleeWeaponType.Unarmed;
     }
 
 

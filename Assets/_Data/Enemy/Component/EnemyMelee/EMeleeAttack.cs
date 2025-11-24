@@ -16,9 +16,7 @@ public class EMeleeAttack : EnemyAttack
     [SerializeField] protected float axeAimTimer;
     [SerializeField] protected float axeThrowCooldown;
     protected float lastTimeAxeThrown;
-
-    public float AxeThrowCooldown => axeThrowCooldown;
-
+    
     protected override void Awake()
     {
         base.Awake();

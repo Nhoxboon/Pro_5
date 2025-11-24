@@ -7,7 +7,6 @@ public class EMeleeAbilityState : EnemyState
     protected EMeleeAttack enemyAttack;
 
     protected float moveSpeed;
-    protected float lastTimeAxeThrown;
     protected Vector3 movementDirection;
     protected const float MAX_MOVEMENT_DISTANCE = 20f;
 
@@ -54,9 +53,6 @@ public class EMeleeAbilityState : EnemyState
     public override void AbilityTrigger()
     {
         base.AbilityTrigger();
-        if (Time.time < enemyAttack.AxeThrowCooldown + lastTimeAxeThrown) return;
-
-        lastTimeAxeThrown = Time.time;
         enemyAttack.ThrowAxe();
     }
 }

@@ -3,16 +3,21 @@
 public class ERangeIdleState : EnemyState
 {
     protected EnemyRange enemy;
+    protected ERangeVisuals enemyVisuals;
 
     public ERangeIdleState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
         stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyRange;
+        enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
     }
 
     public override void Enter()
     {
         base.Enter();
+        
+        enemy.EnemyAnimator.AnimationSetFloat("idleIndex", Random.Range(0, 2));
+        enemyVisuals.EnableIK(true, false);
         stateTimer = enemy.idleTime;
     }
 

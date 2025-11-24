@@ -5,12 +5,15 @@ public class ERangeDeadState : EnemyState
 {
     protected EnemyRange enemy;
     protected ERangeAttack enemyAttack;
+    protected ERangeVisuals enemyVisuals;
+    
     protected bool interactionDisable;
     
     public ERangeDeadState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyRange;
         enemyAttack = enemy?.EnemyAttack as ERangeAttack;
+        enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
     }
 
     public override void Enter()
@@ -18,7 +21,10 @@ public class ERangeDeadState : EnemyState
         base.Enter();
         
         if(!enemy.ThrowGrenadeState.FinishedThrowing)
+        {
+            enemyVisuals.EnableGrenadeModel(false);
             enemyAttack.ThrowGrenade();
+        }
         
         interactionDisable = false;
 
