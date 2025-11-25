@@ -14,7 +14,11 @@ public class EnemyMelee : Enemy
 
     #endregion
 
-    [Header("Enemy Settings")] public EnemyMeleeType meleeType;
+    [Header("Enemy Settings")] 
+    [SerializeField] protected EMeleeAbility enemyAbility;
+    public EMeleeAbility EnemyAbility => enemyAbility;
+    
+    public EnemyMeleeType meleeType;
     public EnemyMeleeWeaponType WeaponType { get; protected set; }
 
     [SerializeField] protected Transform shieldTransform;
@@ -60,7 +64,15 @@ public class EnemyMelee : Enemy
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadEnemyAbility();
         LoadShield();
+    }
+
+    protected void LoadEnemyAbility()
+    {
+        if(enemyAbility != null) return;
+        enemyAbility = GetComponentInChildren<EMeleeAbility>();
+        Debug.Log(transform.name + " LoadEnemyAbility", gameObject);
     }
 
     protected void LoadShield()

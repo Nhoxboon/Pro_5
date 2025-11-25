@@ -5,9 +5,8 @@ public class EBossAttack : EnemyAttack
 {
     [SerializeField] protected float attackRange = 1.5f;
 
-    [Header("Jump Attack")] [SerializeField]
-    protected float minJumpDisRequired = 6f;
-
+    [Header("Jump Attack")] 
+    [SerializeField] protected float minJumpDisRequired = 6f;
     [SerializeField] protected float jumpAtkCooldown = 10f;
     [SerializeField] protected float travelTimeToTarget = 1f;
     public float TravelTimeToTarget => travelTimeToTarget;
@@ -59,7 +58,7 @@ public class EBossAttack : EnemyAttack
 
         return false;
     }
-
+    
     protected void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

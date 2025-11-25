@@ -4,12 +4,14 @@ public class EMeleeRecoveryState : EnemyState
 {
     protected EnemyMelee enemy;
     protected EMeleeAttack enemyAttack;
+    protected EMeleeAbility enemyAbility;
 
     public EMeleeRecoveryState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
         stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyMelee;
         enemyAttack = enemy?.EnemyAttack as EMeleeAttack;
+        enemyAbility = enemy?.EnemyAbility;
     }
 
     public override void Enter()
@@ -29,7 +31,7 @@ public class EMeleeRecoveryState : EnemyState
         enemy.EnemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
 
         if (!triggerCalled) return;
-        if(enemyAttack.CanThrowAxe())
+        if(enemyAbility.CanThrowAxe())
             stateMachine.ChangeState(enemy.AbilityState);
         else if(enemyAttack.PlayerInAttackRange())
             stateMachine.ChangeState(enemy.AttackState);

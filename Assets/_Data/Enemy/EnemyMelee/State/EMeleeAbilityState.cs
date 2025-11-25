@@ -4,7 +4,7 @@ public class EMeleeAbilityState : EnemyState
 {
     protected EnemyMelee enemy;
     protected EnemyMove enemyMove;
-    protected EMeleeAttack enemyAttack;
+    protected EMeleeAbility enemyAbility;
 
     protected float moveSpeed;
     protected Vector3 movementDirection;
@@ -15,7 +15,7 @@ public class EMeleeAbilityState : EnemyState
     {
         enemy = enemyBase as EnemyMelee;
         enemyMove = enemy?.EnemyMove;
-        enemyAttack = enemy?.EnemyAttack as EMeleeAttack;
+        enemyAbility = enemy?.EnemyAbility;
     }
 
     public override void Enter()
@@ -53,6 +53,6 @@ public class EMeleeAbilityState : EnemyState
     public override void AbilityTrigger()
     {
         base.AbilityTrigger();
-        enemyAttack.ThrowAxe();
+        enemyAbility.ThrowAxe();
     }
 }
