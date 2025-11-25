@@ -78,7 +78,7 @@ public class EMeleeAttackState : EnemyState
         attackMoveSpeed = enemyAttack.attackData.moveSpeed;
         enemyAnimator.AnimationSetFloat("attackAnimationSpeed", enemyAttack.attackData.animationSpeed);
         enemyAnimator.AnimationSetFloat("attackIndex", enemyAttack.attackData.attackIndex);
-        enemyAnimator.AnimationSetFloat("slashAttackIndex", Random.Range(0, 5));
+        enemyAnimator.AnimationSetFloat("slashAttackIndex", Random.Range(0, 6));
     }
 
     protected bool PlayerClose() =>

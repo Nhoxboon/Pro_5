@@ -14,7 +14,10 @@ public class ERangeWeaponDataSO : ScriptableObject
     [Header("Bullet Details")] public float bulletSpeed = 20f;
     public float weaponSpread = 0.1f;
 
-    public int GetBulletsPerAttack() => Random.Range(minBulletsPerAttack, maxBulletsPerAttack);
+    public int GetBulletsPerAttack() =>
+        Random.Range(minBulletsPerAttack,
+            maxBulletsPerAttack + 1); //+1 because the random range int max number is exclusive
+
     public float GetWeaponCooldown() => Random.Range(minWeaponCooldown, maxWeaponCooldown);
 
     public Vector3 ApplyWeaponSpread(Vector3 originalDirection)

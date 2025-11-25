@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : NhoxBehaviour
 {
     [Header("Data")] public float idleTime = 2f;
@@ -21,7 +22,7 @@ public class Enemy : NhoxBehaviour
 
     [SerializeField] protected EnemyVisuals enemyVisuals;
     public EnemyVisuals EnemyVisuals => enemyVisuals;
-    
+
     [SerializeField] protected EnemyRagdoll ragdoll;
     public EnemyRagdoll Ragdoll => ragdoll;
 
@@ -91,7 +92,7 @@ public class Enemy : NhoxBehaviour
 
     protected void LoadRagDoll()
     {
-        if(ragdoll != null) return;
+        if (ragdoll != null) return;
         ragdoll = GetComponent<EnemyRagdoll>();
         Debug.Log(transform.name + " LoadRagDoll", gameObject);
     }
@@ -111,7 +112,7 @@ public class Enemy : NhoxBehaviour
     }
 
     public virtual void AbilityTrigger() => StateMachine.currentState.AbilityTrigger();
-    
+
     protected virtual void EnemyDead()
     {
         //For override
@@ -127,8 +128,9 @@ public class Enemy : NhoxBehaviour
     }
 
     public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();
-    
-    public bool IsPlayerInAggressRange() => Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange; 
 
-    protected void OnDrawGizmos() => Gizmos.DrawWireSphere(transform.position, aggroRange);
+    public bool IsPlayerInAggressRange() =>
+        Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
+
+    protected virtual void OnDrawGizmos() => Gizmos.DrawWireSphere(transform.position, aggroRange);
 }

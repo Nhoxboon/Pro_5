@@ -15,8 +15,8 @@ public class ERangeIdleState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        
-        enemy.EnemyAnimator.AnimationSetFloat("idleIndex", Random.Range(0, 2));
+
+        enemy.EnemyAnimator.AnimationSetFloat("idleIndex", Random.Range(0, 3));
         enemyVisuals.EnableIK(true, false);
         stateTimer = enemy.idleTime;
     }

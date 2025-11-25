@@ -49,8 +49,8 @@ public class ERangeBattleState : EnemyState
         base.LogicUpdate();
         if (enemy.EnemyAim.IsSeeingPlayer())
             enemyMove.FaceTarget(enemy.EnemyAim.aim.position);
-        
-        if(enemyAttack.CanThrowGrenade())
+
+        if (enemyAttack.CanThrowGrenade())
             stateMachine.ChangeState(enemy.ThrowGrenadeState);
 
         if (AdvancePlayer())
@@ -114,7 +114,8 @@ public class ERangeBattleState : EnemyState
         Vector3 directionToPlayer = PlayerCtrl.Instance.transform.position - enemy.transform.position;
         if (Physics.Raycast(enemy.transform.position + new Vector3(0, 0.3f, 0), directionToPlayer, out RaycastHit hit))
         {
-            return hit.transform.parent == PlayerCtrl.Instance.transform;
+            return hit.transform.parent == PlayerCtrl.Instance.transform ||
+                   hit.transform == PlayerCtrl.Instance.transform;
         }
 
         return false;

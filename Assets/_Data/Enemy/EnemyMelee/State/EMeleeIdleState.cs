@@ -13,7 +13,7 @@ public class EMeleeIdleState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        stateTimer = enemyBase.idleTime;
+        stateTimer = enemy.idleTime;
     }
 
     public override void Exit()

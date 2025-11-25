@@ -42,7 +42,7 @@ public class EnemyMove : NhoxBehaviour
     protected void LoadPatrolsPoint()
     {
         if (patrolPoints is { Length: > 0 }) return;
-        var patrolPointComponents = GetComponentsInChildren<EnemyPatrolPoint>();
+        var patrolPointComponents = transform.parent.GetComponentsInChildren<EnemyPatrolPoint>();
         patrolPoints = new Transform[patrolPointComponents.Length];
         for (int i = 0; i < patrolPointComponents.Length; i++)
             patrolPoints[i] = patrolPointComponents[i].transform;
@@ -75,10 +75,12 @@ public class EnemyMove : NhoxBehaviour
         }
     }
 
-    public void FaceTarget(Vector3 target)
+    public void FaceTarget(Vector3 target, float turnSpeed = 0)
     {
         Quaternion targetRotation = Quaternion.LookRotation(target - transform.parent.position);
         Vector3 currentEulerAngles = transform.parent.rotation.eulerAngles;
+        
+        if (turnSpeed == 0) turnSpeed = this.turnSpeed;
         float yRotation =
             Mathf.LerpAngle(currentEulerAngles.y, targetRotation.eulerAngles.y, turnSpeed * Time.deltaTime);
 
