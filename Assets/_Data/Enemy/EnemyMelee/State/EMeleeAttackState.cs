@@ -4,10 +4,10 @@ using UnityEngine;
 public class EMeleeAttackState : EnemyState
 {
     protected EnemyMelee enemy;
-    protected EMeleeAttack enemyAttack;
-
     protected EnemyMove enemyMove;
     protected EnemyAnimator enemyAnimator;
+    protected EMeleeAttack enemyAttack;
+    protected EMeleeAbility enemyAbility;
 
     protected Vector3 attackDirection;
     protected float attackMoveSpeed;
@@ -21,6 +21,7 @@ public class EMeleeAttackState : EnemyState
         enemyMove = enemy?.EnemyMove;
         enemyAnimator = enemy?.EnemyAnimator;
         enemyAttack = enemy?.EnemyAttack as EMeleeAttack;
+        enemyAbility = enemy?.EnemyAbility;
     }
 
     public override void Enter()
@@ -59,7 +60,7 @@ public class EMeleeAttackState : EnemyState
         }
 
         if (!triggerCalled) return;
-        if (enemyAttack.PlayerInAttackRange())
+        if (enemyAttack.PlayerInAttackRange() || enemyAbility.CanUseAbility())
             stateMachine.ChangeState(enemy.RecoveryState);
         else
             stateMachine.ChangeState(enemy.ChaseState);

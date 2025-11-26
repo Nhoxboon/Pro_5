@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class EnemyVisuals : NhoxBehaviour
+public class EnemyBasicVisuals : NhoxBehaviour
 {
     [SerializeField] protected Enemy enemy;
     public GameObject CurrentWeaponModel { get; protected set; }

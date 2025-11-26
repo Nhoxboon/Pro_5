@@ -20,18 +20,13 @@ public class EMeleeRecoveryState : EnemyState
         enemy.EnemyMove.Agent.isStopped = true;
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
         enemy.EnemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
 
         if (!triggerCalled) return;
-        if(enemyAbility.CanThrowAxe())
+        if(enemyAbility.CanUseAbility())
             stateMachine.ChangeState(enemy.AbilityState);
         else if(enemyAttack.PlayerInAttackRange())
             stateMachine.ChangeState(enemy.AttackState);

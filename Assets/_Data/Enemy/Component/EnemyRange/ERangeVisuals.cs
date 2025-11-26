@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-public class ERangeVisuals : EnemyVisuals
+public class ERangeVisuals : EnemyBasicVisuals
 {
     [Header("Rig References")] 
     [SerializeField] protected Transform leftHandIK;

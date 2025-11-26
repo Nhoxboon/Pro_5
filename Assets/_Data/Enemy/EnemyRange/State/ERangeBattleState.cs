@@ -22,7 +22,7 @@ public class ERangeBattleState : EnemyState
         enemy = enemyBase as EnemyRange;
         enemyMove = enemy?.EnemyMove;
         enemyAttack = enemy?.EnemyAttack as ERangeAttack;
-        enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
+        enemyVisuals = enemy?.EnemyVisuals;
         enemyCover = enemy?.EnemyCover;
     }
 

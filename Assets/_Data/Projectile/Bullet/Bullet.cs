@@ -66,8 +66,9 @@ public class Bullet : Projectile
         }
 
         if (!other.gameObject.TryGetComponentInParent(out Enemy enemy)) return;
-        Vector3 force = rb.linearVelocity.normalized * impactForce;
         Rigidbody hitRb = other.collider.attachedRigidbody;
+        if (hitRb == null) return;
+        Vector3 force = rb.linearVelocity.normalized * impactForce;
 
         enemy.Core.DamageReceiver.TakeDamage(1);
         enemy.DeadImpact(force, other.contacts[0].point, hitRb);

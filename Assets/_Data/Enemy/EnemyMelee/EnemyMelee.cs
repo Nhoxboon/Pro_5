@@ -14,7 +14,9 @@ public class EnemyMelee : Enemy
 
     #endregion
 
-    [Header("Enemy Settings")] 
+    [Header("Enemy Melee Settings")] 
+    [SerializeField] protected EnemyBasicVisuals enemyVisuals;
+    public EnemyBasicVisuals EnemyVisuals => enemyVisuals;
     [SerializeField] protected EMeleeAbility enemyAbility;
     public EMeleeAbility EnemyAbility => enemyAbility;
     
@@ -64,8 +66,16 @@ public class EnemyMelee : Enemy
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadEnemyVisuals();
         LoadEnemyAbility();
         LoadShield();
+    }
+    
+    protected void LoadEnemyVisuals()
+    {
+        if (enemyVisuals != null) return;
+        enemyVisuals = GetComponentInChildren<EnemyBasicVisuals>();
+        Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
     }
 
     protected void LoadEnemyAbility()

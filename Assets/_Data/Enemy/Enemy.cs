@@ -20,9 +20,6 @@ public class Enemy : NhoxBehaviour
     [SerializeField] protected EnemyAttack enemyAttack;
     public EnemyAttack EnemyAttack => enemyAttack;
 
-    [SerializeField] protected EnemyVisuals enemyVisuals;
-    public EnemyVisuals EnemyVisuals => enemyVisuals;
-
     [SerializeField] protected EnemyRagdoll ragdoll;
     public EnemyRagdoll Ragdoll => ragdoll;
 
@@ -51,7 +48,6 @@ public class Enemy : NhoxBehaviour
         LoadEnemyMove();
         LoadEnemyAnimation();
         LoadEnemyAttack();
-        LoadEnemyVisuals();
         LoadRagDoll();
     }
 
@@ -81,13 +77,6 @@ public class Enemy : NhoxBehaviour
         if (enemyAttack != null) return;
         enemyAttack = GetComponentInChildren<EnemyAttack>();
         Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
-    }
-
-    protected void LoadEnemyVisuals()
-    {
-        if (enemyVisuals != null) return;
-        enemyVisuals = GetComponentInChildren<EnemyVisuals>();
-        Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
     }
 
     protected void LoadRagDoll()

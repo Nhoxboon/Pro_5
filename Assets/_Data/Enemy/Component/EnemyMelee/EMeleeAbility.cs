@@ -11,8 +11,6 @@ public class EMeleeAbility : EnemyAbility
 
     [SerializeField] protected float axeFlySpeed = 10f;
     [SerializeField] protected float axeAimTimer = 0.3f;
-    [SerializeField] protected float axeThrowCooldown = 3f;
-    protected float lastTimeAxeThrown;
     
     protected override void Awake()
     {
@@ -23,7 +21,7 @@ public class EMeleeAbility : EnemyAbility
     protected override void Start()
     {
         base.Start();
-        lastTimeAxeThrown -= axeThrowCooldown;
+        lastTimeUsedAbility -= abilityCooldown;
     }
     
     protected override void LoadComponents()
@@ -38,15 +36,8 @@ public class EMeleeAbility : EnemyAbility
         axeSpawnPoint = transform.Find("AxeSpawnPoint");
         Debug.Log(transform.name + " LoadAxeSpawnPoint", gameObject);
     }
-    
-    public bool CanThrowAxe()
-    {
-        if (enemyMelee.meleeType != EnemyMeleeType.AxeThrow) return false;
 
-        if (!(Time.time > lastTimeAxeThrown + axeThrowCooldown)) return false;
-        lastTimeAxeThrown = Time.time;
-        return true;
-    }
+    public override bool CanUseAbility() => enemyMelee.meleeType == EnemyMeleeType.AxeThrow && base.CanUseAbility();
 
     public void ThrowAxe()
     {

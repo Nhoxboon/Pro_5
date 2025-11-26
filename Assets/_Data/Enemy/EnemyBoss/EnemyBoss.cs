@@ -2,14 +2,23 @@
 
 public class EnemyBoss : Enemy
 {
+    #region State
+    
     public EBossIdleState IdleState { get; protected set; }
     public EBossMoveState MoveState { get; protected set; }
     public EBossAttackState AttackState { get; protected set; }
     public EBossJumpAtkState JumpAtkState { get; protected set; }
     public EBossAbilityState AbilityState { get; protected set; }
     
+    #endregion
+
+    [Header("Boss Settings")]
+    [SerializeField] protected EBossVisuals enemyVisuals;
+    public EBossVisuals EnemyVisuals => enemyVisuals;
     [SerializeField] protected EBossAbility enemyAbility;
     public EBossAbility EnemyAbility => enemyAbility;
+    [SerializeField] protected float actionCooldown = 10f;
+    public float ActionCooldown => actionCooldown;
 
     protected override void Awake()
     {
@@ -32,16 +41,20 @@ public class EnemyBoss : Enemy
     {
         base.Update();
         StateMachine.currentState.LogicUpdate();
-        
-        //Test purpose
-        if(Input.GetKeyDown(KeyCode.V))
-            StateMachine.ChangeState(AbilityState);
     }
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadEnemyVisuals();
         LoadEnemyAbility();
+    }
+
+    protected void LoadEnemyVisuals()
+    {
+        if(enemyVisuals != null) return;
+        enemyVisuals = GetComponentInChildren<EBossVisuals>();
+        Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
     }
 
     protected void LoadEnemyAbility()

@@ -3,13 +3,21 @@ using System.Collections.Generic;
 
 public class EMeleeAttack : EnemyAttack
 {
+    protected EnemyMelee enemyMelee;
+    
     public AttackData_EnemyMelee attackData;
     [SerializeField] protected List<AttackData_EnemyMelee> attackList;
     public List<AttackData_EnemyMelee> AttackList => attackList;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        enemyMelee = enemy as EnemyMelee;
+    }
+    
     public override void UpdateAttackData()
     {
-        EnemyWeaponModel currentWeapon = enemy.EnemyVisuals.CurrentWeaponModel.GetComponent<EnemyWeaponModel>();
+        EnemyWeaponModel currentWeapon = enemyMelee.EnemyVisuals.CurrentWeaponModel.GetComponent<EnemyWeaponModel>();
         if (currentWeapon != null)
         {
             attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);

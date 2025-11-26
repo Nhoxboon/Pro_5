@@ -15,6 +15,8 @@ public class EnemyRange : Enemy
 
     #endregion
 
+    [SerializeField] protected ERangeVisuals enemyVisuals;
+    public ERangeVisuals EnemyVisuals => enemyVisuals;
     [SerializeField] protected EnemyCoverSystem enemyCover;
     public EnemyCoverSystem EnemyCover => enemyCover;
     [SerializeField] protected EnemyAim enemyAim;
@@ -58,8 +60,16 @@ public class EnemyRange : Enemy
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadEnemyVisuals();
         LoadEnemyCover();
         LoadEnemyAim();
+    }
+
+    protected void LoadEnemyVisuals()
+    {
+        if (enemyVisuals != null) return;
+        enemyVisuals = GetComponentInChildren<ERangeVisuals>();
+        Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
     }
 
     protected void LoadEnemyCover()

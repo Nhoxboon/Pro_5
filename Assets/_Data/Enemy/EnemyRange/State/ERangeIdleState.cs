@@ -9,7 +9,7 @@ public class ERangeIdleState : EnemyState
         stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyRange;
-        enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
+        enemyVisuals = enemy?.EnemyVisuals;
     }
 
     public override void Enter()

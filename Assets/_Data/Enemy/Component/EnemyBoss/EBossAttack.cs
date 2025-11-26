@@ -28,20 +28,15 @@ public class EBossAttack : EnemyAttack
 
     public override bool PlayerInAttackRange() =>
         Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position) < attackRange;
+    
+    public void SetJumpAtkOnCooldown() => lastTimeJumped = Time.time;
 
     public bool CanJumpAttack()
     {
         float distanceToPlayer = Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position);
         if (distanceToPlayer < minJumpDisRequired) return false;
 
-        if (Time.time > lastTimeJumped + jumpAtkCooldown + enemy.EnemyAnimator.GetAnimationClipDuration("Jump Attack")
-            && IsPlayerInClearSight())
-        {
-            lastTimeJumped = Time.time;
-            return true;
-        }
-
-        return false;
+        return Time.time > lastTimeJumped + jumpAtkCooldown && IsPlayerInClearSight();
     }
 
     public bool IsPlayerInClearSight()

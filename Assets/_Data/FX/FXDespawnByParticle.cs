@@ -22,5 +22,9 @@ public class FXDespawnByParticle : Despawn
         return !mainParticle.IsAlive(true);
     }
 
-    public override void DespawnObject() => FXSpawner.Instance.Despawn(transform.parent.gameObject);
+    public override void DespawnObject()
+    {
+        mainParticle.Clear();
+        FXSpawner.Instance.Despawn(transform.parent.gameObject);
+    }
 }

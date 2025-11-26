@@ -29,8 +29,8 @@ public class EnemyAnimationEvents : NhoxBehaviour
 
     public void EnableWeaponModel()
     {
-        if (enemy.EnemyVisuals is not ERangeVisuals enemyVisuals) return;
-        enemyVisuals.EnableWeaponModel(true);
-        enemyVisuals.EnableSecondaryWeaponModel(false);
+        if (enemy is not EnemyRange enemyRange) return;
+        enemyRange.EnemyVisuals.EnableWeaponModel(true);
+        enemyRange.EnemyVisuals.EnableSecondaryWeaponModel(false);
     }
 }

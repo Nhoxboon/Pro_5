@@ -20,10 +20,13 @@ public class EBossJumpAtkState : EnemyState
     public override void Enter()
     {
         base.Enter();
+        lastPlayerPos = PlayerCtrl.Instance.transform.position;
         enemyMove.Agent.isStopped = true;
         enemyMove.Agent.velocity = Vector3.zero;
+        
+        enemy.EnemyVisuals.PlaceLandingZoneFX(lastPlayerPos);
+        enemy.EnemyVisuals.EnableWeaponTrail(true);
 
-        lastPlayerPos = PlayerCtrl.Instance.transform.position;
         float distanceToPlayer = Vector3.Distance(enemy.transform.position, lastPlayerPos);
         jumpAtkSpeed = distanceToPlayer / enemyAttack.TravelTimeToTarget;
         
@@ -34,6 +37,8 @@ public class EBossJumpAtkState : EnemyState
     {
         base.Exit();
         enemyMove.Agent.isStopped = false;
+        enemyAttack.SetJumpAtkOnCooldown();
+        enemy.EnemyVisuals.EnableWeaponTrail(false);
     }
 
     public override void LogicUpdate()

@@ -20,12 +20,15 @@ public class EBossAbilityState : EnemyState
         stateTimer = enemyAbility.FlameThrowDuration;
         enemyMove.Agent.isStopped = true;
         enemyMove.Agent.velocity = Vector3.zero;
+        enemy.EnemyVisuals.EnableWeaponTrail(true);
     }
 
     public override void Exit()
     {
         base.Exit();
         enemyMove.Agent.isStopped = false;
+        enemyAbility.SetAbilityOnCooldown();
+        enemy.EnemyVisuals.ResetBatteries();
     }
 
     public override void LogicUpdate()
@@ -44,5 +47,7 @@ public class EBossAbilityState : EnemyState
     {
         base.AbilityTrigger();
         enemyAbility.ActivateFlameThrower(true);
+        enemy.EnemyVisuals.DischargeBatteries();
+        enemy.EnemyVisuals.EnableWeaponTrail(false);
     }
 }

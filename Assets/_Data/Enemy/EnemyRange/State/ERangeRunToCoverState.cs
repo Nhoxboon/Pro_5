@@ -14,7 +14,7 @@ public class ERangeRunToCoverState : EnemyState
     {
         enemy = enemyBase as EnemyRange;
         enemyMove = enemy?.EnemyMove;
-        enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
+        enemyVisuals = enemy?.EnemyVisuals;
     }
 
     public override void Enter()

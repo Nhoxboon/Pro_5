@@ -14,7 +14,7 @@ public class ERangeThrowGrenadeState : EnemyState
     {
         enemy = enemyBase as EnemyRange;
         enemyAttack = enemy?.EnemyAttack as ERangeAttack;
-        enemyVisuals = enemy?.EnemyVisuals as ERangeVisuals;
+        enemyVisuals = enemy?.EnemyVisuals;
     }
 
     public override void Enter()

@@ -5,8 +5,12 @@ public class EBossMoveState : EnemyState
     protected EnemyBoss enemy;
     protected EnemyMove enemyMove;
     protected EBossAttack enemyAttack;
+    protected EBossAbility enemyAbility;
 
     protected Vector3 destination;
+    protected float timeBeforeSpeedUp = 15f;
+    protected bool speedUpActivated;
+    protected float actionTimer;
 
     public EBossMoveState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
         stateMachine, animBoolName)
@@ -14,33 +18,35 @@ public class EBossMoveState : EnemyState
         enemy = enemyBase as EnemyBoss;
         enemyMove = enemy?.EnemyMove;
         enemyAttack = enemy?.EnemyAttack as EBossAttack;
+        enemyAbility = enemy?.EnemyAbility;
     }
 
     public override void Enter()
     {
         base.Enter();
-        enemyMove.Agent.speed = enemyMove.WalkSpeed;
+        SpeedReset();
         destination = enemyMove.GetPatrolDestination();
         enemyMove.Agent.SetDestination(destination);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
+        
+        actionTimer = enemy.ActionCooldown;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
+        actionTimer -= Time.deltaTime;
         enemyMove.FaceTarget(GetNextPathPoint());
 
         if (enemy.InBattleMode)
         {
+            if (ShouldSpeedUp())
+                SpeedUp();
+            
             enemyMove.Agent.SetDestination(PlayerCtrl.Instance.transform.position);
 
-            if (enemyAttack.CanJumpAttack())
-                stateMachine.ChangeState(enemy.JumpAtkState);
+            if (actionTimer < 0)
+                PerformRandomAction();
             else if (enemyAttack.PlayerInAttackRange())
                 stateMachine.ChangeState(enemy.AttackState);
         }
@@ -48,6 +54,41 @@ public class EBossMoveState : EnemyState
         {
             if (Vector3.Distance(enemy.transform.position, destination) < 0.05f)
                 stateMachine.ChangeState(enemy.IdleState);
+        }
+    }
+
+    protected void SpeedUp()
+    {
+        enemyMove.Agent.speed = enemyMove.RunSpeed;
+        enemy.EnemyAnimator.AnimationSetFloat("moveIndex", 1);
+        speedUpActivated = true;
+    }
+
+    protected void SpeedReset()
+    {
+        speedUpActivated = false;
+        enemy.EnemyAnimator.AnimationSetFloat("moveIndex", 0);
+        enemyMove.Agent.speed = enemyMove.WalkSpeed;
+    }
+
+    protected bool ShouldSpeedUp()
+    {
+        if (speedUpActivated) return false;
+        return Time.time > enemy.AttackState.LastTimeAttacked + timeBeforeSpeedUp;
+    }
+
+    protected void PerformRandomAction()
+    {
+        actionTimer = enemy.ActionCooldown;
+        if (Random.Range(0, 2) == 0)
+        {
+            if(enemyAbility.CanUseAbility())
+                stateMachine.ChangeState(enemy.AbilityState);
+        }
+        else
+        {
+            if(enemyAttack.CanJumpAttack())
+                stateMachine.ChangeState(enemy.JumpAtkState);
         }
     }
 }

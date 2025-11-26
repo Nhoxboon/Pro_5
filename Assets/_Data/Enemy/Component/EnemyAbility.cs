@@ -4,6 +4,11 @@ using UnityEngine;
 public class EnemyAbility : NhoxBehaviour
 {
     [SerializeField] protected Enemy enemy;
+    
+    [Header("Ability Cooldown")]
+    [SerializeField] protected float abilityCooldown = 5f;
+    public float AbilityCooldown => abilityCooldown;
+    protected float lastTimeUsedAbility;
 
     protected override void LoadComponents()
     {
@@ -17,4 +22,8 @@ public class EnemyAbility : NhoxBehaviour
         enemy = GetComponentInParent<Enemy>();
         Debug.Log(transform.name + " LoadEnemy", gameObject);
     }
+    
+    public virtual bool CanUseAbility() => Time.time > lastTimeUsedAbility + abilityCooldown;
+    
+    public virtual void SetAbilityOnCooldown() => lastTimeUsedAbility = Time.time;
 }
