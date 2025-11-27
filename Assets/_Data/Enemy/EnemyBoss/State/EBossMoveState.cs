@@ -27,7 +27,7 @@ public class EBossMoveState : EnemyState
         SpeedReset();
         destination = enemyMove.GetPatrolDestination();
         enemyMove.Agent.SetDestination(destination);
-        
+
         actionTimer = enemy.ActionCooldown;
     }
 
@@ -42,7 +42,7 @@ public class EBossMoveState : EnemyState
         {
             if (ShouldSpeedUp())
                 SpeedUp();
-            
+
             enemyMove.Agent.SetDestination(PlayerCtrl.Instance.transform.position);
 
             if (actionTimer < 0)
@@ -81,14 +81,19 @@ public class EBossMoveState : EnemyState
     {
         actionTimer = enemy.ActionCooldown;
         if (Random.Range(0, 2) == 0)
-        {
-            if(enemyAbility.CanUseAbility())
-                stateMachine.ChangeState(enemy.AbilityState);
-        }
+            TryAbility();
         else
         {
-            if(enemyAttack.CanJumpAttack())
+            if (enemyAttack.CanJumpAttack())
                 stateMachine.ChangeState(enemy.JumpAtkState);
+            else if(enemyAttack.WeaponType == BossWeaponType.Hammer)
+                TryAbility();
         }
+    }
+
+    protected void TryAbility()
+    {
+        if (enemyAbility.CanUseAbility())
+            stateMachine.ChangeState(enemy.AbilityState);
     }
 }

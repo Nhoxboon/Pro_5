@@ -4,12 +4,19 @@ using UnityEngine;
 public class EBossAttack : EnemyAttack
 {
     [SerializeField] protected float attackRange = 1.5f;
+    [SerializeField] protected BossWeaponType weaponType;
+    public BossWeaponType WeaponType => weaponType;
 
     [Header("Jump Attack")] 
     [SerializeField] protected float minJumpDisRequired = 6f;
     [SerializeField] protected float jumpAtkCooldown = 10f;
     [SerializeField] protected float travelTimeToTarget = 1f;
     public float TravelTimeToTarget => travelTimeToTarget;
+    [Space]
+    [SerializeField] protected Transform impactPoint;
+    [SerializeField] protected float impactRadius = 2.5f;
+    [SerializeField] protected float impactPower = 30f;
+    protected float upforceMultiplier = 10f;
     [SerializeField] protected LayerMask whatToIgnore;
     protected float lastTimeJumped;
 
@@ -50,22 +57,28 @@ public class EBossAttack : EnemyAttack
             return hit.transform.parent == PlayerCtrl.Instance.transform ||
                    hit.transform == PlayerCtrl.Instance.transform;
         }
-
         return false;
+    }
+
+    public void JumpImpact()
+    {
+        Transform impact = impactPoint;
+        if(impact == null)
+            impact = enemy.transform;
+        
+        Collider[] cols = Physics.OverlapSphere(impact.position, impactRadius);
+        foreach (Collider hit in cols)
+        {
+            if (hit.TryGetComponent(out Rigidbody rbd))
+                rbd.AddExplosionForce(impactPower, impact.position, impactRadius, upforceMultiplier,
+                    ForceMode.Impulse);
+        }
     }
     
     protected void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(enemy.transform.position, attackRange);
-
-        if (PlayerCtrl.Instance != null)
-        {
-            Vector3 myPos = enemy.transform.position + new Vector3(0, 1.5f, 0);
-            Vector3 playerPos = PlayerCtrl.Instance.transform.position + Vector3.up;
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(myPos, playerPos);
-        }
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(enemy.transform.position, minJumpDisRequired);

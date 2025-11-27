@@ -33,4 +33,10 @@ public class EnemyAnimationEvents : NhoxBehaviour
         enemyRange.EnemyVisuals.EnableWeaponModel(true);
         enemyRange.EnemyVisuals.EnableSecondaryWeaponModel(false);
     }
+    
+    public void BossJumpImpact() 
+    {
+        if (enemy.EnemyAttack is not EBossAttack enemyAttack) return;
+        enemyAttack.JumpImpact();
+    }
 }

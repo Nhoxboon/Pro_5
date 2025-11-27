@@ -6,8 +6,8 @@ public class ERangeThrowGrenadeState : EnemyState
     protected EnemyRange enemy;
     protected ERangeAttack enemyAttack;
     protected ERangeVisuals enemyVisuals;
-    
-    public bool FinishedThrowing { get; protected set; }
+
+    public bool FinishedThrowing { get; protected set; } = true;
 
     public ERangeThrowGrenadeState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(
         enemyBase, stateMachine, animBoolName)
@@ -21,7 +21,7 @@ public class ERangeThrowGrenadeState : EnemyState
     {
         base.Enter();
         FinishedThrowing = false;
-        
+
         enemy.EnemyMove.Agent.isStopped = true;
         enemyVisuals.EnableWeaponModel(false);
         enemyVisuals.EnableIK(false, false);
@@ -41,8 +41,8 @@ public class ERangeThrowGrenadeState : EnemyState
         Vector3 playerPos = PlayerCtrl.Instance.transform.position + Vector3.up;
         enemy.EnemyMove.FaceTarget(playerPos);
         enemy.EnemyAim.aim.position = playerPos;
-        
-        if(triggerCalled)
+
+        if (triggerCalled)
             stateMachine.ChangeState(enemy.BattleState);
     }
 

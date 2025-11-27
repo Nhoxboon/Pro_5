@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class EBossAbility : EnemyAbility
 {
-    [Header("Ability")] 
+    [Header("Flame Thrower")] 
     [SerializeField] protected float flameThrowDuration = 3f;
     public float FlameThrowDuration => flameThrowDuration;
     [SerializeField] protected ParticleSystem flameParticle;
     public bool FlameThrowActive { get; protected set;}
+    
+    [Header("Hammer")]
+    protected string hammerFXPrefab = "HammerFX";
+    [SerializeField] protected Transform impactPoint;
 
     protected override void LoadComponents()
     {
@@ -41,5 +45,12 @@ public class EBossAbility : EnemyAbility
         }
         flameParticle.Clear();
         flameParticle.Play();
+    }
+    
+    public void ActivateHammer()
+    {
+        if(impactPoint == null) return;
+        Transform newFX = FXSpawner.Instance.Spawn(hammerFXPrefab, impactPoint.position, Quaternion.identity);
+        newFX.gameObject.SetActive(true);
     }
 }

@@ -21,16 +21,21 @@ public class EBossJumpAtkState : EnemyState
     {
         base.Enter();
         lastPlayerPos = PlayerCtrl.Instance.transform.position;
+        enemyMove.FaceTarget(lastPlayerPos, 1000);
         enemyMove.Agent.isStopped = true;
         enemyMove.Agent.velocity = Vector3.zero;
-        
+
         enemy.EnemyVisuals.PlaceLandingZoneFX(lastPlayerPos);
         enemy.EnemyVisuals.EnableWeaponTrail(true);
 
         float distanceToPlayer = Vector3.Distance(enemy.transform.position, lastPlayerPos);
         jumpAtkSpeed = distanceToPlayer / enemyAttack.TravelTimeToTarget;
-        
-        enemyMove.FaceTarget(lastPlayerPos, 1000);
+
+
+        if (enemyAttack.WeaponType != BossWeaponType.Hammer) return;
+        enemyMove.Agent.isStopped = false;
+        enemyMove.Agent.speed = enemyMove.RunSpeed;
+        enemyMove.Agent.SetDestination(lastPlayerPos);
     }
 
     public override void Exit()

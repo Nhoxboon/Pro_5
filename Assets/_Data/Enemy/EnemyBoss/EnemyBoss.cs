@@ -3,16 +3,17 @@
 public class EnemyBoss : Enemy
 {
     #region State
-    
+
     public EBossIdleState IdleState { get; protected set; }
     public EBossMoveState MoveState { get; protected set; }
     public EBossAttackState AttackState { get; protected set; }
     public EBossJumpAtkState JumpAtkState { get; protected set; }
     public EBossAbilityState AbilityState { get; protected set; }
-    
+    public EBossDeadState DeadState { get; protected set; }
+
     #endregion
 
-    [Header("Boss Settings")]
+    [Header("Boss Settings")] 
     [SerializeField] protected EBossVisuals enemyVisuals;
     public EBossVisuals EnemyVisuals => enemyVisuals;
     [SerializeField] protected EBossAbility enemyAbility;
@@ -29,6 +30,15 @@ public class EnemyBoss : Enemy
         AttackState = new EBossAttackState(this, StateMachine, "attack");
         JumpAtkState = new EBossJumpAtkState(this, StateMachine, "jumpAttack");
         AbilityState = new EBossAbilityState(this, StateMachine, "ability");
+        DeadState = new EBossDeadState(this, StateMachine, "idle");
+
+        core.Stats.Health.OnCurrentValueZero += EnemyDead;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        core.Stats.Health.OnCurrentValueZero -= EnemyDead;
     }
 
     protected override void Start()
@@ -52,21 +62,28 @@ public class EnemyBoss : Enemy
 
     protected void LoadEnemyVisuals()
     {
-        if(enemyVisuals != null) return;
+        if (enemyVisuals != null) return;
         enemyVisuals = GetComponentInChildren<EBossVisuals>();
         Debug.Log(transform.name + " LoadEnemyVisuals", gameObject);
     }
 
     protected void LoadEnemyAbility()
     {
-        if(enemyAbility != null) return;
+        if (enemyAbility != null) return;
         enemyAbility = GetComponentInChildren<EBossAbility>();
         Debug.Log(transform.name + " LoadEnemyAbility", gameObject);
     }
 
     public override void EnterBattleMode()
     {
+        if (InBattleMode) return;
         base.EnterBattleMode();
         StateMachine.ChangeState(MoveState);
+    }
+
+    protected override void EnemyDead()
+    {
+        base.EnemyDead();
+        StateMachine.ChangeState(DeadState);
     }
 }

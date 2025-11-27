@@ -1,11 +1,13 @@
 ﻿
+using System;
 using UnityEngine;
 
 public class EnemyAbility : NhoxBehaviour
 {
     [SerializeField] protected Enemy enemy;
-    
-    [Header("Ability Cooldown")]
+
+    [Header("Ability")] 
+    [SerializeField] protected float minAbilityDistance = 6f;
     [SerializeField] protected float abilityCooldown = 5f;
     public float AbilityCooldown => abilityCooldown;
     protected float lastTimeUsedAbility;
@@ -23,7 +25,18 @@ public class EnemyAbility : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemy", gameObject);
     }
     
-    public virtual bool CanUseAbility() => Time.time > lastTimeUsedAbility + abilityCooldown;
+    public virtual bool CanUseAbility()
+    {
+        bool playerWithinDistance = Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position) < minAbilityDistance;
+        
+        return Time.time > lastTimeUsedAbility + abilityCooldown && playerWithinDistance;
+    }
     
     public virtual void SetAbilityOnCooldown() => lastTimeUsedAbility = Time.time;
+
+    protected virtual void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(enemy.transform.position, minAbilityDistance);
+    }
 }

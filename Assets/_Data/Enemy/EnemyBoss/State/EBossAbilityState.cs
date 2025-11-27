@@ -1,17 +1,22 @@
-﻿
+﻿using System;
 using UnityEngine;
 
 public class EBossAbilityState : EnemyState
 {
     protected EnemyBoss enemy;
     protected EnemyMove enemyMove;
+    protected EBossAttack enemyAttack;
     protected EBossAbility enemyAbility;
-    
-    public EBossAbilityState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+    protected EBossVisuals enemyVisuals;
+
+    public EBossAbilityState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase,
+        stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyBoss;
         enemyMove = enemy?.EnemyMove;
+        enemyAttack = enemy?.EnemyAttack as EBossAttack;
         enemyAbility = enemy?.EnemyAbility;
+        enemyVisuals = enemy?.EnemyVisuals;
     }
 
     public override void Enter()
@@ -20,7 +25,7 @@ public class EBossAbilityState : EnemyState
         stateTimer = enemyAbility.FlameThrowDuration;
         enemyMove.Agent.isStopped = true;
         enemyMove.Agent.velocity = Vector3.zero;
-        enemy.EnemyVisuals.EnableWeaponTrail(true);
+        enemyVisuals.EnableWeaponTrail(true);
     }
 
     public override void Exit()
@@ -28,26 +33,46 @@ public class EBossAbilityState : EnemyState
         base.Exit();
         enemyMove.Agent.isStopped = false;
         enemyAbility.SetAbilityOnCooldown();
-        enemy.EnemyVisuals.ResetBatteries();
+        enemyVisuals.ResetBatteries();
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
         enemyMove.FaceTarget(PlayerCtrl.Instance.transform.position);
-        
-        if (stateTimer < 0 && enemyAbility.FlameThrowActive)
-            enemyAbility.ActivateFlameThrower(false);
-        
-        if(triggerCalled)
+
+        if (ShouldDisableFlameThrower())
+            DisableFlameThrower();
+
+        if (triggerCalled)
             stateMachine.ChangeState(enemy.MoveState);
     }
+
+    protected bool ShouldDisableFlameThrower() => stateTimer < 0;
 
     public override void AbilityTrigger()
     {
         base.AbilityTrigger();
-        enemyAbility.ActivateFlameThrower(true);
-        enemy.EnemyVisuals.DischargeBatteries();
-        enemy.EnemyVisuals.EnableWeaponTrail(false);
+
+        switch (enemyAttack.WeaponType)
+        {
+            case BossWeaponType.Fist:
+                enemyAbility.ActivateFlameThrower(true);
+                enemyVisuals.DischargeBatteries();
+                enemyVisuals.EnableWeaponTrail(false);
+                break;
+            case BossWeaponType.Hammer:
+                enemyAbility.ActivateHammer();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void DisableFlameThrower()
+    {
+        if(enemyAttack.WeaponType != BossWeaponType.Fist) return;
+        if (!enemyAbility.FlameThrowActive) return;
+        enemyAbility.ActivateFlameThrower(false);
     }
 }

@@ -22,12 +22,7 @@ public class EMeleeDeadState : EnemyState
 
         enemy.Ragdoll.RagdollActive(true);
 
-        // startTimer = 1.5f; //Note: Uncomment if need to disable interaction with enemy
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
+        // stateTimer = 1.5f; //Note: Uncomment if need to disable interaction with enemy
     }
 
     public override void LogicUpdate()

@@ -33,16 +33,14 @@ public class EBossAttackState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        
+
         if (stateTimer > 0)
             enemyMove.FaceTarget(PlayerCtrl.Instance.transform.position, 20);
 
-        if (triggerCalled)
-        {
-            if (enemy.EnemyAttack.PlayerInAttackRange())
-                stateMachine.ChangeState(enemy.IdleState);
-            else
-                stateMachine.ChangeState(enemy.MoveState);
-        }
+        if (!triggerCalled) return;
+        if (enemy.EnemyAttack.PlayerInAttackRange())
+            stateMachine.ChangeState(enemy.IdleState);
+        else
+            stateMachine.ChangeState(enemy.MoveState);
     }
 }
