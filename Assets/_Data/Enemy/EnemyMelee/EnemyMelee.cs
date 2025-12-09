@@ -38,13 +38,6 @@ public class EnemyMelee : Enemy
         AbilityState = new EMeleeAbilityState(this, StateMachine, "axeThrow");
         DeadState = new EMeleeDeadState(this, StateMachine, "idle"); //Idle anim is just a placeholder, we use rag doll
 
-        core.Stats.Health.OnCurrentValueZero += EnemyDead;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        core.Stats.Health.OnCurrentValueZero -= EnemyDead;
     }
 
     protected override void Start()
@@ -135,9 +128,9 @@ public class EnemyMelee : Enemy
         enemyAnimator.AnimationTrigger("dodge");
     }
 
-    protected override void EnemyDead()
+    protected override void EnemyDie()
     {
-        base.EnemyDead();
+        base.EnemyDie();
         StateMachine.ChangeState(DeadState);
     }
 }

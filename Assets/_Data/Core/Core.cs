@@ -16,6 +16,9 @@ public class Core : NhoxBehaviour
 
     [SerializeField] protected DamageReceiver damageReceiver;
     public DamageReceiver DamageReceiver => damageReceiver;
+    
+    [SerializeField] protected Ragdoll ragdoll;
+    public Ragdoll Ragdoll => ragdoll;
     #endregion
 
     protected override void LoadComponents()
@@ -24,6 +27,7 @@ public class Core : NhoxBehaviour
         LoadRoot();
         LoadStats();
         LoadDamageReceiver();
+        LoadRagDoll();
     }
 
     protected void LoadRoot()
@@ -45,6 +49,13 @@ public class Core : NhoxBehaviour
         if (damageReceiver != null) return;
         damageReceiver = GetComponentInChildren<DamageReceiver>();
         Debug.Log(transform.name + " LoadDamageReceiver", gameObject);
+    }
+    
+    protected void LoadRagDoll()
+    {
+        if (ragdoll != null) return;
+        ragdoll = GetComponentInChildren<Ragdoll>();
+        Debug.Log(transform.name + " LoadRagDoll", gameObject);
     }
 
     public void LogicUpdate()

@@ -3511,6 +3511,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7664184425446777496}
   m_LocalEulerAnglesHint: {x: -14, y: -83, z: 117.4}
+--- !u!1 &3557909898645056094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5788713242278947331}
+  - component: {fileID: 2008624648759952008}
+  m_Layer: 11
+  m_Name: Ragdoll
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5788713242278947331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3557909898645056094}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5184242036351855560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2008624648759952008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3557909898645056094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  core: {fileID: 7654625143423058615}
+  ragdollParent: {fileID: 3250936888003361376}
+  ragdollCols:
+  - {fileID: 2761054528470086493}
+  - {fileID: 4451992524090050128}
+  - {fileID: 6676558139771647237}
+  - {fileID: 4830395944079066506}
+  - {fileID: 549181008048604985}
+  - {fileID: 7834323411862172088}
+  - {fileID: 3940988078836521539}
+  - {fileID: 3345093104261978098}
+  - {fileID: 9098062858676126087}
+  - {fileID: 5620970609459075944}
+  - {fileID: 55462531285313929}
+  ragdollRbs:
+  - {fileID: 4580662174315743240}
+  - {fileID: 8151145034467892127}
+  - {fileID: 5233654153986756031}
+  - {fileID: 2209735742383300620}
+  - {fileID: 3822858892013917694}
+  - {fileID: 5493100841860313151}
+  - {fileID: 6686412888422036488}
+  - {fileID: 5242910759142862549}
+  - {fileID: 7751263382831796580}
+  - {fileID: 1333590607762748893}
+  - {fileID: 6789743582713233449}
 --- !u!1 &3591086687133014347
 GameObject:
   m_ObjectHideFlags: 0
@@ -6461,8 +6531,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7388380384540798540}
   - {fileID: 8074927437582602137}
+  - {fileID: 7388380384540798540}
+  - {fileID: 5788713242278947331}
   m_Father: {fileID: 9108201055560787726}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7654625143423058615
@@ -6481,6 +6552,7 @@ MonoBehaviour:
   root: {fileID: 8681276682700190735}
   stats: {fileID: 2723538521441608802}
   damageReceiver: {fileID: 4350362471195704131}
+  ragdoll: {fileID: 2008624648759952008}
 --- !u!1 &6302679478893916888
 GameObject:
   m_ObjectHideFlags: 0
@@ -9448,7 +9520,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9108201055560787726}
   - component: {fileID: 7161306584250911626}
-  - component: {fileID: 2448762111800570508}
   - component: {fileID: 6254423985451221362}
   m_Layer: 11
   m_Name: EnemyRange
@@ -9503,43 +9574,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2448762111800570508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8681276682700190735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ragdollParent: {fileID: 3250936888003361376}
-  ragdollCols:
-  - {fileID: 2761054528470086493}
-  - {fileID: 4451992524090050128}
-  - {fileID: 6676558139771647237}
-  - {fileID: 4830395944079066506}
-  - {fileID: 549181008048604985}
-  - {fileID: 7834323411862172088}
-  - {fileID: 3940988078836521539}
-  - {fileID: 3345093104261978098}
-  - {fileID: 9098062858676126087}
-  - {fileID: 5620970609459075944}
-  - {fileID: 55462531285313929}
-  ragdollRbs:
-  - {fileID: 4580662174315743240}
-  - {fileID: 8151145034467892127}
-  - {fileID: 5233654153986756031}
-  - {fileID: 2209735742383300620}
-  - {fileID: 3822858892013917694}
-  - {fileID: 5493100841860313151}
-  - {fileID: 6686412888422036488}
-  - {fileID: 5242910759142862549}
-  - {fileID: 7751263382831796580}
-  - {fileID: 1333590607762748893}
-  - {fileID: 6789743582713233449}
 --- !u!114 &6254423985451221362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9559,7 +9593,6 @@ MonoBehaviour:
   enemyAnimator: {fileID: 6826797805207904024}
   enemyAttack: {fileID: 5801970961435942854}
   enemyVisuals: {fileID: 379793502354175936}
-  ragdoll: {fileID: 2448762111800570508}
   enemyCover: {fileID: 3583481152325368680}
   enemyAim: {fileID: 3744352515817949573}
 --- !u!1 &8687593203001010995

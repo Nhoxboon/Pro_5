@@ -20,7 +20,7 @@ public class EMeleeDeadState : EnemyState
         enemy.EnemyAnimator.SetAnimator(false);
         enemy.EnemyMove.Agent.isStopped = true;
 
-        enemy.Ragdoll.RagdollActive(true);
+        enemy.Core.Ragdoll.RagdollActive(true);
 
         // stateTimer = 1.5f; //Note: Uncomment if need to disable interaction with enemy
     }
@@ -37,7 +37,7 @@ public class EMeleeDeadState : EnemyState
     {
         if (!(stateTimer < 0) || interactionDisable) return;
         interactionDisable = true;
-        enemy.Ragdoll.RagdollActive(false);
-        enemy.Ragdoll.ColliderActive(false);
+        enemy.Core.Ragdoll.RagdollActive(false);
+        enemy.Core.Ragdoll.ColliderActive(false);
     }
 }

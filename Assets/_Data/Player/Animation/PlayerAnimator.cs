@@ -6,6 +6,7 @@ using UnityEngine.Animations.Rigging;
 public class PlayerAnimator : NhoxBehaviour
 {
     [SerializeField] protected Animator anim;
+    public Animator Animator => anim;
     
     [Header("Rig")]
     [SerializeField] protected Rig rig;

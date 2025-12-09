@@ -20,9 +20,6 @@ public class Enemy : NhoxBehaviour
     [SerializeField] protected EnemyAttack enemyAttack;
     public EnemyAttack EnemyAttack => enemyAttack;
 
-    [SerializeField] protected EnemyRagdoll ragdoll;
-    public EnemyRagdoll Ragdoll => ragdoll;
-
     public bool InBattleMode { get; protected set; }
     public EnemyStateMachine StateMachine { get; protected set; }
 
@@ -31,9 +28,14 @@ public class Enemy : NhoxBehaviour
         base.Awake();
         StateMachine = new EnemyStateMachine();
         core.DamageReceiver.GetDamage += EnterBattleMode;
+        core.Stats.Health.OnCurrentValueZero += EnemyDie;
     }
 
-    protected virtual void OnDestroy() => core.DamageReceiver.GetDamage -= EnterBattleMode;
+    protected virtual void OnDestroy()
+    {
+        core.DamageReceiver.GetDamage -= EnterBattleMode;
+        core.Stats.Health.OnCurrentValueZero -= EnemyDie;
+    }
 
     protected virtual void Update()
     {
@@ -48,7 +50,6 @@ public class Enemy : NhoxBehaviour
         LoadEnemyMove();
         LoadEnemyAnimation();
         LoadEnemyAttack();
-        LoadRagDoll();
     }
 
     protected void LoadCore()
@@ -79,13 +80,6 @@ public class Enemy : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
     }
 
-    protected void LoadRagDoll()
-    {
-        if (ragdoll != null) return;
-        ragdoll = GetComponent<EnemyRagdoll>();
-        Debug.Log(transform.name + " LoadRagDoll", gameObject);
-    }
-
     protected bool ShouldEnterBattleMode()
     {
         if (!IsPlayerInAggressRange() || InBattleMode) return false;
@@ -102,12 +96,12 @@ public class Enemy : NhoxBehaviour
 
     public virtual void AbilityTrigger() => StateMachine.currentState.AbilityTrigger();
 
-    protected virtual void EnemyDead()
+    protected virtual void EnemyDie()
     {
         //For override
     }
 
-    public virtual void DeadImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
+    public virtual void BulletImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
         StartCoroutine(DeadImpactCoroutine(force, hitPoint, rb));
 
     protected IEnumerator DeadImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)

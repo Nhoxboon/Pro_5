@@ -31,7 +31,7 @@ public class EnemyAim : NhoxBehaviour
     public void UpdateAimPosition()
     {
         float aimSpeed = AimOnPlayer() ? fastAim : slowAim;
-        aim.position = Vector3.MoveTowards(aim.position, PlayerCtrl.Instance.playerBody.position, Time.deltaTime * aimSpeed);
+        aim.position = Vector3.MoveTowards(aim.position, PlayerCtrl.Instance.transform.position + Vector3.up, Time.deltaTime * aimSpeed);
     }
     
     public bool AimOnPlayer()
@@ -43,7 +43,7 @@ public class EnemyAim : NhoxBehaviour
     public bool IsSeeingPlayer()
     {
         Vector3 myPosition = transform.parent.position + Vector3.up;
-        Vector3 directionToPlayer = PlayerCtrl.Instance.playerBody.position - myPosition;
+        Vector3 directionToPlayer = (PlayerCtrl.Instance.transform.position + Vector3.up) - myPosition;
         if (Physics.Raycast(myPosition, directionToPlayer, out RaycastHit hit, Mathf.Infinity, ~whatToIgnore))
         {
             if (hit.transform.parent == PlayerCtrl.Instance.transform)

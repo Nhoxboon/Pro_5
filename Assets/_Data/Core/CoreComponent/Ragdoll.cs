@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class EnemyRagdoll : NhoxBehaviour
+public class Ragdoll : CoreComponent
 {
     [SerializeField] protected Transform ragdollParent;
     [SerializeField] protected Collider[] ragdollCols;
@@ -24,21 +24,21 @@ public class EnemyRagdoll : NhoxBehaviour
     protected void LoadRagdollParent()
     {
         if(ragdollParent != null) return;
-        ragdollParent = transform.Find("Model");
+        ragdollParent = core.Root.transform.Find("Model");
         Debug.Log(transform.name + " LoadRagdollParent", gameObject);
     }
 
     protected void LoadRagdollColliders()
     {
         if(ragdollCols is { Length: > 0 }) return;
-        ragdollCols = GetComponentsInChildren<Collider>();
+        ragdollCols = core.Root.GetComponentsInChildren<Collider>();
         Debug.Log(transform.name + " LoadRagdollColliders", gameObject);
     }
     
     protected void LoadRagdollRigidbodies()
     {
         if(ragdollRbs is { Length: > 0 }) return;
-        ragdollRbs = GetComponentsInChildren<Rigidbody>();
+        ragdollRbs = core.Root.GetComponentsInChildren<Rigidbody>();
         Debug.Log(transform.name + " LoadRagdollRigidbodies", gameObject);
     }
     

@@ -52,6 +52,7 @@ public class EBossAttack : EnemyAttack
         Vector3 playerPos = PlayerCtrl.Instance.transform.position + Vector3.up;
         Vector3 directionToPlayer = (playerPos - myPos).normalized;
 
+        //TODO: Will change late because now player use hitbox in ragdoll not hitbox
         if (Physics.Raycast(myPos, directionToPlayer, out RaycastHit hit, 100, ~whatToIgnore))
         {
             return hit.transform.parent == PlayerCtrl.Instance.transform ||

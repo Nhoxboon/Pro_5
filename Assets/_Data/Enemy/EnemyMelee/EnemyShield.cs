@@ -34,8 +34,6 @@ public class EnemyShield : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemy", gameObject);
     }
 
-    public void GetDamage(float damage) => enemy.Core.DamageReceiver.ReduceShieldDurability(damage);
-
     protected void DisableShield()
     {
         enemy.EnemyAnimator.AnimationSetFloat("chaseIndex", 0);

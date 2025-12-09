@@ -12,6 +12,7 @@ public class PlayerAimCtrl : NhoxBehaviour
 
     protected void Update()
     {
+        if(PlayerCtrl.Instance.IsDead) return;
         aim.UpdateAimPos();
         camFollow.UpdateCamPos();
         aimVisual.UpdateAimVisuals();

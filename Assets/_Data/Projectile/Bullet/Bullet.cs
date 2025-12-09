@@ -58,20 +58,20 @@ public class Bullet : Projectile
     {
         SpawnFX(other);
         ProjectileSpawner.Instance.Despawn(gameObject);
+        
+        Transform root = other.transform.root;
+        if (root.TryGetComponentInChildren(out IDamageable damageable))
+            damageable.TakeDamage(1);
 
-        if (other.gameObject.TryGetComponent(out EnemyShield shield))
-        {
-            shield.GetDamage(1);
-            return;
-        }
+        ApplyBulletImpactForEnemy(other);
+    }
 
+    protected void ApplyBulletImpactForEnemy(Collision other)
+    {
         if (!other.gameObject.TryGetComponentInParent(out Enemy enemy)) return;
         Rigidbody hitRb = other.collider.attachedRigidbody;
-        if (hitRb == null) return;
         Vector3 force = rb.linearVelocity.normalized * impactForce;
-
-        enemy.Core.DamageReceiver.TakeDamage(1);
-        enemy.DeadImpact(force, other.contacts[0].point, hitRb);
+        enemy.BulletImpact(force, other.contacts[0].point, hitRb);
     }
 
     public void BulletSetup(float flyDis = 100, float impactForce = 100)

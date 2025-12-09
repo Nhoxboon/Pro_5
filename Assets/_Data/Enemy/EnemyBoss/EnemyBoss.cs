@@ -31,14 +31,6 @@ public class EnemyBoss : Enemy
         JumpAtkState = new EBossJumpAtkState(this, StateMachine, "jumpAttack");
         AbilityState = new EBossAbilityState(this, StateMachine, "ability");
         DeadState = new EBossDeadState(this, StateMachine, "idle");
-
-        core.Stats.Health.OnCurrentValueZero += EnemyDead;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        core.Stats.Health.OnCurrentValueZero -= EnemyDead;
     }
 
     protected override void Start()
@@ -81,9 +73,9 @@ public class EnemyBoss : Enemy
         StateMachine.ChangeState(MoveState);
     }
 
-    protected override void EnemyDead()
+    protected override void EnemyDie()
     {
-        base.EnemyDead();
+        base.EnemyDie();
         StateMachine.ChangeState(DeadState);
     }
 }

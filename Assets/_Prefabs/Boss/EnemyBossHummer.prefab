@@ -681,6 +681,76 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &809357667760357088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675878123739396087}
+  - component: {fileID: 3451157406617921257}
+  m_Layer: 11
+  m_Name: Ragdoll
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &675878123739396087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809357667760357088}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7227806697202247594}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3451157406617921257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809357667760357088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  core: {fileID: 1953584580828064005}
+  ragdollParent: {fileID: 2611539739393946717}
+  ragdollCols:
+  - {fileID: 6528493100795467928}
+  - {fileID: 523369607132608100}
+  - {fileID: 2531595959531484562}
+  - {fileID: 1067418826778317124}
+  - {fileID: 6727460037916553119}
+  - {fileID: 5851697111175548823}
+  - {fileID: 6907721409022356727}
+  - {fileID: 7656734866761091376}
+  - {fileID: 8576407288468590926}
+  - {fileID: 2780016864855889406}
+  - {fileID: 8945577465081898085}
+  ragdollRbs:
+  - {fileID: 907000063558266606}
+  - {fileID: 908121878641152789}
+  - {fileID: 6227054099831033245}
+  - {fileID: 6845082049847174062}
+  - {fileID: 4064233403099191668}
+  - {fileID: 4636807277289947135}
+  - {fileID: 7079442872695078178}
+  - {fileID: 6396609783211311170}
+  - {fileID: 1989084271183950377}
+  - {fileID: 6496866894259460614}
+  - {fileID: 3829259092803896247}
 --- !u!1 &1219121391983282999
 GameObject:
   m_ObjectHideFlags: 0
@@ -6183,7 +6253,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2664504306327448665}
   - component: {fileID: 1874966825565564449}
-  - component: {fileID: 2788100468456601009}
   - component: {fileID: 1693774863116288180}
   m_Layer: 0
   m_Name: EnemyBossHummer
@@ -6237,43 +6306,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2788100468456601009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2289388592573420454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ragdollParent: {fileID: 2611539739393946717}
-  ragdollCols:
-  - {fileID: 6528493100795467928}
-  - {fileID: 523369607132608100}
-  - {fileID: 2531595959531484562}
-  - {fileID: 1067418826778317124}
-  - {fileID: 6727460037916553119}
-  - {fileID: 5851697111175548823}
-  - {fileID: 6907721409022356727}
-  - {fileID: 7656734866761091376}
-  - {fileID: 8576407288468590926}
-  - {fileID: 2780016864855889406}
-  - {fileID: 8945577465081898085}
-  ragdollRbs:
-  - {fileID: 907000063558266606}
-  - {fileID: 908121878641152789}
-  - {fileID: 6227054099831033245}
-  - {fileID: 6845082049847174062}
-  - {fileID: 4064233403099191668}
-  - {fileID: 4636807277289947135}
-  - {fileID: 7079442872695078178}
-  - {fileID: 6396609783211311170}
-  - {fileID: 1989084271183950377}
-  - {fileID: 6496866894259460614}
-  - {fileID: 3829259092803896247}
 --- !u!114 &1693774863116288180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6292,7 +6324,6 @@ MonoBehaviour:
   enemyMove: {fileID: 3480468212773036432}
   enemyAnimator: {fileID: 2881030075895608720}
   enemyAttack: {fileID: 5616093584300277295}
-  ragdoll: {fileID: 2788100468456601009}
   enemyVisuals: {fileID: 8087832371923230896}
   enemyAbility: {fileID: 6748211345224107451}
   actionCooldown: 5
@@ -12826,6 +12857,7 @@ Transform:
   m_Children:
   - {fileID: 7440229785885440957}
   - {fileID: 3009015022588311652}
+  - {fileID: 675878123739396087}
   m_Father: {fileID: 2664504306327448665}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1953584580828064005
@@ -12844,6 +12876,7 @@ MonoBehaviour:
   root: {fileID: 2289388592573420454}
   stats: {fileID: 5786101344974171991}
   damageReceiver: {fileID: 5520231563109115072}
+  ragdoll: {fileID: 0}
 --- !u!1 &6640154698660145929
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,13 +33,6 @@ public class EnemyRange : Enemy
         ThrowGrenadeState = new ERangeThrowGrenadeState(this, StateMachine, "throwGrenade");
         DeadState = new ERangeDeadState(this, StateMachine, "idle");  //Idle anim is just a placeholder, we use rag doll
         
-        core.Stats.Health.OnCurrentValueZero += EnemyDead;
-    }
-    
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        core.Stats.Health.OnCurrentValueZero -= EnemyDead;
     }
 
     protected override void Start()
@@ -102,9 +95,9 @@ public class EnemyRange : Enemy
             enemyAnimator.AnimationSetFloat("advanceIndex", 1);
     }
     
-    protected override void EnemyDead()
+    protected override void EnemyDie()
     {
-        base.EnemyDead();
+        base.EnemyDie();
         StateMachine.ChangeState(DeadState);
     }
 }

@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerCtrl : NhoxBehaviour
 {
     private static PlayerCtrl instance;
     public static PlayerCtrl Instance => instance;
+    
+    [SerializeField] protected Core core;
+    public Core Core => core;
 
     [SerializeField] protected PlayerInput playerInput;
     public PlayerInput PlayerInput => playerInput;
@@ -29,12 +33,13 @@ public class PlayerCtrl : NhoxBehaviour
     [SerializeField] protected PlayerInteraction playerInteraction;
     public PlayerInteraction PlayerInteraction => playerInteraction;
     
-    //Test purpose
-    public Transform playerBody;
+    public bool IsDead => core.Stats.Health.CurrentValue == 0;
 
     protected override void Awake()
     {
         base.Awake();
+        core.Stats.Health.OnCurrentValueZero += PlayerDie;
+        
         if (instance != null)
         {
             Debug.LogError("Only one instance of PlayerCtrl allow to exist");
@@ -44,9 +49,12 @@ public class PlayerCtrl : NhoxBehaviour
         instance = this;
     }
 
+    protected void OnDestroy() => core.Stats.Health.OnCurrentValueZero += PlayerDie;
+
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadCore();
         LoadPlayerInput();
         LoadPlayerMovement();
         LoadPlayerAimCtrl();
@@ -55,6 +63,13 @@ public class PlayerCtrl : NhoxBehaviour
         LoadPlayerWeaponVisual();
         LoadPlayerInventory();
         LoadPlayerInteraction();
+    }
+    
+    protected void LoadCore()
+    {
+        if (core != null) return;
+        core = GetComponentInChildren<Core>();
+        Debug.Log(transform.name + " LoadCore", gameObject);
     }
 
     protected void LoadPlayerInput()
@@ -111,5 +126,11 @@ public class PlayerCtrl : NhoxBehaviour
         if (playerInteraction != null) return;
         playerInteraction = GetComponentInChildren<PlayerInteraction>();
         Debug.Log(transform.name + " LoadPlayerInteraction", gameObject);
+    }
+    
+    protected void PlayerDie()
+    {
+        playerAnim.Animator.enabled = false;
+        core.Ragdoll.RagdollActive(true);
     }
 }

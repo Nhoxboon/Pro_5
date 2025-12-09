@@ -1254,7 +1254,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8977228257959820586}
   - component: {fileID: 8229523643003103905}
-  - component: {fileID: 1407804353673513903}
   - component: {fileID: 1637711726168971191}
   m_Layer: 0
   m_Name: EnemyBossFist
@@ -1308,43 +1307,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1407804353673513903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1503141140201970933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ragdollParent: {fileID: 3353238014086464764}
-  ragdollCols:
-  - {fileID: 8710285072853475189}
-  - {fileID: 73112678496442160}
-  - {fileID: 3968459735385514292}
-  - {fileID: 3327763107075143490}
-  - {fileID: 2373222344258590355}
-  - {fileID: 247307314631033140}
-  - {fileID: 8960605923533855769}
-  - {fileID: 4890088859532191314}
-  - {fileID: 1183189110854178604}
-  - {fileID: 3390920233061836812}
-  - {fileID: 705719358135594176}
-  ragdollRbs:
-  - {fileID: 2007858910906729391}
-  - {fileID: 5825258339182116448}
-  - {fileID: 4182711493793779046}
-  - {fileID: 7954219406864239371}
-  - {fileID: 7307089483211885564}
-  - {fileID: 5377969267764767675}
-  - {fileID: 6800613415080396604}
-  - {fileID: 3909715028685321347}
-  - {fileID: 7746240949014429046}
-  - {fileID: 4374687972137786145}
-  - {fileID: 7460519922775713182}
 --- !u!114 &1637711726168971191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1363,7 +1325,6 @@ MonoBehaviour:
   enemyMove: {fileID: 2510608867115159626}
   enemyAnimator: {fileID: 4470734797723055723}
   enemyAttack: {fileID: 4999814829808773209}
-  ragdoll: {fileID: 1407804353673513903}
   enemyVisuals: {fileID: 8361353845973281215}
   enemyAbility: {fileID: 8113782370037166687}
   actionCooldown: 5
@@ -2647,6 +2608,7 @@ Transform:
   m_Children:
   - {fileID: 6107743247325530012}
   - {fileID: 1546826591761339331}
+  - {fileID: 7588588088195059213}
   m_Father: {fileID: 8977228257959820586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2270027421988407100
@@ -2665,6 +2627,7 @@ MonoBehaviour:
   root: {fileID: 1503141140201970933}
   stats: {fileID: 2608831638984946637}
   damageReceiver: {fileID: 5167627792685833741}
+  ragdoll: {fileID: 0}
 --- !u!1 &5089671014345988643
 GameObject:
   m_ObjectHideFlags: 0
@@ -14790,6 +14753,76 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1 &8776196634343702409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7588588088195059213}
+  - component: {fileID: 7183558404967706529}
+  m_Layer: 11
+  m_Name: Ragdoll
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7588588088195059213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8776196634343702409}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8748596069713592901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7183558404967706529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8776196634343702409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  core: {fileID: 2270027421988407100}
+  ragdollParent: {fileID: 3353238014086464764}
+  ragdollCols:
+  - {fileID: 8710285072853475189}
+  - {fileID: 73112678496442160}
+  - {fileID: 3968459735385514292}
+  - {fileID: 3327763107075143490}
+  - {fileID: 2373222344258590355}
+  - {fileID: 247307314631033140}
+  - {fileID: 8960605923533855769}
+  - {fileID: 4890088859532191314}
+  - {fileID: 1183189110854178604}
+  - {fileID: 3390920233061836812}
+  - {fileID: 705719358135594176}
+  ragdollRbs:
+  - {fileID: 2007858910906729391}
+  - {fileID: 5825258339182116448}
+  - {fileID: 4182711493793779046}
+  - {fileID: 7954219406864239371}
+  - {fileID: 7307089483211885564}
+  - {fileID: 5377969267764767675}
+  - {fileID: 6800613415080396604}
+  - {fileID: 3909715028685321347}
+  - {fileID: 7746240949014429046}
+  - {fileID: 4374687972137786145}
+  - {fileID: 7460519922775713182}
 --- !u!1 &9121841281576734923
 GameObject:
   m_ObjectHideFlags: 0

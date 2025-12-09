@@ -2130,10 +2130,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 546739200291049347}
+  minAbilityDistance: 6
+  abilityCooldown: 5
   axeSpawnPoint: {fileID: 361547440080168230}
   axeFlySpeed: 10
   axeAimTimer: 0.3
-  axeThrowCooldown: 3
 --- !u!1 &2780300955837522471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2239,7 +2240,6 @@ GameObject:
   m_Component:
   - component: {fileID: 609831354600438171}
   - component: {fileID: 3061246112849950139}
-  - component: {fileID: 7660328889482387002}
   - component: {fileID: 546739200291049347}
   m_Layer: 11
   m_Name: EnemyMelee
@@ -2293,43 +2293,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7660328889482387002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3132772102997451585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ragdollParent: {fileID: 2873332001201421907}
-  ragdollCols:
-  - {fileID: 4803027889538152304}
-  - {fileID: 7239237402669097469}
-  - {fileID: 6480874982709401039}
-  - {fileID: 1105099616626619946}
-  - {fileID: 4228636275735464814}
-  - {fileID: 4070242993934942588}
-  - {fileID: 7424052027761495394}
-  - {fileID: 8981885004823134350}
-  - {fileID: 950526196276005903}
-  - {fileID: 6411188574868954718}
-  - {fileID: 8599511371412484730}
-  ragdollRbs:
-  - {fileID: 863991302115854677}
-  - {fileID: 3497084286510619231}
-  - {fileID: 1933859746330435816}
-  - {fileID: 5214607136380672665}
-  - {fileID: 4914125364418871731}
-  - {fileID: 2932843648694618932}
-  - {fileID: 6713918555787820144}
-  - {fileID: 3561564237726752922}
-  - {fileID: 6592472939552406708}
-  - {fileID: 560322269742179634}
-  - {fileID: 6078456943051083184}
 --- !u!114 &546739200291049347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2349,7 +2312,6 @@ MonoBehaviour:
   enemyAnimator: {fileID: 2003987622449720733}
   enemyAttack: {fileID: 1108283842713516609}
   enemyVisuals: {fileID: 4549447855608242417}
-  ragdoll: {fileID: 7660328889482387002}
   enemyAbility: {fileID: 6363985197333152881}
   meleeType: 0
   shieldTransform: {fileID: 5047585049564944156}
@@ -2681,8 +2643,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8872039680849713534}
   - {fileID: 4628711268394407237}
+  - {fileID: 8872039680849713534}
+  - {fileID: 5892030306084856917}
   m_Father: {fileID: 609831354600438171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6776366909950185078
@@ -2701,6 +2664,7 @@ MonoBehaviour:
   root: {fileID: 3132772102997451585}
   stats: {fileID: 5962205140307652556}
   damageReceiver: {fileID: 3943628207755567623}
+  ragdoll: {fileID: 0}
 --- !u!1 &3913358147298863566
 GameObject:
   m_ObjectHideFlags: 0
@@ -4600,6 +4564,76 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0001231581, y: -0.11072096, z: -0.054761052}
     m_Extent: {x: 0.4797752, y: 0.69894457, z: 0.17296748}
   m_DirtyAABB: 0
+--- !u!1 &6326168470172746047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5892030306084856917}
+  - component: {fileID: 2668207438735361263}
+  m_Layer: 11
+  m_Name: Ragdoll
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5892030306084856917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6326168470172746047}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6851451221812112705}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2668207438735361263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6326168470172746047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ded4cd2161a441c8006c91a7ef4b845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  core: {fileID: 6776366909950185078}
+  ragdollParent: {fileID: 2873332001201421907}
+  ragdollCols:
+  - {fileID: 4803027889538152304}
+  - {fileID: 7239237402669097469}
+  - {fileID: 6480874982709401039}
+  - {fileID: 1105099616626619946}
+  - {fileID: 4228636275735464814}
+  - {fileID: 4070242993934942588}
+  - {fileID: 7424052027761495394}
+  - {fileID: 8981885004823134350}
+  - {fileID: 950526196276005903}
+  - {fileID: 6411188574868954718}
+  - {fileID: 8599511371412484730}
+  ragdollRbs:
+  - {fileID: 863991302115854677}
+  - {fileID: 3497084286510619231}
+  - {fileID: 1933859746330435816}
+  - {fileID: 5214607136380672665}
+  - {fileID: 4914125364418871731}
+  - {fileID: 2932843648694618932}
+  - {fileID: 6713918555787820144}
+  - {fileID: 3561564237726752922}
+  - {fileID: 6592472939552406708}
+  - {fileID: 560322269742179634}
+  - {fileID: 6078456943051083184}
 --- !u!1 &6354788981014493176
 GameObject:
   m_ObjectHideFlags: 0

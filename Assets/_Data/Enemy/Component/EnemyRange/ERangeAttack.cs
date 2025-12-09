@@ -74,7 +74,7 @@ public class ERangeAttack : EnemyAttack
             Quaternion.LookRotation(GunPoint.forward));
         newBullet.gameObject.SetActive(true);
 
-        if (!newBullet.TryGetComponent(out EnemyBullet bullet)) return;
+        if (!newBullet.TryGetComponent(out Bullet bullet)) return;
         bullet.BulletSetup();
         bullet.Fire(WeaponData.ApplyWeaponSpread(bulletDir), WeaponData.bulletSpeed);
     }
