@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class EnemyWeaponModel : NhoxBehaviour
 {
@@ -7,6 +8,12 @@ public class EnemyWeaponModel : NhoxBehaviour
     public EMeleeWeaponDataSO weaponData;
 
     [SerializeField] protected TrailRenderer[] tr;
+    
+    [Header("Damage Attribute")]
+    [SerializeField] protected Transform[] damagePoints;
+    public Transform[] DamagePoints => damagePoints;
+    [SerializeField] protected float attackRadius = 0.3f;
+    public float AttackRadius => attackRadius;
 
     protected override void Awake()
     {
@@ -31,5 +38,22 @@ public class EnemyWeaponModel : NhoxBehaviour
     {
         foreach (TrailRenderer trail in tr)
             trail.gameObject.SetActive(enable);
+    }
+
+    [ContextMenu("Assign Damage Points")]
+    protected void GetDamagePoints()
+    {
+        damagePoints = new Transform[tr.Length];
+        for(int i = 0; i < tr.Length; i++)
+        {
+            damagePoints[i] = tr[i].transform;
+        }
+    }
+
+    protected void OnDrawGizmos()
+    {
+        if (damagePoints.Length == 0) return;
+        foreach (Transform point in damagePoints)
+            Gizmos.DrawWireSphere(point.position, attackRadius);
     }
 }

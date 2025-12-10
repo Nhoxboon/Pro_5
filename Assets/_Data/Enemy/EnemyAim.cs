@@ -46,7 +46,7 @@ public class EnemyAim : NhoxBehaviour
         Vector3 directionToPlayer = (PlayerCtrl.Instance.transform.position + Vector3.up) - myPosition;
         if (Physics.Raycast(myPosition, directionToPlayer, out RaycastHit hit, Mathf.Infinity, ~whatToIgnore))
         {
-            if (hit.transform.parent == PlayerCtrl.Instance.transform)
+            if (hit.transform.root == PlayerCtrl.Instance.transform)
             {
                 UpdateAimPosition();
                 return true;

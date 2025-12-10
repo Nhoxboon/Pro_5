@@ -21,8 +21,12 @@ public class EnemyAxe : Projectile
         if (timer > 0)
             direction = player.position + Vector3.up - transform.position;
 
-        rb.linearVelocity = direction.normalized * flySpeed;
         transform.forward = rb.linearVelocity;
+    }
+
+    protected void FixedUpdate()
+    {
+        rb.linearVelocity = direction.normalized * flySpeed;
     }
 
     protected override void LoadComponents()
@@ -38,13 +42,18 @@ public class EnemyAxe : Projectile
         Debug.Log(transform.name + " LoadAxeModel", gameObject);
     }
 
-    protected void OnTriggerEnter(Collider other)
+    protected void OnCollisionEnter(Collision other)
     {
-        if (!other.TryGetComponent(out Bullet _) && !other.TryGetComponent(out PlayerCtrl _)) return;
+        SpawnFX();
+        ProjectileSpawner.Instance.Despawn(gameObject);
+        if (!other.transform.root.TryGetComponentInChildren(out IDamageable damageable)) return;
+        damageable.TakeDamage(1);
+    }
+
+    protected void SpawnFX()
+    {
         Transform newFX = FXSpawner.Instance.Spawn(fxName, transform.position, Quaternion.identity);
         newFX.gameObject.SetActive(true);
-            
-        ProjectileSpawner.Instance.Despawn(gameObject);
     }
 
     public void AxeSetup(float speed, Transform player, float time)

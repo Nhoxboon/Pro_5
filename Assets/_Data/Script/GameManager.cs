@@ -5,6 +5,8 @@ public class GameManager : NhoxBehaviour
 {
     private static GameManager instance;
     public static GameManager Instance => instance;
+    
+    public bool friendlyFire;
 
     protected override void Awake()
     {

@@ -113,11 +113,7 @@ public class ERangeBattleState : EnemyState
     {
         Vector3 directionToPlayer = PlayerCtrl.Instance.transform.position - enemy.transform.position;
         if (Physics.Raycast(enemy.transform.position + new Vector3(0, 0.3f, 0), directionToPlayer, out RaycastHit hit))
-        {
-            //TODO: Will change late because now player use hitbox in ragdoll not hitbox
-            return hit.transform.parent == PlayerCtrl.Instance.transform ||
-                   hit.transform == PlayerCtrl.Instance.transform;
-        }
+            return hit.transform.root == PlayerCtrl.Instance.transform;
 
         return false;
     }

@@ -1177,6 +1177,9 @@ MonoBehaviour:
   grenadeCooldown: 2
   grenadeSpawnPoint: {fileID: 7341188478577066088}
   timeToTarget: 1.2
+  whatIsAlly:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &978326335155307403
 GameObject:
   m_ObjectHideFlags: 0

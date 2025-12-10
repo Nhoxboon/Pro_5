@@ -27,7 +27,6 @@ public class EMeleeAttackState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        enemy.EnemyVisuals.EnableWeaponModel(true);
         enemy.EnemyVisuals.EnableWeaponTrail(true);
         SetAttackProperties();
 

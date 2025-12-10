@@ -26,6 +26,7 @@ public class ERangeAttack : EnemyAttack
     protected float explosionTimer = 0.75f;
     protected string grenadePrefab = "EnemyGrenade";
     protected float lastTimeGrenadeThrown = -10f;
+    [SerializeField] protected LayerMask whatIsAlly;
     
     protected override void Awake()
     {
@@ -87,9 +88,7 @@ public class ERangeAttack : EnemyAttack
             enemyRange.EnemyCover.SafeDistance)
             return false;
         
-        if(Time.time > grenadeCooldown + lastTimeGrenadeThrown)
-            return true;
-        return false;
+        return Time.time > grenadeCooldown + lastTimeGrenadeThrown;
     }
 
     public void ThrowGrenade()
@@ -98,12 +97,18 @@ public class ERangeAttack : EnemyAttack
         Transform newPrefab = ProjectileSpawner.Instance.Spawn(grenadePrefab, grenadeSpawnPoint.position,
             Quaternion.identity);
         newPrefab?.gameObject.SetActive(true);
-        if (newPrefab is null || !newPrefab.TryGetComponent(out EnemyGrenade grenade)) return;
-        if(enemyRange.StateMachine.currentState == enemyRange.DeadState)
-        {
-            grenade.SetupGrenade(transform.parent.position, 1, explosionTimer, impactPower);
+        
+        if (newPrefab is null || !newPrefab.TryGetComponent(out EnemyGrenade grenade)) 
             return;
-        } 
-        grenade.SetupGrenade(PlayerCtrl.Instance.transform.position, timeToTarget, explosionTimer, impactPower);
+        if (EnemyDeadAction(grenade)) 
+            return; 
+        grenade.SetupGrenade(whatIsAlly, PlayerCtrl.Instance.transform.position, timeToTarget, explosionTimer, impactPower);
+    }
+
+    protected bool EnemyDeadAction(EnemyGrenade grenade)
+    {
+        if (enemyRange.StateMachine.currentState != enemyRange.DeadState) return false;
+        grenade.SetupGrenade(whatIsAlly, transform.parent.position, 1, explosionTimer, impactPower);
+        return true;
     }
 }

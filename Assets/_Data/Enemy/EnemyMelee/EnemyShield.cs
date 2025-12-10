@@ -5,11 +5,12 @@ using UnityEngine;
 public class EnemyShield : NhoxBehaviour
 {
     [SerializeField] protected Enemy enemy;
-    [SerializeField] protected float durability = 20f;
+    protected float durability;
 
     protected override void Awake()
     {
         base.Awake();
+        durability = enemy is EnemyMelee enemyMelee ? enemyMelee.ShieldDurability : 10f;
         enemy.Core.Stats.ShieldDurability.SetMaxValue(durability);
         enemy.Core.Stats.ShieldDurability.Init();
         

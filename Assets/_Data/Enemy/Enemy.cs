@@ -107,7 +107,7 @@ public class Enemy : NhoxBehaviour
     protected IEnumerator DeadImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
         yield return new WaitForSeconds(0.1f);
-        rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
+        rb?.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
 
     public void AnimationTrigger() => StateMachine.currentState.AnimationTrigger();

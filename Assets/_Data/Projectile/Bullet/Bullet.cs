@@ -57,13 +57,12 @@ public class Bullet : Projectile
     protected virtual void OnCollisionEnter(Collision other)
     {
         SpawnFX(other);
-        ProjectileSpawner.Instance.Despawn(gameObject);
-        
         Transform root = other.transform.root;
         if (root.TryGetComponentInChildren(out IDamageable damageable))
             damageable.TakeDamage(1);
 
         ApplyBulletImpactForEnemy(other);
+        ProjectileSpawner.Instance.Despawn(gameObject);
     }
 
     protected void ApplyBulletImpactForEnemy(Collision other)
