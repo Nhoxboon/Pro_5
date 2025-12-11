@@ -335,7 +335,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
-  durability: 10
 --- !u!1 &243846805649915848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,7 +1164,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 6254423985451221362}
-  weaponType: 4
+  whatIsAlly:
+    serializedVersion: 2
+    m_Bits: 2048
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 256
+  weaponType: 0
   attackDelay: 1
   availableWeaponsData:
   - {fileID: 11400000, guid: ab26ef540f51e9244bde3820fc52172b, type: 2}
@@ -1177,9 +1182,6 @@ MonoBehaviour:
   grenadeCooldown: 2
   grenadeSpawnPoint: {fileID: 7341188478577066088}
   timeToTarget: 1.2
-  whatIsAlly:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!1 &978326335155307403
 GameObject:
   m_ObjectHideFlags: 0

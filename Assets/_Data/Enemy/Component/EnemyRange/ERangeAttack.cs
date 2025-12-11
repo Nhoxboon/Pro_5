@@ -26,7 +26,6 @@ public class ERangeAttack : EnemyAttack
     protected float explosionTimer = 0.75f;
     protected string grenadePrefab = "EnemyGrenade";
     protected float lastTimeGrenadeThrown = -10f;
-    [SerializeField] protected LayerMask whatIsAlly;
     
     protected override void Awake()
     {
@@ -43,7 +42,7 @@ public class ERangeAttack : EnemyAttack
     protected void LoadGrenadeSpawnPoint()
     {
         if (grenadeSpawnPoint != null) return;
-        grenadeSpawnPoint = transform.parent.GetComponentInChildren<EnemyRangeWeaponModel>().transform.parent.parent
+        grenadeSpawnPoint = transform.parent.GetComponentInChildren<EnemyRangeWeaponModel>(true).transform.parent.parent
             .Find("GrenadeStartPoint");
         Debug.Log(transform.name + " LoadGrenadeSpawnPoint", gameObject);
     }

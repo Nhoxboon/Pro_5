@@ -779,7 +779,7 @@ MonoBehaviour:
   - {fileID: 7980260139206286363}
   damagePoints:
   - {fileID: 4359221623291896638}
-  attackRadius: 0.3
+  attackRadius: 0.4
 --- !u!1 &782029025313365329
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,7 +1259,7 @@ Transform:
   m_GameObject: {fileID: 1718204824420442792}
   serializedVersion: 2
   m_LocalRotation: {x: 0.44445845, y: -0.49078602, z: -0.54428333, w: -0.51511306}
-  m_LocalPosition: {x: -0.1407, y: 0.077, z: 0.0287}
+  m_LocalPosition: {x: -0.136, y: 0.077, z: 0.028}
   m_LocalScale: {x: 0.79999995, y: 0.8, z: 0.79999983}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1338,7 +1338,7 @@ MonoBehaviour:
   - {fileID: 1764966671716250009}
   damagePoints:
   - {fileID: 6160129381772631974}
-  attackRadius: 0.3
+  attackRadius: 0.4
 --- !u!1 &1946165702454485913
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,6 +2373,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 546739200291049347}
+  whatIsAlly:
+    serializedVersion: 2
+    m_Bits: 2048
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 256
   attackData:
     attackName: 
     attackRange: 0
@@ -2393,9 +2399,6 @@ MonoBehaviour:
     attackIndex: 1
     animationSpeed: 1.4
     attackType: 0
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!1 &3500814545132576282
 GameObject:
   m_ObjectHideFlags: 0
@@ -4923,7 +4926,7 @@ Transform:
   m_GameObject: {fileID: 6552604997038703943}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000119209275, y: 0.000000029802319, z: 0.00000004470348, w: 1}
-  m_LocalPosition: {x: 0, y: 0.197, z: 0.02}
+  m_LocalPosition: {x: 0, y: 0.228, z: 0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -6732,7 +6735,7 @@ MonoBehaviour:
   - {fileID: 8415961297778731222}
   damagePoints:
   - {fileID: 1228766765119370842}
-  attackRadius: 0.3
+  attackRadius: 0.4
 --- !u!1 &8253390062760886436
 GameObject:
   m_ObjectHideFlags: 0
@@ -6971,7 +6974,7 @@ MonoBehaviour:
   - {fileID: 6592976736249556249}
   damagePoints:
   - {fileID: 2542643551821982701}
-  attackRadius: 0.3
+  attackRadius: 0.4
 --- !u!1 &8388466973176187358
 GameObject:
   m_ObjectHideFlags: 0
@@ -7251,7 +7254,7 @@ Transform:
   m_GameObject: {fileID: 8638905664080641927}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000119209275, y: 0.000000029802319, z: 0.00000004470348, w: 1}
-  m_LocalPosition: {x: 0, y: 0.095, z: 0.012}
+  m_LocalPosition: {x: -0, y: 0.14, z: 0.012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7480,7 +7483,7 @@ MonoBehaviour:
   - {fileID: 7618830863057462934}
   damagePoints:
   - {fileID: 6157368077266711289}
-  attackRadius: 0.3
+  attackRadius: 0.4
 --- !u!1 &8713154371066231537
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,12 +60,16 @@ public class EnemyGrenade : Projectile
         Collider[] cols = Physics.OverlapSphere(transform.position, impactRadius);
         foreach (Collider hit in cols)
         {
-            if (!IsTargetValid(hit)) continue;
-            
             Transform root = hit.transform.root;
-            if (!uniqueEntities.Add(root)) continue;
+            IDamageable damageable = DamageableTarget(root);
             
-            ApplyDamage(root);
+            if(damageable != null)
+            {
+                if (!IsTargetValid(hit)) continue;
+
+                if (!uniqueEntities.Add(root)) continue;
+                damageable.TakeDamage(1);
+            }
             ApplyPhysicalForce(hit);
         }
     }
@@ -77,12 +81,11 @@ public class EnemyGrenade : Projectile
                 ForceMode.Impulse);
     }
 
-    protected void ApplyDamage(Transform target)
+    protected IDamageable DamageableTarget(Transform target)
     {
         if (target.TryGetComponent(out PlayerCtrl player))
-            player.Core.DamageReceiver.TakeDamage(1);
-        else if(target.TryGetComponent(out Enemy enemy))
-            enemy.Core.DamageReceiver.TakeDamage(1);
+            return player.Core.DamageReceiver;
+        return target.TryGetComponent(out Enemy enemy) ? enemy.Core.DamageReceiver : null;
     }
 
     protected void SpawnFX()
