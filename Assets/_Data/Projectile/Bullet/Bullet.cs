@@ -59,7 +59,7 @@ public class Bullet : Projectile
         SpawnFX(other);
         Transform root = other.transform.root;
         if (root.TryGetComponentInChildren(out IDamageable damageable))
-            damageable.TakeDamage(1);
+            damageable.TakeDamage(damage);
 
         ApplyBulletImpactForEnemy(other);
         ProjectileSpawner.Instance.Despawn(gameObject);
@@ -73,8 +73,9 @@ public class Bullet : Projectile
         enemy.BulletImpact(force, other.contacts[0].point, hitRb);
     }
 
-    public void BulletSetup(float flyDis = 100, float impactForce = 100)
+    public void BulletSetup(int damage, float flyDis = 100, float impactForce = 100)
     {
+        this.damage = damage;
         this.impactForce = impactForce;
 
         startPosition = transform.position;

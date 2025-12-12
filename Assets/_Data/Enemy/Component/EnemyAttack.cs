@@ -45,7 +45,7 @@ public class EnemyAttack : NhoxBehaviour
 
     public virtual bool PlayerInAttackRange() => false;
 
-    protected virtual void MeleeAttackCheck(Transform[] damagePoints, float attackRadius)
+    protected virtual void MeleeAttackCheck(Transform[] damagePoints, float attackRadius, int damage)
     {
         if(!isAttackReady) return;
         foreach (Transform atkPoint in damagePoints)
@@ -55,7 +55,7 @@ public class EnemyAttack : NhoxBehaviour
             foreach (var col in detectedHits)
             {
                 if (!col.transform.root.TryGetComponent(out PlayerCtrl player)) continue;
-                player.Core.DamageReceiver.TakeDamage(1);
+                player.Core.DamageReceiver.TakeDamage(damage);
                 isAttackReady = false;
                 SpawnFX(atkPoint);
                 return;

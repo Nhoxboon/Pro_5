@@ -35,7 +35,7 @@ public class PickupWeapon : Interactable
     {
         oldWeapon = true;
         weapon = wp;
-        weaponData = wp.weaponData;
+        weaponData = wp.WeaponData;
         transform.position = trans.position + new Vector3(0, 0.5f, 0);
         SetupGameObject();
     }

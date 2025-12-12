@@ -44,6 +44,6 @@ public class EMeleeAbility : EnemyAbility
         Transform newAxe = ProjectileSpawner.Instance.Spawn(axe, axeSpawnPoint.position, Quaternion.identity);
         newAxe.gameObject.SetActive(true);
         if (newAxe.TryGetComponent(out EnemyAxe enemyAxe))
-            enemyAxe.AxeSetup(axeFlySpeed, PlayerCtrl.Instance.transform, axeAimTimer);
+            enemyAxe.AxeSetup(abilityDamage, axeFlySpeed, PlayerCtrl.Instance.transform, axeAimTimer);
     }
 }

@@ -47,7 +47,7 @@ public class EnemyAxe : Projectile
         SpawnFX();
         ProjectileSpawner.Instance.Despawn(gameObject);
         if (!other.transform.root.TryGetComponentInChildren(out IDamageable damageable)) return;
-        damageable.TakeDamage(1);
+        damageable.TakeDamage(damage);
     }
 
     protected void SpawnFX()
@@ -56,8 +56,9 @@ public class EnemyAxe : Projectile
         newFX.gameObject.SetActive(true);
     }
 
-    public void AxeSetup(float speed, Transform player, float time)
+    public void AxeSetup(int damage, float speed, Transform player, float time)
     {
+        this.damage = damage;
         rotationSpeed = 1600f;
         flySpeed = speed;
         this.player = player;

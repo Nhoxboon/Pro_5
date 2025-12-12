@@ -59,7 +59,7 @@ public class PlayerAttack : NhoxBehaviour
         Vector3 bulletDir = CurrentWeapon.ApplySpread(BulletDirection());
 
         if (!prefab.TryGetComponent(out Bullet bullet)) return;
-        bullet.BulletSetup(CurrentWeapon.GunDistance, bulletImpact);
+        bullet.BulletSetup(CurrentWeapon.bulletDamage, CurrentWeapon.GunDistance, bulletImpact);
         bullet.Fire(bulletDir, bulletSpeed);
     }
 

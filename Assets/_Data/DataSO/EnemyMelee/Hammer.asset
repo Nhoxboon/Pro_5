@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackData:
   - attackName: Axe spin attack
+    attackDamage: 20
     attackRange: 1.5
-    moveSpeed: 3.5
+    moveSpeed: 4
     attackIndex: 0
     animationSpeed: 1
     attackType: 1
   - attackName: Axe slash
+    attackDamage: 15
     attackRange: 1
     moveSpeed: 0
     attackIndex: 1
     animationSpeed: 1.4
     attackType: 0
+  turnSpeed: 5

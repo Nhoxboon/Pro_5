@@ -1259,7 +1259,7 @@ Transform:
   m_GameObject: {fileID: 1718204824420442792}
   serializedVersion: 2
   m_LocalRotation: {x: 0.44445845, y: -0.49078602, z: -0.54428333, w: -0.51511306}
-  m_LocalPosition: {x: -0.136, y: 0.077, z: 0.028}
+  m_LocalPosition: {x: -0.159, y: 0.077, z: 0.03}
   m_LocalScale: {x: 0.79999995, y: 0.8, z: 0.79999983}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2141,11 +2141,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 546739200291049347}
+  abilityDamage: 30
   minAbilityDistance: 6
-  abilityCooldown: 5
+  abilityCooldown: 10
   axeSpawnPoint: {fileID: 361547440080168230}
-  axeFlySpeed: 10
-  axeAimTimer: 0.3
+  axeFlySpeed: 8
+  axeAimTimer: 1.25
 --- !u!1 &2780300955837522471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2326,7 +2327,7 @@ MonoBehaviour:
   enemyAbility: {fileID: 6363985197333152881}
   meleeType: 0
   shieldTransform: {fileID: 5047585049564944156}
-  shieldDurability: 10
+  shieldDurability: 400
   dodgeCooldown: 2
 --- !u!1 &3424857210804865751
 GameObject:
@@ -2381,6 +2382,7 @@ MonoBehaviour:
     m_Bits: 256
   attackData:
     attackName: 
+    attackDamage: 0
     attackRange: 0
     moveSpeed: 0
     attackIndex: 0
@@ -2388,12 +2390,14 @@ MonoBehaviour:
     attackType: 0
   attackList:
   - attackName: Axe spin attack
+    attackDamage: 10
     attackRange: 1.5
     moveSpeed: 3.5
     attackIndex: 0
     animationSpeed: 1
     attackType: 1
   - attackName: Axe slash
+    attackDamage: 5
     attackRange: 0.75
     moveSpeed: 0
     attackIndex: 1
@@ -7020,7 +7024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   core: {fileID: 6776366909950185078}
-  hp: 20
+  hp: 100
   health:
     maxValue: 0
     currentValue: 0

@@ -5,6 +5,8 @@ public class WeaponDataSO : ScriptableObject
 {
     public string weaponName;
     public WeaponType weaponType;
+    [Header("Bullet Info")]
+    public int bulletDamage = 2;
 
     [Header("Magazine Details")] public int bulletsInMagazine;
     public int magazineCapacity;
@@ -28,6 +30,6 @@ public class WeaponDataSO : ScriptableObject
     public float reloadSpeed = 1;
 
     [Range(1, 3)] public float equipmentSpeed = 1;
-    [Range(4, 8)] public float gunDistance = 4;
+    [Range(4, 25)] public float gunDistance = 4;
     [Range(4, 8)] public float cameraDistance = 6;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ERangeThrowGrenadeState : EnemyState
 {
     protected EnemyRange enemy;
-    protected ERangeAttack enemyAttack;
+    protected ERangeAbility enemyAbility;
     protected ERangeVisuals enemyVisuals;
 
     public bool FinishedThrowing { get; protected set; } = true;
@@ -13,7 +13,7 @@ public class ERangeThrowGrenadeState : EnemyState
         enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyRange;
-        enemyAttack = enemy?.EnemyAttack as ERangeAttack;
+        enemyAbility = enemy?.EnemyAbility;
         enemyVisuals = enemy?.EnemyVisuals;
     }
 
@@ -50,7 +50,7 @@ public class ERangeThrowGrenadeState : EnemyState
     {
         base.AbilityTrigger();
         FinishedThrowing = true;
-        enemyAttack.ThrowGrenade();
+        enemyAbility.ThrowGrenade();
         enemyVisuals.EnableGrenadeModel(false);
         enemy.StartCoroutine(ResetIKDelay());
     }

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Stinger
   weaponType: 4
-  bulletsInMagazine: 15
-  magazineCapacity: 15
+  bulletDamage: 80
+  bulletsInMagazine: 12
+  magazineCapacity: 12
   totalReserveAmmo: 300
   shootType: 0
   bulletsPerShot: 1
@@ -30,5 +31,5 @@ MonoBehaviour:
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipmentSpeed: 1
-  gunDistance: 8
+  gunDistance: 25
   cameraDistance: 6

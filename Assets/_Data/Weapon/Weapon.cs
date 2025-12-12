@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 public class Weapon
 {
     public WeaponType weaponType;
+    
+    public int bulletDamage;
 
     #region Regular Mode Variables
 
@@ -55,11 +57,12 @@ public class Weapon
 
     #endregion
 
-    public WeaponDataSO weaponData { get; private set; } //Serves as default weapon data
+    public WeaponDataSO WeaponData { get; private set; } //Serves as default weapon data
 
     public Weapon(WeaponDataSO weaponData)
     {
         weaponType = weaponData.weaponType;
+        bulletDamage = weaponData.bulletDamage;
         shootType = weaponData.shootType;
         BulletsPerShot = weaponData.bulletsPerShot;
 
@@ -85,7 +88,7 @@ public class Weapon
         GunDistance = weaponData.gunDistance;
         CameraDistance = weaponData.cameraDistance;
 
-        this.weaponData = weaponData;
+        WeaponData = weaponData;
     }
 
     public bool CanShoot() => HasEnoughBullet() && ReadyToFire();
@@ -122,7 +125,7 @@ public class Weapon
     {
         UpdateSpread();
         float randomizeValue = Random.Range(-currentSpread, currentSpread);
-        Quaternion spreadRotation = Quaternion.Euler(randomizeValue, randomizeValue, randomizeValue);
+        Quaternion spreadRotation = Quaternion.Euler(randomizeValue, randomizeValue / 2, randomizeValue);
         return spreadRotation * originalDirection;
     }
 

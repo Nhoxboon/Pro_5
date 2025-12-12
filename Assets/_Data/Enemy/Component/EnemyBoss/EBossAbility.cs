@@ -7,7 +7,7 @@ public class EBossAbility : EnemyAbility
     [Header("Flame Thrower")] 
     [SerializeField] protected float flameThrowDuration = 3f;
     public float FlameThrowDuration => flameThrowDuration;
-    [SerializeField] protected float flameDamageCooldown = 0.5f;
+    [SerializeField] protected float flameDamageCooldown = 0.25f;
     public float FlameDamageCooldown => flameDamageCooldown;
     [SerializeField] protected ParticleSystem flameParticle;
     public bool FlameThrowActive { get; protected set;}
@@ -58,6 +58,6 @@ public class EBossAbility : EnemyAbility
         newFX.gameObject.SetActive(true);
         
         if(enemy.EnemyAttack is EBossAttack enemyAttack)
-            enemyAttack.ApplyHammerAbilityDamage();
+            enemyAttack.ApplyHammerAbilityDamage(abilityDamage);
     }
 }

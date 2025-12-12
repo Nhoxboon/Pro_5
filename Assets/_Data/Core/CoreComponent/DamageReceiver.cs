@@ -4,7 +4,7 @@ public class DamageReceiver : CoreComponent, IDamageable
 {
     public Action GetDamage;
     
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(int damage)
     {
         if (core.Stats.ShieldDurability.CurrentValue > 0)
             ReduceShieldDurability(damage);

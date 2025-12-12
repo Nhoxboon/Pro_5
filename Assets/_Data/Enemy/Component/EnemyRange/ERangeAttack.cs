@@ -17,34 +17,10 @@ public class ERangeAttack : EnemyAttack
     protected string bulletPrefab = "EnemyBullet";
     [SerializeField] protected List<ERangeWeaponDataSO> availableWeaponsData;
     
-    [Header("Grenade Perk")]
-    public GrenadePerk grenadePerk;
-    [SerializeField] protected float grenadeCooldown = 4f;
-    [SerializeField] protected Transform grenadeSpawnPoint;
-    protected float impactPower = 10f;
-    public float timeToTarget = 1.2f;
-    protected float explosionTimer = 0.75f;
-    protected string grenadePrefab = "EnemyGrenade";
-    protected float lastTimeGrenadeThrown = -10f;
-    
     protected override void Awake()
     {
         base.Awake();
         enemyRange = enemy as EnemyRange;
-    }
-
-    protected override void LoadComponents()
-    {
-        base.LoadComponents();
-        LoadGrenadeSpawnPoint();
-    }
-
-    protected void LoadGrenadeSpawnPoint()
-    {
-        if (grenadeSpawnPoint != null) return;
-        grenadeSpawnPoint = transform.parent.GetComponentInChildren<EnemyRangeWeaponModel>(true).transform.parent.parent
-            .Find("GrenadeStartPoint");
-        Debug.Log(transform.name + " LoadGrenadeSpawnPoint", gameObject);
     }
 
     protected void GetGunPoint()
@@ -75,39 +51,7 @@ public class ERangeAttack : EnemyAttack
         newBullet.gameObject.SetActive(true);
 
         if (!newBullet.TryGetComponent(out Bullet bullet)) return;
-        bullet.BulletSetup();
+        bullet.BulletSetup(WeaponData.bulletDamage);
         bullet.Fire(WeaponData.ApplyWeaponSpread(bulletDir), WeaponData.bulletSpeed);
-    }
-
-    public bool CanThrowGrenade()
-    {
-        if(grenadePerk == GrenadePerk.Unavailable) return false;
-
-        if (Vector3.Distance(enemyRange.transform.position, PlayerCtrl.Instance.transform.position) <
-            enemyRange.EnemyCover.SafeDistance)
-            return false;
-        
-        return Time.time > grenadeCooldown + lastTimeGrenadeThrown;
-    }
-
-    public void ThrowGrenade()
-    {
-        lastTimeGrenadeThrown = Time.time;
-        Transform newPrefab = ProjectileSpawner.Instance.Spawn(grenadePrefab, grenadeSpawnPoint.position,
-            Quaternion.identity);
-        newPrefab?.gameObject.SetActive(true);
-        
-        if (newPrefab is null || !newPrefab.TryGetComponent(out EnemyGrenade grenade)) 
-            return;
-        if (EnemyDeadAction(grenade)) 
-            return; 
-        grenade.SetupGrenade(whatIsAlly, PlayerCtrl.Instance.transform.position, timeToTarget, explosionTimer, impactPower);
-    }
-
-    protected bool EnemyDeadAction(EnemyGrenade grenade)
-    {
-        if (enemyRange.StateMachine.currentState != enemyRange.DeadState) return false;
-        grenade.SetupGrenade(whatIsAlly, transform.parent.position, 1, explosionTimer, impactPower);
-        return true;
     }
 }

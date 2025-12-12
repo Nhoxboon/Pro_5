@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Destoryer
   weaponType: 3
-  bulletsInMagazine: 15
-  magazineCapacity: 15
+  bulletDamage: 20
+  bulletsInMagazine: 20
+  magazineCapacity: 20
   totalReserveAmmo: 300
   shootType: 0
   bulletsPerShot: 5

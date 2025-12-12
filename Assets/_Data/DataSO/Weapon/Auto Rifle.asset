@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: AUG
   weaponType: 2
-  bulletsInMagazine: 30
-  magazineCapacity: 30
+  bulletDamage: 12
+  bulletsInMagazine: 32
+  magazineCapacity: 32
   totalReserveAmmo: 300
   shootType: 1
   bulletsPerShot: 1
@@ -30,5 +31,5 @@ MonoBehaviour:
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipmentSpeed: 1
-  gunDistance: 6
+  gunDistance: 25
   cameraDistance: 6

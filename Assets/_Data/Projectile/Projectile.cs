@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Projectile : NhoxBehaviour
 {
+    protected int damage;
     [SerializeField] protected Rigidbody rb;
     
     protected virtual void OnEnable() => ResetProjectile();

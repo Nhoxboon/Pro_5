@@ -5,6 +5,7 @@ using UnityEngine;
 public struct AttackData_EnemyMelee
 {
     public string attackName;
+    public int attackDamage;
     public float attackRange;
     public float moveSpeed;
     public float attackIndex;

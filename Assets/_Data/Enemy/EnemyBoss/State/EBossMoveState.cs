@@ -8,7 +8,7 @@ public class EBossMoveState : EnemyState
     protected EBossAbility enemyAbility;
 
     protected Vector3 destination;
-    protected float timeBeforeSpeedUp = 15f;
+    protected float timeBeforeSpeedUp = 8f;
     protected bool speedUpActivated;
     protected float actionTimer;
 
@@ -61,12 +61,14 @@ public class EBossMoveState : EnemyState
     {
         enemyMove.Agent.speed = enemyMove.RunSpeed;
         enemy.EnemyAnimator.AnimationSetFloat("moveIndex", 1);
+        enemy.EnemyAnimator.AnimationSetFloat("moveAnimSpeedMultiplier", 1.5f);
         speedUpActivated = true;
     }
 
     protected void SpeedReset()
     {
         speedUpActivated = false;
+        enemy.EnemyAnimator.AnimationSetFloat("moveAnimSpeedMultiplier", 1f);
         enemy.EnemyAnimator.AnimationSetFloat("moveIndex", 0);
         enemyMove.Agent.speed = enemyMove.WalkSpeed;
     }

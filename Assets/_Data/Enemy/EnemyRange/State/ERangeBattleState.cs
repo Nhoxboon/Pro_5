@@ -7,6 +7,7 @@ public class ERangeBattleState : EnemyState
     protected ERangeAttack enemyAttack;
     protected ERangeVisuals enemyVisuals;
     protected EnemyCoverSystem enemyCover;
+    protected ERangeAbility enemyAbility;
 
     protected float lastTimeShot = -10;
     protected int bulletsFired = 0;
@@ -24,6 +25,7 @@ public class ERangeBattleState : EnemyState
         enemyAttack = enemy?.EnemyAttack as ERangeAttack;
         enemyVisuals = enemy?.EnemyVisuals;
         enemyCover = enemy?.EnemyCover;
+        enemyAbility = enemy?.EnemyAbility;
     }
 
     public override void Enter()
@@ -50,7 +52,7 @@ public class ERangeBattleState : EnemyState
         if (enemy.EnemyAim.IsSeeingPlayer())
             enemyMove.FaceTarget(enemy.EnemyAim.aim.position);
 
-        if (enemyAttack.CanThrowGrenade())
+        if (enemyAbility.CanUseAbility())
             stateMachine.ChangeState(enemy.ThrowGrenadeState);
 
         if (AdvancePlayer())

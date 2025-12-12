@@ -11,7 +11,9 @@ public class ERangeWeaponDataSO : ScriptableObject
     public float minWeaponCooldown = 1.5f;
     public float maxWeaponCooldown = 3f;
 
-    [Header("Bullet Details")] public float bulletSpeed = 20f;
+    [Header("Bullet Details")] 
+    public int bulletDamage = 3;
+    public float bulletSpeed = 20f;
     public float weaponSpread = 0.1f;
 
     public int GetBulletsPerAttack() =>
@@ -23,7 +25,7 @@ public class ERangeWeaponDataSO : ScriptableObject
     public Vector3 ApplyWeaponSpread(Vector3 originalDirection)
     {
         float randomizeValue = Random.Range(-weaponSpread, weaponSpread);
-        Quaternion spreadRotation = Quaternion.Euler(randomizeValue, randomizeValue, randomizeValue);
+        Quaternion spreadRotation = Quaternion.Euler(randomizeValue, randomizeValue / 2, randomizeValue);
         return spreadRotation * originalDirection;
     }
 }

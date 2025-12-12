@@ -6,11 +6,13 @@ public class EBossAttack : EnemyAttack
 {
     protected EnemyBoss enemyBoss;
     
+    [SerializeField] protected int meleeAtkDamage = 40;
     [SerializeField] protected float attackRange = 1.3f;
     [SerializeField] protected BossWeaponType weaponType;
     public BossWeaponType WeaponType => weaponType;
 
     [Header("Jump Attack")] 
+    [SerializeField] protected int jumpAtkDamage = 15;
     [SerializeField] protected float minJumpDisRequired = 4f;
     [SerializeField] protected float jumpAtkCooldown = 10f;
     [SerializeField] protected float travelTimeToTarget = 1f;
@@ -25,9 +27,9 @@ public class EBossAttack : EnemyAttack
     [Header("Attack")]
     [SerializeField] protected Transform[] damagePoints;
     [SerializeField] protected float attackRadius = 0.5f;
-    
-    [Header("Hammer Ability")]
-    [SerializeField] protected float hammerRadius = 1f;
+
+    [Header("Hammer Ability")] 
+    [SerializeField] protected float hammerRadius = 1.3f;
     protected string meleeFX = "BossMeleeImpactFX";
 
     protected override void Awake()
@@ -36,7 +38,7 @@ public class EBossAttack : EnemyAttack
         enemyBoss = enemy as EnemyBoss;
     }
 
-    protected void Update() => MeleeAttackCheck(damagePoints, attackRadius);
+    protected void Update() => MeleeAttackCheck(damagePoints, attackRadius, meleeAtkDamage);
 
     public override bool PlayerInAttackRange() =>
         Vector3.Distance(enemy.transform.position, PlayerCtrl.Instance.transform.position) < attackRange;
@@ -66,7 +68,7 @@ public class EBossAttack : EnemyAttack
     public void JumpImpact()
     {
         Transform impactPoint = GetImpactPoint();
-        MassDamage(impactPoint.position, impactRadius);
+        MassDamage(jumpAtkDamage, impactPoint.position, impactRadius);
     }
     
     protected Transform GetImpactPoint()
@@ -77,7 +79,7 @@ public class EBossAttack : EnemyAttack
         return enemy.transform;
     }
 
-    public void MassDamage(Vector3 impactPoint, float impactRad)
+    public void MassDamage(int damage, Vector3 impactPoint, float impactRad)
     {
         HashSet<Transform> uniqueEntities = new HashSet<Transform>();
         Collider[] cols = Physics.OverlapSphere(impactPoint, impactRad, ~whatIsAlly);
@@ -87,7 +89,7 @@ public class EBossAttack : EnemyAttack
             if (root.TryGetComponentInChildren(out IDamageable damageable))
             {
                 if (!uniqueEntities.Add(root)) continue;
-                damageable.TakeDamage(1);
+                damageable.TakeDamage(damage);
             }
             ApplyPhysicalForce(impactPoint, impactRad, hit);
         }
@@ -100,7 +102,8 @@ public class EBossAttack : EnemyAttack
                 ForceMode.Impulse);
     }
 
-    public void ApplyHammerAbilityDamage() => MassDamage(damagePoints[0].position, hammerRadius);
+    public void ApplyHammerAbilityDamage(int abilityDamage) =>
+        MassDamage(abilityDamage, damagePoints[0].position, hammerRadius);
 
     protected override void SpawnFX(Transform point)
     {

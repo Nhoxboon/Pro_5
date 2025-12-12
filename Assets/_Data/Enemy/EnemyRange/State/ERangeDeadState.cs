@@ -4,7 +4,7 @@ using UnityEngine;
 public class ERangeDeadState : EnemyState
 {
     protected EnemyRange enemy;
-    protected ERangeAttack enemyAttack;
+    protected ERangeAbility enemyAbility;
     protected ERangeVisuals enemyVisuals;
     
     protected bool interactionDisable;
@@ -12,7 +12,7 @@ public class ERangeDeadState : EnemyState
     public ERangeDeadState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as EnemyRange;
-        enemyAttack = enemy?.EnemyAttack as ERangeAttack;
+        enemyAbility = enemy?.EnemyAbility;
         enemyVisuals = enemy?.EnemyVisuals;
     }
 
@@ -23,7 +23,7 @@ public class ERangeDeadState : EnemyState
         if(!enemy.ThrowGrenadeState.FinishedThrowing)
         {
             enemyVisuals.EnableGrenadeModel(false);
-            enemyAttack.ThrowGrenade();
+            enemyAbility.ThrowGrenade();
         }
         
         interactionDisable = false;

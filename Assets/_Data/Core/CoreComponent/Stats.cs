@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Stats : CoreComponent
 {
-    public float hp = 20f;
+    public float hp = 100f;
     [SerializeField] protected Stat health;
     public Stat Health => health;
     

@@ -22,7 +22,7 @@ public class EMeleeAttack : EnemyAttack
 
     protected void Update()
     {
-        MeleeAttackCheck(currentWeapon.DamagePoints, currentWeapon.AttackRadius);
+        MeleeAttackCheck(currentWeapon.DamagePoints, currentWeapon.AttackRadius, attackData.attackDamage);
     }
 
     public override void UpdateAttackData()

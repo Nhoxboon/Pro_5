@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Python
   weaponType: 1
+  bulletDamage: 30
   bulletsInMagazine: 6
   magazineCapacity: 6
   totalReserveAmmo: 60
@@ -28,7 +29,7 @@ MonoBehaviour:
   baseSpread: 0.2
   maximumSpread: 2.5
   spreadIncreaseRate: 0.3
-  reloadSpeed: 1
+  reloadSpeed: 1.5
   equipmentSpeed: 1.5
-  gunDistance: 4
+  gunDistance: 25
   cameraDistance: 6

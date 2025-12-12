@@ -19,6 +19,8 @@ public class EnemyRange : Enemy
     public ERangeVisuals EnemyVisuals => enemyVisuals;
     [SerializeField] protected EnemyCoverSystem enemyCover;
     public EnemyCoverSystem EnemyCover => enemyCover;
+    [SerializeField] protected ERangeAbility enemyAbility;
+    public ERangeAbility EnemyAbility => enemyAbility;
     [SerializeField] protected EnemyAim enemyAim;
     public EnemyAim EnemyAim => enemyAim;
     
@@ -55,6 +57,7 @@ public class EnemyRange : Enemy
         base.LoadComponents();
         LoadEnemyVisuals();
         LoadEnemyCover();
+        LoadEnemyAbility();
         LoadEnemyAim();
     }
 
@@ -70,6 +73,13 @@ public class EnemyRange : Enemy
         if (enemyCover != null) return;
         enemyCover = GetComponentInChildren<EnemyCoverSystem>();
         Debug.Log(transform.name + " LoadEnemyCover", gameObject);
+    }
+
+    protected void LoadEnemyAbility()
+    {
+        if(enemyAbility != null) return;
+        enemyAbility = GetComponentInChildren<ERangeAbility>();
+        Debug.Log(transform.name + " LoadEnemyAbility", gameObject);
     }
 
     protected void LoadEnemyAim()

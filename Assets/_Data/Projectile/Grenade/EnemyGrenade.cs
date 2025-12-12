@@ -22,8 +22,9 @@ public class EnemyGrenade : Projectile
             Explode();
     }
 
-    public void SetupGrenade(LayerMask allyLayer, Vector3 target, float timeToTarget, float countdown, float power)
+    public void SetupGrenade(int damage, LayerMask allyLayer, Vector3 target, float timeToTarget, float countdown, float power)
     {
+        this.damage = damage;
         allyLayerMask = allyLayer;
         rb.linearVelocity = CalculateLaunchVelocity(target, timeToTarget);
         timer = countdown + timeToTarget;
@@ -68,7 +69,7 @@ public class EnemyGrenade : Projectile
                 if (!IsTargetValid(hit)) continue;
 
                 if (!uniqueEntities.Add(root)) continue;
-                damageable.TakeDamage(1);
+                damageable.TakeDamage(damage);
             }
             ApplyPhysicalForce(hit);
         }

@@ -1178,10 +1178,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 841a4128bc37a2a40b18ac48b655cb6e, type: 2}
   - {fileID: 11400000, guid: 9a92a432e1b3b244aa82c75fcf8bebbc, type: 2}
   - {fileID: 11400000, guid: 56a5ba9d3546b49428974e76d6fcd7db, type: 2}
-  grenadePerk: 0
-  grenadeCooldown: 2
-  grenadeSpawnPoint: {fileID: 7341188478577066088}
-  timeToTarget: 1.2
 --- !u!1 &978326335155307403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,6 +1562,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4896936810326992330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1560066370343282870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2847856571986299913}
+  - component: {fileID: 1603717633918307158}
+  m_Layer: 11
+  m_Name: Ability
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2847856571986299913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560066370343282870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9108201055560787726}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1603717633918307158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560066370343282870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268ea9f4377847679a82a6cebbdcf5f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 6254423985451221362}
+  abilityDamage: 40
+  minAbilityDistance: 6
+  abilityCooldown: 2
+  grenadePerk: 0
+  grenadeSpawnPoint: {fileID: 7341188478577066088}
+  timeToTarget: 1.2
+  whatIsAlly:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &1633690053556309431
 GameObject:
   m_ObjectHideFlags: 0
@@ -8382,7 +8432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   core: {fileID: 7654625143423058615}
-  hp: 20
+  hp: 100
   health:
     maxValue: 0
     currentValue: 0
@@ -9553,6 +9603,7 @@ Transform:
   - {fileID: 8913502650257945246}
   - {fileID: 4559222342160322513}
   - {fileID: 4033202144321262259}
+  - {fileID: 2847856571986299913}
   - {fileID: 8535741038398606493}
   - {fileID: 1120521364822751543}
   m_Father: {fileID: 0}
@@ -9599,6 +9650,7 @@ MonoBehaviour:
   enemyAttack: {fileID: 5801970961435942854}
   enemyVisuals: {fileID: 379793502354175936}
   enemyCover: {fileID: 3583481152325368680}
+  enemyAbility: {fileID: 1603717633918307158}
   enemyAim: {fileID: 3744352515817949573}
 --- !u!1 &8687593203001010995
 GameObject:

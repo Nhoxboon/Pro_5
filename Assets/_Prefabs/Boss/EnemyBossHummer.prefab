@@ -472,17 +472,19 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 256
+  meleeAtkDamage: 40
   attackRange: 1.6
   weaponType: 1
-  minJumpDisRequired: 4
+  jumpAtkDamage: 25
+  minJumpDisRequired: 5
   jumpAtkCooldown: 5
-  travelTimeToTarget: 1
+  travelTimeToTarget: 0.6
   impactRadius: 2.5
   impactPower: 30
   damagePoints:
   - {fileID: 5982203708909438343}
   attackRadius: 0.5
-  hammerRadius: 1
+  hammerRadius: 1.3
 --- !u!1 &744943652431790274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,7 +1489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   core: {fileID: 1953584580828064005}
-  hp: 20
+  hp: 1500
   health:
     maxValue: 0
     currentValue: 0
@@ -13588,7 +13590,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 1693774863116288180}
-  minAbilityDistance: 2
+  abilityDamage: 25
+  minAbilityDistance: 2.5
   abilityCooldown: 4
   flameThrowDuration: 3
   flameDamageCooldown: 0.5

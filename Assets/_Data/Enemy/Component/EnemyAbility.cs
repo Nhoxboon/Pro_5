@@ -7,6 +7,8 @@ public class EnemyAbility : NhoxBehaviour
     [SerializeField] protected Enemy enemy;
 
     [Header("Ability")] 
+    [SerializeField] protected int abilityDamage = 10;
+    public int AbilityDamage => abilityDamage;
     [SerializeField] protected float minAbilityDistance = 6f;
     [SerializeField] protected float abilityCooldown = 5f;
     public float AbilityCooldown => abilityCooldown;
