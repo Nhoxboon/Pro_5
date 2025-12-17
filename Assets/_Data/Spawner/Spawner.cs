@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Spawner : NhoxBehaviour
+public abstract class Spawner<T> : NhoxSingleton<T> where T : NhoxBehaviour
 {
     [SerializeField] protected List<Transform> prefabs = new List<Transform>();
 

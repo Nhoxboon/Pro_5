@@ -1,11 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerCtrl : NhoxBehaviour
+public class PlayerCtrl : NhoxSingleton<PlayerCtrl>
 {
-    private static PlayerCtrl instance;
-    public static PlayerCtrl Instance => instance;
-    
     [SerializeField] protected Core core;
     public Core Core => core;
 
@@ -39,17 +36,9 @@ public class PlayerCtrl : NhoxBehaviour
     {
         base.Awake();
         core.Stats.Health.OnCurrentValueZero += PlayerDie;
-        
-        if (instance != null)
-        {
-            Debug.LogError("Only one instance of PlayerCtrl allow to exist");
-            return;
-        }
-
-        instance = this;
     }
 
-    protected void OnDestroy() => core.Stats.Health.OnCurrentValueZero += PlayerDie;
+    protected void OnDestroy() => core.Stats.Health.OnCurrentValueZero -= PlayerDie;
 
     protected override void LoadComponents()
     {

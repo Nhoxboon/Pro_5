@@ -1,19 +1,6 @@
 ﻿using UnityEngine;
 
-public class ProjectileSpawner : Spawner
+public class ProjectileSpawner : Spawner<ProjectileSpawner>
 {
-    private static ProjectileSpawner instance;
-    public static ProjectileSpawner Instance => instance;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if (instance != null)
-        {
-            Debug.LogError("Only 1 instance of ProjectileSpawner allow to exist");
-            return;
-        }
-
-        instance = this;
-    }
+    
 }
