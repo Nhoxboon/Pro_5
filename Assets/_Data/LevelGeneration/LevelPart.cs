@@ -4,11 +4,24 @@ using UnityEngine;
 public class LevelPart : NhoxBehaviour
 {
     [SerializeField] protected SnapPoint[] snapPoints;
+    
+    [Header("Intersection Check")] 
+    [SerializeField] protected LayerMask intersectionLayer;
+    [SerializeField] protected Transform intersectionCheckParent;
+    [SerializeField] protected Collider[] intersectionCheckColliders;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        LoadSnapPoints();
+    }
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
         LoadSnapPoints();
+        LoadLayerMask();
+        LoadIntersectionCheck();
     }
 
     protected void LoadSnapPoints()
@@ -18,6 +31,40 @@ public class LevelPart : NhoxBehaviour
         Debug.Log(transform.name + " LoadSnapPoints", gameObject);
     }
 
+    protected void LoadLayerMask()
+    {
+        if (intersectionLayer.value != 0) return;
+        intersectionLayer = LayerMask.GetMask("IntersectionCheck");
+        Debug.Log(transform.name + " LoadLayerMask", gameObject);
+    }
+    
+    protected void LoadIntersectionCheck()
+    {
+        if (intersectionCheckColliders.Length > 0) return;
+        intersectionCheckParent = GetComponentInChildren<IntersectionCheck>().transform;
+        intersectionCheckColliders = intersectionCheckParent.GetComponentsInChildren<Collider>();
+        Debug.Log(transform.name + " LoadIntersectionCheckColliders", gameObject);
+    }
+
+    public bool IntersectionDetected()
+    {
+        Physics.SyncTransforms();
+
+        foreach (var col in intersectionCheckColliders)
+        {
+            Collider[] hitCols = Physics.OverlapBox(col.bounds.center, col.bounds.extents, Quaternion.identity,
+                intersectionLayer);
+
+            foreach (var hit in hitCols)
+            {
+                if (hit.transform.parent.TryGetComponent(out IntersectionCheck intersectionCheck) &&
+                    intersectionCheckParent != intersectionCheck.transform)
+                    return true;
+            }
+        }
+        return false;
+    }
+    
     public void SnapAndAlignPartTo(SnapPoint targetSnapPoint)
     {
         SnapPoint entrancePoint = GetEntrancePoint();
