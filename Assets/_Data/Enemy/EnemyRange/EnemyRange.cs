@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyRange : Enemy
 {
@@ -101,6 +103,9 @@ public class EnemyRange : Enemy
 
     protected override void InitializePerk()
     {
+        if (enemyAttack is ERangeAttack rangeAttack)
+            rangeAttack.SelectRandomWeaponType();
+        
         if (enemyCover.IsUnstoppable())
             enemyAnimator.AnimationSetFloat("advanceIndex", 1);
     }

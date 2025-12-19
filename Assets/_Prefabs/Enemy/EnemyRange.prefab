@@ -9642,8 +9642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ad9cd4972d4e43a206fe87077ed451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleTime: 10
-  aggroRange: 10
+  idleTime: 3
+  aggroRange: 15
   core: {fileID: 7654625143423058615}
   enemyMove: {fileID: 8128529766799189533}
   enemyAnimator: {fileID: 6826797805207904024}

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ERangeAttack : EnemyAttack
 {
@@ -22,7 +24,24 @@ public class ERangeAttack : EnemyAttack
         base.Awake();
         enemyRange = enemy as EnemyRange;
     }
+    
+    public void SetWeaponType(EnemyRangeWeaponType newType) => weaponType = newType;
 
+    public void SelectRandomWeaponType()
+    {
+        if (weaponType != EnemyRangeWeaponType.Random) return;
+        List<EnemyRangeWeaponType> validTypes = new List<EnemyRangeWeaponType>();
+
+        foreach (EnemyRangeWeaponType value in Enum.GetValues(typeof(EnemyRangeWeaponType)))
+        {
+            if(value != EnemyRangeWeaponType.Random && value != EnemyRangeWeaponType.Rifle)
+                validTypes.Add(value);
+        }
+        
+        int randomIndex = Random.Range(0, validTypes.Count);
+        weaponType = validTypes[randomIndex];
+    }
+    
     protected void GetGunPoint()
     {
         if (enemyRange.EnemyVisuals.CurrentWeaponModel.TryGetComponent(out EnemyRangeWeaponModel weapon) &&

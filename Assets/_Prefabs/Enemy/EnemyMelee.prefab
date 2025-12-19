@@ -2317,8 +2317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82af0885bae740c6a5828eef94a3e114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleTime: 2
-  aggroRange: 6
+  idleTime: 3
+  aggroRange: 8
   core: {fileID: 6776366909950185078}
   enemyMove: {fileID: 3614282592889796114}
   enemyAnimator: {fileID: 2003987622449720733}
@@ -2328,7 +2328,7 @@ MonoBehaviour:
   meleeType: 0
   shieldTransform: {fileID: 5047585049564944156}
   shieldDurability: 400
-  dodgeCooldown: 2
+  dodgeCooldown: 5
 --- !u!1 &3424857210804865751
 GameObject:
   m_ObjectHideFlags: 0
@@ -3936,7 +3936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 1.5
   runSpeed: 4
-  advanceStoppingDistance: 5
+  advanceStoppingDistance: 0
   advanceDuration: 2.5
   turnSpeed: 5
   patrolPoints:

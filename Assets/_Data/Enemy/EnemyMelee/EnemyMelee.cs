@@ -26,7 +26,7 @@ public class EnemyMelee : Enemy
     [SerializeField] protected Transform shieldTransform;
     [SerializeField] protected float shieldDurability = 10f;
     public float ShieldDurability => shieldDurability;
-    public float dodgeCooldown = 2f;
+    public float dodgeCooldown = 5f;
     protected float lastDodgeTime = -10f;
 
     protected override void Awake()

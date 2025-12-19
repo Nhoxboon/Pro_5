@@ -5,4 +5,5 @@
     Shotgun,
     AutoRifle,
     Rifle,
+    Random,
 }

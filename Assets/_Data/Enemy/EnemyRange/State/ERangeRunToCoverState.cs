@@ -37,7 +37,7 @@ public class ERangeRunToCoverState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(Vector3.Distance(enemy.transform.position, destination) <= 0.3f)
+        if(Vector3.Distance(enemy.transform.position, destination) <= 0.8f)
             stateMachine.ChangeState(enemy.BattleState);
     }
 }

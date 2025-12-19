@@ -5,9 +5,11 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : NhoxBehaviour
 {
-    [Header("Data")] public float idleTime = 2f;
+    [Header("Data")] 
+    public float idleTime = 2f;
     public float aggroRange = 4f;
 
+    [Header("Components")]
     [SerializeField] protected Core core;
     public Core Core => core;
 

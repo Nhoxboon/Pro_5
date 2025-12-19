@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Desert Eagle
   weaponType: 0
-  bulletDamage: 20
+  bulletDamage: 18
   bulletsInMagazine: 15
   magazineCapacity: 15
   totalReserveAmmo: 60
