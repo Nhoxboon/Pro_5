@@ -139,6 +139,7 @@ public class ERangeBattleState : EnemyState
     protected void SetupForFirstAttack()
     {
         if (!firstTimeAttack) return;
+        enemy.aggroRange = enemyMove.AdvanceStoppingDistance + 2;
         firstTimeAttack = false;
         bulletsPerAttack = enemyAttack.WeaponData.GetBulletsPerAttack();
         weaponCooldown = enemyAttack.WeaponData.GetWeaponCooldown();

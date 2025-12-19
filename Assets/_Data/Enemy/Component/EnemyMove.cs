@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyMove : NhoxBehaviour
@@ -93,4 +94,10 @@ public class EnemyMove : NhoxBehaviour
 
     public void ActivateManualMovement(bool manualMove) => manualMovement = manualMove;
     public void ActivateManualRotation(bool manualRotate) => manualRotation = manualRotate;
+
+    protected void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.parent.position, advanceStoppingDistance);
+    }
 }
