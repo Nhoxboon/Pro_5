@@ -12,7 +12,7 @@ public class EnemyAim : NhoxBehaviour
     protected override void Start()
     {
         base.Start();
-        aim.parent = null;
+        aim.parent = GameObject.Find("AimHolder").transform;
     }
 
     protected override void LoadComponents()

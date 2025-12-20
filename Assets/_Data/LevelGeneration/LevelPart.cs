@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelPart : NhoxBehaviour
 {
+    [SerializeField] protected Enemy[] enemies;
+    public Enemy[] Enemies => enemies;
     [SerializeField] protected SnapPoint[] snapPoints;
     
     [Header("Intersection Check")] 
@@ -19,9 +21,16 @@ public class LevelPart : NhoxBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        LoadEnemies();
         LoadSnapPoints();
         LoadLayerMask();
         LoadIntersectionCheck();
+    }
+
+    protected void LoadEnemies()
+    {
+        if(enemies != null && enemies.Length > 0 )return;
+        enemies = GetComponentsInChildren<Enemy>(true);
     }
 
     protected void LoadSnapPoints()
@@ -40,10 +49,20 @@ public class LevelPart : NhoxBehaviour
     
     protected void LoadIntersectionCheck()
     {
-        if (intersectionCheckColliders.Length > 0) return;
+        if (intersectionCheckColliders is { Length: > 0 }) return;
         intersectionCheckParent = GetComponentInChildren<IntersectionCheck>().transform;
         intersectionCheckColliders = intersectionCheckParent.GetComponentsInChildren<Collider>();
         Debug.Log(transform.name + " LoadIntersectionCheckColliders", gameObject);
+    }
+
+    [ContextMenu("Set static to environment layer")]
+    protected void AdjustLayerForStaticObj()
+    {
+        foreach (var child in transform.GetComponentsInChildren<Transform>(true))
+        {
+            if (child.gameObject.isStatic)
+                child.gameObject.layer = LayerMask.NameToLayer("Environment");
+        }
     }
 
     public bool IntersectionDetected()
