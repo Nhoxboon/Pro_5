@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public class LevelGenerator : NhoxBehaviour
+public class LevelGenerator : NhoxSingleton<LevelGenerator>
 {
     [SerializeField] protected NavMeshSurface navMesh;
     
@@ -136,5 +136,11 @@ public class LevelGenerator : NhoxBehaviour
             enemy.transform.parent = enemyHolder;
             enemy.gameObject.SetActive(true);
         }
+    }
+
+    public Enemy GetRandomEnemy()
+    {
+        int randomIndex = Random.Range(0, enemies.Count);
+        return enemies[randomIndex];
     }
 }

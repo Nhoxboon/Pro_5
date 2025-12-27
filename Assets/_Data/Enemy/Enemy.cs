@@ -22,6 +22,9 @@ public class Enemy : NhoxBehaviour
     [SerializeField] protected EnemyAttack enemyAttack;
     public EnemyAttack EnemyAttack => enemyAttack;
 
+    [SerializeField] protected EnemyDrop enemyDrop;
+    public EnemyDrop EnemyDrop => enemyDrop;
+
     public bool InBattleMode { get; protected set; }
     public EnemyStateMachine StateMachine { get; protected set; }
 
@@ -52,6 +55,7 @@ public class Enemy : NhoxBehaviour
         LoadEnemyMove();
         LoadEnemyAnimation();
         LoadEnemyAttack();
+        LoadEnemyDrop();
     }
 
     protected void LoadCore()
@@ -82,6 +86,13 @@ public class Enemy : NhoxBehaviour
         Debug.Log(transform.name + " LoadEnemyAttack", gameObject);
     }
 
+    protected void LoadEnemyDrop()
+    {
+        if (enemyDrop != null) return;
+        enemyDrop = GetComponentInChildren<EnemyDrop>();
+        Debug.Log(transform.name + " LoadEnemyDrop", gameObject);
+    }
+
     protected bool ShouldEnterBattleMode()
     {
         if (!IsPlayerInAggressRange() || InBattleMode) return false;
@@ -96,11 +107,19 @@ public class Enemy : NhoxBehaviour
         //For override
     }
 
+    public virtual void MakeEnemyStronger()
+    {
+        int additionalHealth = Mathf.RoundToInt(core.Stats.Health.MaxValue * 1.5f);
+        core.Stats.Health.SetMaxValue(core.Stats.Health.MaxValue + additionalHealth);
+        core.Stats.Health.Init();
+        transform.localScale *= 1.2f;
+    }
+
     public virtual void AbilityTrigger() => StateMachine.currentState.AbilityTrigger();
 
     protected virtual void EnemyDie()
     {
-        //For override
+        enemyDrop.DropItems();
     }
 
     public virtual void BulletImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>

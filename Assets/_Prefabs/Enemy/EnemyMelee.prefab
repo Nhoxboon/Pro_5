@@ -2281,6 +2281,7 @@ Transform:
   - {fileID: 5351284866273968704}
   - {fileID: 4782170678382359709}
   - {fileID: 4751417746601962275}
+  - {fileID: 3920587149839767937}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &3061246112849950139
@@ -2323,6 +2324,7 @@ MonoBehaviour:
   enemyMove: {fileID: 3614282592889796114}
   enemyAnimator: {fileID: 2003987622449720733}
   enemyAttack: {fileID: 1108283842713516609}
+  enemyDrop: {fileID: 7022160190272231465}
   enemyVisuals: {fileID: 4549447855608242417}
   enemyAbility: {fileID: 6363985197333152881}
   meleeType: 0
@@ -6049,6 +6051,50 @@ Transform:
   - {fileID: 8869788343605541107}
   m_Father: {fileID: 4087309420043535065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7362044336781435699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3920587149839767937}
+  - component: {fileID: 7022160190272231465}
+  m_Layer: 11
+  m_Name: Drop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3920587149839767937
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7362044336781435699}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 609831354600438171}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7022160190272231465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7362044336781435699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b640ed42140a4fe59a9f6bb6c7ff0032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7391720776239499226
 GameObject:
   m_ObjectHideFlags: 0

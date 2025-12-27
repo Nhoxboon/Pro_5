@@ -6290,6 +6290,7 @@ Transform:
   - {fileID: 2887448579074700292}
   - {fileID: 7007306491350441916}
   - {fileID: 1223247977287097602}
+  - {fileID: 3803625905286709781}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1874966825565564449
@@ -6332,6 +6333,7 @@ MonoBehaviour:
   enemyMove: {fileID: 3480468212773036432}
   enemyAnimator: {fileID: 2881030075895608720}
   enemyAttack: {fileID: 5616093584300277295}
+  enemyDrop: {fileID: 4912054352717489936}
   enemyVisuals: {fileID: 8087832371923230896}
   enemyAbility: {fileID: 6748211345224107451}
   actionCooldown: 5
@@ -7185,6 +7187,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2651d652b28495a9585601b07539bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &3862769896970679306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3803625905286709781}
+  - component: {fileID: 4912054352717489936}
+  m_Layer: 11
+  m_Name: Drop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3803625905286709781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862769896970679306}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2664504306327448665}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4912054352717489936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862769896970679306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b640ed42140a4fe59a9f6bb6c7ff0032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3892144636560596643
