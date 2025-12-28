@@ -36,7 +36,6 @@ public class EnemyRange : Enemy
         AdvancePlayerState = new ERangeAdvancePlayerState(this, StateMachine, "advance");
         ThrowGrenadeState = new ERangeThrowGrenadeState(this, StateMachine, "throwGrenade");
         DeadState = new ERangeDeadState(this, StateMachine, "idle");  //Idle anim is just a placeholder, we use rag doll
-        
     }
 
     protected override void Start()
@@ -114,5 +113,19 @@ public class EnemyRange : Enemy
     {
         base.EnemyDie();
         StateMachine.ChangeState(DeadState);
+    }
+
+    protected override void ResetEnemy()
+    {
+        if(IdleState != null && StateMachine?.currentState != null)
+            StateMachine.ChangeState(IdleState);
+        base.ResetEnemy();
+
+        enemyAbility.ResetAbility();
+        enemyCover.ResetCover();
+        enemyAim.ResetAimPosition();
+
+        enemyVisuals.ResetVisuals();
+        enemyAttack.UpdateAttackData();
     }
 }

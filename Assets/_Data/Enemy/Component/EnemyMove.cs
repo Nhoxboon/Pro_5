@@ -78,6 +78,10 @@ public class EnemyMove : NhoxBehaviour
 
     public void FaceTarget(Vector3 target, float turnSpeed = 0)
     {
+        Vector3 direction = target - transform.parent.position;
+
+        if (direction.sqrMagnitude < 0.01f) return;
+
         Quaternion targetRotation = Quaternion.LookRotation(target - transform.parent.position);
         Vector3 currentEulerAngles = transform.parent.rotation.eulerAngles;
         
@@ -99,5 +103,20 @@ public class EnemyMove : NhoxBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.parent.position, advanceStoppingDistance);
+    }
+
+    public void ResetMove()
+    {
+        if(agent == null) return;
+        agent.enabled = false;
+        manualMovement = false;
+        manualRotation = false;
+        currentPatrolIndex = 0;
+
+        agent.enabled = true;
+        agent.ResetPath();
+        agent.velocity = Vector3.zero;
+        agent.isStopped = false;
+        agent.speed = walkSpeed;
     }
 }

@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: aggroRange
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 6254423985451221362, guid: 6372de6001db17f4eac2d007130d2808, type: 3}
+      propertyPath: originalAggroRange
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8128529766799189533, guid: 6372de6001db17f4eac2d007130d2808, type: 3}
       propertyPath: advanceStoppingDistance
       value: 3

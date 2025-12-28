@@ -76,4 +76,12 @@ public class EnemyCoverSystem : NhoxBehaviour
 
         return collectedCovers;
     }
+
+    public void ResetCover()
+    {
+        CurrentCover?.SetOccupied(false);
+        CurrentCover = null;
+        LastCover?.SetOccupied(false);
+        LastCover = null;
+    }
 }

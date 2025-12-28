@@ -109,4 +109,12 @@ public class ERangeVisuals : EnemyBasicVisuals
         }
         return null;
     }
+
+    public override void ResetVisuals()
+    {
+        base.ResetVisuals();
+        EnableIK(false, false, 100f);
+        EnableGrenadeModel(false);
+        EnableSecondaryWeaponModel(false);
+    }
 }

@@ -8,7 +8,7 @@ public class EnemyDrop : NhoxBehaviour
 
     public void DropItems()
     {
-        if(missionObjKey is not null)
+        if(missionObjKey != null)
             CreateItem(missionObjKey);
     }
 

@@ -86,7 +86,7 @@ public class EBossAttack : EnemyAttack
         foreach (Collider hit in cols)
         {
             Transform root = hit.transform.root;
-            if (root.TryGetComponentInChildren(out IDamageable damageable))
+            if (hit.TryGetComponent(out IDamageable damageable))
             {
                 if (!uniqueEntities.Add(root)) continue;
                 damageable.TakeDamage(damage);
@@ -128,5 +128,11 @@ public class EBossAttack : EnemyAttack
         //     }
         //     Gizmos.DrawWireSphere(damagePoints[0].position, hammerRadius);
         // }
+    }
+
+    public override void ResetAttackCooldown()
+    {
+        base.ResetAttackCooldown();
+        lastTimeJumped = Time.time;
     }
 }

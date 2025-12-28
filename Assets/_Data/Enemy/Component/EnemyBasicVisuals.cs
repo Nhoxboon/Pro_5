@@ -125,4 +125,11 @@ public class EnemyBasicVisuals : NhoxBehaviour
         if (CurrentWeaponModel.TryGetComponent(out EnemyWeaponModel weaponModel))
             weaponModel.EnableTrail(enable);
     }
+
+    public virtual void ResetVisuals()
+    {
+        SetupLook();
+        EnableWeaponModel(true);
+        EnableWeaponTrail(false);
+    }
 }

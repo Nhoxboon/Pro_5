@@ -41,4 +41,9 @@ public class EnemyAbility : NhoxBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(enemy.transform.position, minAbilityDistance);
     }
+
+    public virtual void ResetAbility()
+    {
+        lastTimeUsedAbility = -abilityCooldown;
+    }
 }

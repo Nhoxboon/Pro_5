@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyRange_AdvanceGrenade Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7094554633810567242, guid: e38bc8ec4fe3e2c49862e4ea2d392645, type: 3}
+      propertyPath: originalAggroRange
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

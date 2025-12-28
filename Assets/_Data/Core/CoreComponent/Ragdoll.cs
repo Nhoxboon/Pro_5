@@ -53,4 +53,10 @@ public class Ragdoll : CoreComponent
         foreach (var col in ragdollCols)
             col.enabled = value;
     }
+
+    public void ResetRagdoll()
+    {
+        RagdollActive(false);
+        ColliderActive(true);
+    }
 }

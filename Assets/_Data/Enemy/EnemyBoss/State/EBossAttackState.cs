@@ -11,6 +11,7 @@ public class EBossAttackState : EnemyState
     {
         enemy = enemyBase as EnemyBoss;
         enemyMove = enemy?.EnemyMove;
+        LastTimeAttacked = Time.time;//Need to set initial value to prevent immediate speed up
     }
 
     public override void Enter()
@@ -43,4 +44,6 @@ public class EBossAttackState : EnemyState
         else
             stateMachine.ChangeState(enemy.MoveState);
     }
+
+    public void ResetAttackTimer() => LastTimeAttacked = Time.time;
 }

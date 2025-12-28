@@ -32,19 +32,20 @@ public class ERangeDeadState : EnemyState
         enemy.EnemyMove.Agent.isStopped = true;
 
         enemy.Core.Ragdoll.RagdollActive(true);
-        // startTimer = 1.5f; //Note: Uncomment if need to disable interaction with enemy
+        stateTimer = 1.5f; //Note: Uncomment if need to disable interaction with enemy
     }
 
     public override void Exit()
     {
         base.Exit();
+        interactionDisable = false;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
         //Note: Uncomment if need to disable interaction with enemy
-        // DisableInteraction();
+        DisableInteraction();
     }
     
     protected void DisableInteraction()

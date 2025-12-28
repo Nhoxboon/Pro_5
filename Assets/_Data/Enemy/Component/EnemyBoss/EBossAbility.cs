@@ -39,15 +39,16 @@ public class EBossAbility : EnemyAbility
             enemy.EnemyAnimator.AnimationTrigger("stopFlameThrow");
             return;
         }
+        flameParticle.Clear();
+
         var mainModule = flameParticle.main;
         mainModule.duration = flameThrowDuration;
-        
+
         if (flameParticle.transform.GetChild(0).TryGetComponent(out ParticleSystem extraParticle))
         {
             var extraModule = extraParticle.main;
             extraModule.duration = flameThrowDuration;
         }
-        flameParticle.Clear();
         flameParticle.Play();
     }
     
@@ -59,5 +60,12 @@ public class EBossAbility : EnemyAbility
         
         if(enemy.EnemyAttack is EBossAttack enemyAttack)
             enemyAttack.ApplyHammerAbilityDamage(abilityDamage);
+    }
+
+    public override void ResetAbility()
+    {
+        base.ResetAbility();
+        if(FlameThrowActive)
+            FlameThrowActive = false;
     }
 }

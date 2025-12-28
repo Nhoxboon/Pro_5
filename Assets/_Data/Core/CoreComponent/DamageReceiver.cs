@@ -1,10 +1,25 @@
 ﻿using System;
+using UnityEngine;
 
-public class DamageReceiver : CoreComponent, IDamageable
+public class DamageReceiver : CoreComponent
 {
     public Action GetDamage;
-    
-    public virtual void TakeDamage(int damage)
+    [SerializeField] protected Hitbox[] hitboxes;
+
+    protected override void LoadComponents()
+    {
+        base.LoadComponents();
+        LoadHitboxes();
+    }
+
+    protected void LoadHitboxes()
+    {
+        if (hitboxes is { Length: > 0 }) return;
+        hitboxes = core.Root.GetComponentsInChildren<Hitbox>();
+        Debug.Log(transform.name + " LoadHitboxes", gameObject);
+    }
+
+    public void TakeDamage(int damage)
     {
         if (core.Stats.ShieldDurability.CurrentValue > 0)
             ReduceShieldDurability(damage);

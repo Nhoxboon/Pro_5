@@ -54,4 +54,6 @@ public class EnemyAim : NhoxBehaviour
         }
         return false;
     }
+
+    public void ResetAimPosition() => aim.position = transform.parent.position + Vector3.up;
 }

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: meleeType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 546739200291049347, guid: 38cee52e088f4334db955e77ee2e54ee, type: 3}
+      propertyPath: originalAggroRange
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 609831354600438171, guid: 38cee52e088f4334db955e77ee2e54ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.76

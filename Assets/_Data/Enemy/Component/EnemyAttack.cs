@@ -69,4 +69,9 @@ public class EnemyAttack : NhoxBehaviour
     {
         //For override
     }
+
+    public virtual void ResetAttackCooldown()
+    {
+        //For override
+    }
 }

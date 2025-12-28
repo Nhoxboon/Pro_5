@@ -78,4 +78,19 @@ public class EnemyBoss : Enemy
         base.EnemyDie();
         StateMachine.ChangeState(DeadState);
     }
+
+    protected override void ResetEnemy()
+    {
+        if (IdleState != null && StateMachine?.currentState != null)
+            StateMachine.ChangeState(IdleState);
+        base.ResetEnemy();
+
+        AttackState?.ResetAttackTimer();
+        enemyAbility.ResetAbility();
+
+        enemyVisuals.EnableWeaponTrail(false);
+        enemyAttack.ResetAttackCooldown();
+        if (enemyAttack is EBossAttack { WeaponType: BossWeaponType.Fist })
+            enemyVisuals.ResetBatteries();
+    }
 }

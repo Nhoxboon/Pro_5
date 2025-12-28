@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : NhoxBehaviour
 {
-    [Header("Data")] 
+    [Header("Data")]
+    public EnemyType enemyType;
     public float idleTime = 2f;
+    protected float originalAggroRange;
     public float aggroRange = 4f;
 
     [Header("Components")]
@@ -23,7 +26,6 @@ public class Enemy : NhoxBehaviour
     public EnemyAttack EnemyAttack => enemyAttack;
 
     [SerializeField] protected EnemyDrop enemyDrop;
-    public EnemyDrop EnemyDrop => enemyDrop;
 
     public bool InBattleMode { get; protected set; }
     public EnemyStateMachine StateMachine { get; protected set; }
@@ -32,11 +34,23 @@ public class Enemy : NhoxBehaviour
     {
         base.Awake();
         StateMachine = new EnemyStateMachine();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        originalAggroRange = aggroRange;
+    }
+
+    protected void OnEnable()
+    {
+        if (StateMachine?.currentState != null)
+            ResetEnemy();
         core.DamageReceiver.GetDamage += EnterBattleMode;
         core.Stats.Health.OnCurrentValueZero += EnemyDie;
     }
 
-    protected virtual void OnDestroy()
+    protected virtual void OnDisable()
     {
         core.DamageReceiver.GetDamage -= EnterBattleMode;
         core.Stats.Health.OnCurrentValueZero -= EnemyDie;
@@ -120,6 +134,9 @@ public class Enemy : NhoxBehaviour
     protected virtual void EnemyDie()
     {
         enemyDrop.DropItems();
+        StartCoroutine(DespawnCoroutine());
+        if(this.TryGetComponent(out MissionObj_HuntTarget huntTarget))
+            huntTarget.TargetKilled();
     }
 
     public virtual void BulletImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb) =>
@@ -136,5 +153,22 @@ public class Enemy : NhoxBehaviour
     public bool IsPlayerInAggressRange() =>
         Vector3.Distance(transform.position, PlayerCtrl.Instance.transform.position) < aggroRange;
 
+    protected IEnumerator DespawnCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        EnemySpawner.Instance.Despawn(gameObject);
+    }
+
     protected virtual void OnDrawGizmos() => Gizmos.DrawWireSphere(transform.position, aggroRange);
+
+    protected virtual void ResetEnemy()
+    {
+        aggroRange = originalAggroRange;
+        InBattleMode = false;
+        core.Stats.Health.Init();
+        enemyMove.ResetMove();
+
+        core.Ragdoll.ResetRagdoll();
+        enemyAnimator.SetAnimator(true);
+    }
 }

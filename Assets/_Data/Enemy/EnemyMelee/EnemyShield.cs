@@ -17,7 +17,13 @@ public class EnemyShield : NhoxBehaviour
         enemy.Core.Stats.ShieldDurability.OnCurrentValueZero += DisableShield;
     }
 
-    protected void OnDestroy()
+    protected void OnEnable()
+    {
+        enemy.Core.Stats.ShieldDurability.OnCurrentValueZero += DisableShield;
+        ResetShield();
+    }
+
+    protected void OnDisable()
     {
         enemy.Core.Stats.ShieldDurability.OnCurrentValueZero -= DisableShield;
     }
@@ -39,5 +45,10 @@ public class EnemyShield : NhoxBehaviour
     {
         enemy.EnemyAnimator.AnimationSetFloat("chaseIndex", 0);
         gameObject.SetActive(false);
+    }
+
+    protected void ResetShield()
+    {
+        enemy.Core.Stats.ShieldDurability.Init();
     }
 }

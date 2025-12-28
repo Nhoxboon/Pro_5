@@ -16,7 +16,7 @@ public class MissionManager : NhoxSingleton<MissionManager>
         currentMission?.UpdateMission();
     }
 
-    protected void StartMission() => currentMission.StartMission();
+    protected void StartMission() => currentMission?.StartMission();
 
-    public bool MissionCompleted() => currentMission.MissionCompleted();
+    public bool MissionCompleted() => currentMission != null && currentMission.MissionCompleted();
 }

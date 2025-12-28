@@ -27,7 +27,6 @@ public class EBossMoveState : EnemyState
         SpeedReset();
         destination = enemyMove.GetPatrolDestination();
         enemyMove.Agent.SetDestination(destination);
-
         actionTimer = enemy.ActionCooldown;
     }
 
@@ -52,7 +51,7 @@ public class EBossMoveState : EnemyState
         }
         else
         {
-            if (Vector3.Distance(enemy.transform.position, destination) < 0.05f)
+            if (enemyMove.Agent.remainingDistance <= enemyMove.Agent.stoppingDistance + 0.05f)
                 stateMachine.ChangeState(enemy.IdleState);
         }
     }

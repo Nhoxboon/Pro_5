@@ -39,7 +39,6 @@ public class EnemyMelee : Enemy
         AttackState = new EMeleeAttackState(this, StateMachine, "attack");
         AbilityState = new EMeleeAbilityState(this, StateMachine, "axeThrow");
         DeadState = new EMeleeDeadState(this, StateMachine, "idle"); //Idle anim is just a placeholder, we use rag doll
-
     }
 
     protected override void Start()
@@ -134,5 +133,17 @@ public class EnemyMelee : Enemy
     {
         base.EnemyDie();
         StateMachine.ChangeState(DeadState);
+    }
+
+    protected override void ResetEnemy()
+    {
+        lastDodgeTime = -10f;
+        if(IdleState != null && StateMachine?.currentState != null)
+            StateMachine.ChangeState(IdleState);
+        base.ResetEnemy();
+
+        enemyAbility.ResetAbility();
+        enemyVisuals.ResetVisuals();
+        enemyAttack.UpdateAttackData();
     }
 }

@@ -32,7 +32,7 @@ public class FlameThrowDamageArea : NhoxBehaviour
         if(!enemy.EnemyAbility.FlameThrowActive) return;
         if(Time.time - lastTimeDamage < damageCooldown) return;
 
-        if (!other.transform.root.TryGetComponentInChildren(out IDamageable damageable)) return;
+        if (!other.transform.TryGetComponent(out IDamageable damageable)) return;
         damageable.TakeDamage(enemy.EnemyAbility.AbilityDamage);
         lastTimeDamage = Time.time;
     }

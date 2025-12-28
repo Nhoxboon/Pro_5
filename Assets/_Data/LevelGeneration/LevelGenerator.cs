@@ -22,6 +22,7 @@ public class LevelGenerator : NhoxSingleton<LevelGenerator>
     protected bool generationOver;
     
     protected List<Enemy> enemies = new();
+    public List<Enemy> Enemies => enemies;
     protected Transform enemyHolder;
     
     protected override void Start()

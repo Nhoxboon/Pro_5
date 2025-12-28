@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Stats : CoreComponent
@@ -19,6 +20,8 @@ public class Stats : CoreComponent
         health.SetMaxValue(hp);
         health.Init();
     }
+
+    protected void OnDisable() => health.SetMaxValue(hp);
 
     protected override void LoadComponents()
     {
