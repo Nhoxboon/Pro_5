@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 396ea135bd084971b7e9b10ba8f7f73c, type: 3}
-  m_Name: Auto Rifle
+  m_Name: Auto-Rifle
   m_EditorClassIdentifier: 
   weaponName: AUG
   weaponType: 2
@@ -33,3 +33,4 @@ MonoBehaviour:
   equipmentSpeed: 1
   gunDistance: 25
   cameraDistance: 6
+  weaponIcon: {fileID: -536253286, guid: b42038258611743cea5b8e69794a8be6, type: 3}

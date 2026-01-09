@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,12 +121,122 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: UI_WeaponIcons_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 848
+        width: 947
+        height: 225
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a92f743197784739a987c8e760bf444
+      internalID: -1471655000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_WeaponIcons_1
+      rect:
+        serializedVersion: 2
+        x: 966
+        y: 849
+        width: 947
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f131fb1fb96f4a6fa7463fc6d8970ad
+      internalID: -480737265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_WeaponIcons_2
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 610
+        width: 947
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b45631680531f40fbb694f4fbee39df5
+      internalID: 541979235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_WeaponIcons_4
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 368
+        width: 947
+        height: 225
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70b339b7a11be4d988fd585bb113a2a1
+      internalID: -536253286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_WeaponIcons_6
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 127
+        width: 948
+        height: 228
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b86d9ca186ed4d8b933d9f40bbcfe64
+      internalID: 1705755061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e03a65c3da50d4029afca7a9ba0ded42
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +245,14 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      UI_WeaponIcons_0: -1471655000
+      UI_WeaponIcons_1: -480737265
+      UI_WeaponIcons_2: 541979235
+      UI_WeaponIcons_3: -2045570439
+      UI_WeaponIcons_4: -536253286
+      UI_WeaponIcons_5: -301774910
+      UI_WeaponIcons_6: 1705755061
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

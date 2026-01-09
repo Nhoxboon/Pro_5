@@ -50,6 +50,8 @@ public class PlayerAttack : NhoxBehaviour
     protected void SpawnBullet()
     {
         CurrentWeapon.bulletsInMagazine--;
+        CurrentWeapon.NotifyAmmoChanged();
+
 
         var prefab =
             ProjectileSpawner.Instance.Spawn(bulletName, GunPoint().position,

@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 [Serializable]
 public class Weapon
 {
+    public event Action OnAmmoChanged;
+    public void NotifyAmmoChanged() => OnAmmoChanged?.Invoke();
+
     public WeaponType weaponType;
     
     public int bulletDamage;

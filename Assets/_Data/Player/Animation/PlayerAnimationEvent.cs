@@ -8,6 +8,7 @@ public class PlayerAnimationEvent : NhoxBehaviour
         instance.PlayerAnim.RestoreRigWeight();
         instance.PlayerAttack.CurrentWeapon.RefillBullets();
         instance.PlayerAttack.SetWeaponReady(true);
+        instance.PlayerAttack.CurrentWeapon.NotifyAmmoChanged();
     }
 
     public void RestoreWeight()

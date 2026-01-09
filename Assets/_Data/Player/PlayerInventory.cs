@@ -42,6 +42,7 @@ public class PlayerInventory : NhoxBehaviour
         currentWeapon = weaponSlots[i];
         PlayerCtrl.Instance.PlayerAnim.WeaponEquipAnim();
         CameraManager.Instance.ChangeCameraDistance(currentWeapon.CameraDistance);
+        UpdateWeaponUI();
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -65,6 +66,7 @@ public class PlayerInventory : NhoxBehaviour
 
         weaponSlots.Add(newWeapon);
         PlayerCtrl.Instance.PlayerWeaponVisual.SwitchOnBackupWeapon();
+        UpdateWeaponUI();
     }
 
     public Weapon WeaponInSlots(WeaponType weaponType)
@@ -102,4 +104,6 @@ public class PlayerInventory : NhoxBehaviour
         if (dropWeapon.TryGetComponent(out PickupWeapon pickupWeapon))
             pickupWeapon.SetupPickupWeapon(currentWeapon, transform.parent);
     }
+
+    public void UpdateWeaponUI() => UIManager.Instance.UIInGame.WeaponSlots.UpdateWeaponUI(weaponSlots, currentWeapon);
 }
