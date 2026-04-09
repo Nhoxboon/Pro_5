@@ -14,6 +14,7 @@ public class MissionTimer : Mission
     public override bool MissionCompleted()
     {
         return currentTime > 0;
+
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -22,10 +23,12 @@ public class MissionTimer : Mission
         base.UpdateMission();
         currentTime -= Time.deltaTime;
         if (currentTime < 0)
-        {
-            Debug.Log("Mission Failed: Time's up!");
-        }
-        // string timeText = System.TimeSpan.FromSeconds(currentTime).ToString("mm':'ss");
-        // Debug.Log(timeText);
+            UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo("Mission Failed: Time's up!");
+
+        string timeText = System.TimeSpan.FromSeconds(currentTime).ToString("mm':'ss");
+
+        string missionTxt = "Get to evacuation point before plane take off.";
+        string missionDetails = "Time left: " + timeText;
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionTxt, missionDetails);
     }
 }

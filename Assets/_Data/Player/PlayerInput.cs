@@ -15,7 +15,12 @@ public class PlayerInput : NhoxBehaviour
         SetupInputEvents();
     }
 
-    protected void OnEnable() => controls.Enable();
+    protected void OnEnable()
+    {
+        controls.Enable();
+        controls.Player.UIMissionTooltipSwitch.performed +=
+            _ => UIManager.Instance.UIInGame.SwitchMissionTooltip();
+    }
 
     protected void OnDisable() => controls.Disable();
 

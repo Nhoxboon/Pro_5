@@ -32,30 +32,35 @@ public class MissionLastDefense : Mission
     {
         defensePoint = FindFirstObjectByType<MissionEndTrigger>().transform.position;
         respawnPoints = new List<Transform>(ClosestRespawnPoints(amountRespawnPoints));
+
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionName, missionDescription);
     }
 
     public override bool MissionCompleted()
     {
-        if(!defenseBegun)
-        {
-            StartDefenseEvent();
-            return false;
-        }
-        return defenseTimer <= 0f;
+        if (defenseBegun) return defenseTimer <= 0f;
+        StartDefenseEvent();
+        return false;
     }
 
     public override void UpdateMission()
     {
         base.UpdateMission();
         if (!defenseBegun) return;
-        defenseTimer -= Time.deltaTime;
+
         waveTimer -= Time.deltaTime;
+        if(defenseTimer > 0f)
+            defenseTimer -= Time.deltaTime;
 
         if (!(waveTimer <= 0f)) return;
         CreateNewEnemies(enemyPerWave);
         waveTimer = waveCooldown;
 
         defenseTimerText = TimeSpan.FromSeconds(defenseTimer).ToString("mm':'ss");
+
+        string missionTxt = "Defense yourself till plane is ready to take off.";
+        string missionDetails = "Time left " + defenseTimerText;
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionTxt, missionDetails);
     }
 
     protected void StartDefenseEvent()

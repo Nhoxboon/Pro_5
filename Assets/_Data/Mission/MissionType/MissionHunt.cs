@@ -14,6 +14,7 @@ public class MissionHunt : Mission
     public override void StartMission()
     {
         killsToGo = amountToKill;
+        UpdateMissionUI();
         MissionObj_HuntTarget.OnTargetKilled += EliminateTarget;
         List<Enemy> validEnemies = GetValidEnemies();
 
@@ -34,8 +35,13 @@ public class MissionHunt : Mission
     protected void EliminateTarget()
     {
         killsToGo--;
+        UpdateMissionUI();
+
         if (killsToGo <= 0)
+        {
+            UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo("Get to the evacuation point.");
             MissionObj_HuntTarget.OnTargetKilled -= EliminateTarget;
+        }
     }
 
     protected List<Enemy> GetValidEnemies()
@@ -48,5 +54,13 @@ public class MissionHunt : Mission
             validEnemies.AddRange(LevelGenerator.Instance.Enemies.Where(enemy => enemy.enemyType == enemyType));
 
         return validEnemies;
+    }
+
+    protected void UpdateMissionUI()
+    {
+        string missionTxt = $"Eliminate {amountToKill} enemies with signal disruptor.";
+        string missionDetails = $"Target left: {killsToGo}";
+
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionTxt, missionDetails);
     }
 }

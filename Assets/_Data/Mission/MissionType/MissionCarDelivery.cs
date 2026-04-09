@@ -9,6 +9,11 @@ public class MissionCarDelivery : Mission
     public override void StartMission()
     {
         FindFirstObjectByType<MissionObj_CarDeliveryZone>(FindObjectsInactive.Include).gameObject.SetActive(true);
+
+        string missionTxt = "Find a functional vehicle.";
+        string missionDetails = "Deliver it to evacuation point.";
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionTxt, missionDetails);
+
         carDelivered = false;
         MissionObj_CarToDeliver.OnCarDelivery += CarDeliveryCompleted;
         Car[] cars = FindObjectsByType<Car>(FindObjectsSortMode.None);
@@ -25,5 +30,6 @@ public class MissionCarDelivery : Mission
     {
         carDelivered = true;
         MissionObj_CarToDeliver.OnCarDelivery -= CarDeliveryCompleted;
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo("Car Delivered!");
     }
 }

@@ -9,6 +9,9 @@ public class MissionKeyFind : Mission
     public override void StartMission()
     {
         MissionObj_Key.OnKeyPickedUp += PickUpKey;
+
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionName, missionDescription);
+
         Enemy enemy = LevelGenerator.Instance.GetRandomEnemy();
         enemy.GetComponentInChildren<EnemyDrop>()?.GiveKey(key);
         enemy.MakeEnemyStronger();
@@ -23,6 +26,6 @@ public class MissionKeyFind : Mission
     {
         keyFound = true;
         MissionObj_Key.OnKeyPickedUp -= PickUpKey;
-        Debug.Log("I found the key!");
+        UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo(missionName, "Key found! Mission completed.");
     }
 }
