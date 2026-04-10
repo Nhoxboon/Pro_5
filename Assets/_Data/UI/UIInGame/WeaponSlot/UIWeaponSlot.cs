@@ -53,12 +53,14 @@ public class UIWeaponSlot : NhoxBehaviour
     {
         if (currentWeapon == null) return;
         currentWeapon.OnAmmoChanged += UpdateAmmoText;
+        currentWeapon.OnAmmoChanged += UpdateWeaponIcon;
     }
 
     protected void UnsubscribeFromWeapon()
     {
         if (currentWeapon == null) return;
         currentWeapon.OnAmmoChanged -= UpdateAmmoText;
+        currentWeapon.OnAmmoChanged -= UpdateWeaponIcon;
     }
 
     protected void UpdateWeaponIcon()
@@ -74,6 +76,7 @@ public class UIWeaponSlot : NhoxBehaviour
     {
         if (currentWeapon == null) return;
         ammoText.text = currentWeapon.bulletsInMagazine + "/" + currentWeapon.totalReserveAmmo;
+        ammoText.color = Color.white;
     }
 
     protected void ClearSlot()
