@@ -6,9 +6,9 @@ public abstract class BaseBtn : NhoxBehaviour
     [Header("Base Button")] 
     [SerializeField] protected Button button;
 
-    protected void OnEnable() => button.onClick.AddListener(OnClick);
+    protected virtual void OnEnable() => button.onClick.AddListener(OnClick);
 
-    protected void OnDisable() => button.onClick.RemoveListener(OnClick);
+    protected virtual void OnDisable() => button.onClick.RemoveListener(OnClick);
 
     protected override void LoadComponents()
     {

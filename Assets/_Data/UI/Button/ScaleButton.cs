@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler
+public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Hover Settings")] 
     [SerializeField] protected float scaleSpeed = 3f;
@@ -15,7 +15,12 @@ public class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler
     
     [SerializeField] protected Image buttonImage;
     [SerializeField] protected TextMeshProUGUI buttonText;
-    
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        ResetBtn();
+    }
 
     protected override void Start()
     {
@@ -69,9 +74,12 @@ public class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler
         buttonImage.color = Color.white;
         buttonText.color = Color.white;
     }
-
-    protected override void OnClick()
+    
+    protected void ResetBtn()
     {
-        
+        targetScale = defaultScale;
+        transform.localScale = defaultScale;
+        buttonImage.color = Color.white;
+        buttonText.color = Color.white;
     }
 }
