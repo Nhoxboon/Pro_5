@@ -34,3 +34,4 @@ MonoBehaviour:
   gunDistance: 4.5
   cameraDistance: 6
   weaponIcon: {fileID: -480737265, guid: b42038258611743cea5b8e69794a8be6, type: 3}
+  weaponInfo: It's like rifle, but an opposite

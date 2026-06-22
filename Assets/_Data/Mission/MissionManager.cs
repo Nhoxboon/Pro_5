@@ -5,12 +5,6 @@ public class MissionManager : NhoxSingleton<MissionManager>
 {
     public Mission currentMission;
 
-    protected override void Start()
-    {
-        base.Start();
-        Invoke(nameof(StartMission), 2f);
-    }
-
     protected void Update()
     {
         currentMission?.UpdateMission();
@@ -19,4 +13,10 @@ public class MissionManager : NhoxSingleton<MissionManager>
     protected void StartMission() => currentMission?.StartMission();
 
     public bool MissionCompleted() => currentMission != null && currentMission.MissionCompleted();
+
+    public void SelectMission(Mission newMission)
+    {
+        currentMission = newMission;
+        StartMission();
+    }
 }

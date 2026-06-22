@@ -1,18 +1,18 @@
-﻿
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Hover Settings")] 
-    [SerializeField] protected float scaleSpeed = 3f;
+    [Header("Hover Settings")] [SerializeField]
+    protected float scaleSpeed = 3f;
+
     [SerializeField] protected float scaleRate = 1.15f;
-    
+
     protected Vector3 defaultScale;
     protected Vector3 targetScale;
-    
+
     [SerializeField] protected Image buttonImage;
     [SerializeField] protected TextMeshProUGUI buttonText;
 
@@ -28,7 +28,7 @@ public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitH
         defaultScale = transform.localScale;
         targetScale = defaultScale;
     }
-    
+
     protected virtual void Update()
     {
         if (Mathf.Abs(transform.localScale.x - targetScale.x) > 0.01f)
@@ -44,7 +44,7 @@ public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitH
         LoadBtnImage();
         LoadBtnTxt();
     }
-    
+
     protected void LoadBtnImage()
     {
         if (buttonImage != null) return;
@@ -62,24 +62,27 @@ public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitH
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         targetScale = defaultScale * scaleRate;
-        
-        buttonImage.color = Color.yellow;
-        buttonText.color = Color.yellow;
+        ChangeBtnColor(Color.yellow);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
         targetScale = defaultScale;
-
-        buttonImage.color = Color.white;
-        buttonText.color = Color.white;
+        ChangeBtnColor(Color.white);
     }
-    
-    protected void ResetBtn()
+
+    protected void ChangeBtnColor(Color newColor)
+    {
+        if (buttonImage != null)
+            buttonImage.color = newColor;
+        if (buttonText != null)
+            buttonText.color = newColor;
+    }
+
+    protected virtual void ResetBtn()
     {
         targetScale = defaultScale;
         transform.localScale = defaultScale;
-        buttonImage.color = Color.white;
-        buttonText.color = Color.white;
+        ChangeBtnColor(Color.white);
     }
 }

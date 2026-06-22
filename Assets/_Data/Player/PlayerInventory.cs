@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInventory : NhoxBehaviour
 {
-    [SerializeField] protected WeaponDataSO defaultWeaponData;
+    protected List<WeaponDataSO> defaultWeaponsData;
     [SerializeField] protected Weapon currentWeapon;
     public Weapon CurrentWeapon => currentWeapon;
 
@@ -13,24 +13,12 @@ public class PlayerInventory : NhoxBehaviour
 
     protected string weaponPickupPrefab = "PickupWeapon";
 
-    protected override void Start() => Invoke(nameof(EquipStartingWeapon), 0.1f);
-
-    protected override void LoadComponents()
+    public void SetDefaultWeapons(List<WeaponDataSO> newWeaponsData)
     {
-        base.LoadComponents();
-        LoadDefaultWeaponData();
-    }
-
-    protected void LoadDefaultWeaponData()
-    {
-        if (defaultWeaponData != null) return;
-        defaultWeaponData = Resources.Load<WeaponDataSO>("Weapon/Pistol");
-        Debug.Log(transform.name + " LoadDefaultWeaponData", gameObject);
-    }
-
-    protected void EquipStartingWeapon()
-    {
-        weaponSlots[0] = new Weapon(defaultWeaponData);
+        defaultWeaponsData = new List<WeaponDataSO>(newWeaponsData);
+        weaponSlots.Clear();
+        foreach(WeaponDataSO weaponData in defaultWeaponsData)
+            PickupWeapon(new Weapon(weaponData));
         EquipWeapon(0);
     }
 
@@ -42,6 +30,7 @@ public class PlayerInventory : NhoxBehaviour
         currentWeapon = weaponSlots[i];
         PlayerCtrl.Instance.PlayerAnim.WeaponEquipAnim();
         CameraManager.Instance.ChangeCameraDistance(currentWeapon.CameraDistance);
+        
         UpdateWeaponUI();
     }
 
