@@ -55,6 +55,7 @@ public class EnemyAttack : NhoxBehaviour
             foreach (var col in detectedHits)
             {
                 if (!col.transform.root.TryGetComponent(out PlayerCtrl player)) continue;
+                if (player.IsDead) return;
                 player.Core.DamageReceiver.TakeDamage(damage);
                 isAttackReady = false;
                 SpawnFX(atkPoint);

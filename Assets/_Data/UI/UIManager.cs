@@ -3,23 +3,34 @@ using UnityEngine;
 
 public class UIManager : NhoxSingleton<UIManager>
 {
-    [Header("UI Menu")] [SerializeField] protected UIMainMenu uiMainMenu;
+    [Header("UI Menu")]
+    [SerializeField] protected UIMainMenu uiMainMenu;
     [SerializeField] protected UIInGame uiInGame;
     public UIInGame UIInGame => uiInGame;
     [SerializeField] protected UIUpgrades uiUpgrades;
     [SerializeField] protected UISettings uiSettings;
     [SerializeField] protected UICredits uiCredits;
 
-    [Header("Other UI")] 
+    [Header("Other UI")]
     [SerializeField] protected UIMissionSelection uiMissionSel;
     [SerializeField] protected UIWeaponSelection uiWeaponSel;
     public UIWeaponSelection UIWeaponSel => uiWeaponSel;
 
+    [SerializeField] protected UIPause uiPause;
+    [SerializeField] protected UIGameOver uiGameOver;
+
     [SerializeField] protected Transform[] uiElements;
-    
-    [Header("Switching UI")] 
-    protected Transform currentUI;
+
+    [Header("Switching UI")] protected Transform currentUI;
     protected Stack<Transform> uiHistory = new Stack<Transform>();
+
+    protected override void Start()
+    {
+        base.Start();
+        AssignUIInput();
+    }
+
+    #region LoadComponents
 
     protected override void LoadComponents()
     {
@@ -31,6 +42,8 @@ public class UIManager : NhoxSingleton<UIManager>
         LoadUICredits();
         LoadUIMissionSel();
         LoadUIWeaponSel();
+        LoadUIPause();
+        LoadUIGameOver();
         LoadUIElements();
     }
 
@@ -75,12 +88,26 @@ public class UIManager : NhoxSingleton<UIManager>
         uiMissionSel = GetComponentInChildren<UIMissionSelection>(true);
         Debug.Log(transform.name + " LoadUIMissionSel", gameObject);
     }
-    
+
     protected void LoadUIWeaponSel()
     {
         if (uiWeaponSel != null) return;
         uiWeaponSel = GetComponentInChildren<UIWeaponSelection>(true);
         Debug.Log(transform.name + " LoadUIWeaponSel", gameObject);
+    }
+
+    protected void LoadUIPause()
+    {
+        if (uiPause != null) return;
+        uiPause = GetComponentInChildren<UIPause>(true);
+        Debug.Log(transform.name + " LoadUIPause", gameObject);
+    }
+
+    protected void LoadUIGameOver()
+    {
+        if (uiGameOver != null) return;
+        uiGameOver = GetComponentInChildren<UIGameOver>(true);
+        Debug.Log(transform.name + " LoadUIGameOver", gameObject);
     }
 
     protected void LoadUIElements()
@@ -94,13 +121,27 @@ public class UIManager : NhoxSingleton<UIManager>
             uiElements[i] = transform.GetChild(i);
         Debug.Log(transform.name + " LoadUIElements", gameObject);
     }
-    
+
+    #endregion
+
+    protected void AssignUIInput()
+    {
+        PlayerControls controls = PlayerCtrl.Instance.PlayerInput.Controls;
+        controls.UI.UIPause.performed += ctx => PauseSwitch();
+    }
+
     protected void UpdateHistory(Transform newUI)
     {
         if (currentUI != null)
             uiHistory.Push(currentUI);
-            
+
         currentUI = newUI;
+    }
+
+    public void ShowGameOverUI(string msg = "GAME OVER!")
+    {
+        SwitchTo(uiGameOver.transform);
+        uiGameOver.ShowGameOverMessage(msg);
     }
 
     protected void SwitchTo(Transform ui)
@@ -108,11 +149,11 @@ public class UIManager : NhoxSingleton<UIManager>
         if (currentUI == ui) return;
 
         UpdateHistory(ui);
-        
+
         foreach (Transform tr in uiElements)
             tr.gameObject.SetActive(tr == ui);
     }
-    
+
     public void BackToLastUI()
     {
         if (uiHistory.Count > 0)
@@ -127,10 +168,33 @@ public class UIManager : NhoxSingleton<UIManager>
             SwitchToMainMenu();
     }
 
+    public void StartTheGame()
+    {
+        SwitchTo(uiInGame.transform);
+        GameManager.Instance.GameStart();
+    }
+
+    public void PauseSwitch()
+    {
+        bool gamePaused = uiPause.gameObject.activeSelf;
+        if (gamePaused)
+        {
+            SwitchTo(uiInGame.transform);
+            ControlsManager.Instance?.SwitchToCharacterControls();
+            TimeManager.Instance?.ResumeTime();
+        }
+        else
+        {
+            SwitchTo(uiPause.transform);
+            ControlsManager.Instance?.SwitchToUIControls();
+            TimeManager.Instance?.PauseTime();
+        }
+    }
+
     public void SwitchToMainMenu() => SwitchTo(uiMainMenu.transform);
-    public void SwitchToInGameUI() => SwitchTo(uiInGame.transform);
     public void SwitchToUpgradesUI() => SwitchTo(uiUpgrades.transform);
     public void SwitchToSettingsUI() => SwitchTo(uiSettings.transform);
     public void SwitchToCreditsUI() => SwitchTo(uiCredits.transform);
     public void SwitchToMissionSelectionUI() => SwitchTo(uiMissionSel.transform);
+    public void SwitchToWeaponSelectionUI() => SwitchTo(uiWeaponSel.transform);
 }

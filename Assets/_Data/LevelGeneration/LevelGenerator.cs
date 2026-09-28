@@ -19,7 +19,7 @@ public class LevelGenerator : NhoxSingleton<LevelGenerator>
     
     [SerializeField] protected float generationCooldown;
     protected float cooldownTimer;
-    protected bool generationOver;
+    protected bool generationOver = true;
     
     protected List<Enemy> enemies = new();
     public List<Enemy> Enemies => enemies;
@@ -30,7 +30,6 @@ public class LevelGenerator : NhoxSingleton<LevelGenerator>
         base.Start();
         enemyHolder = GameObject.Find("EnemyHolder").transform;
         defaultSnapPoint = nextSnapPoint;
-        InitializeGeneration();
     }
 
     protected void Update()
@@ -81,7 +80,7 @@ public class LevelGenerator : NhoxSingleton<LevelGenerator>
     }
 
     [ContextMenu("Restart Generation")]
-    protected void InitializeGeneration()
+    public void InitializeGeneration()
     {
         nextSnapPoint = defaultSnapPoint;
         generationOver = false;
@@ -137,6 +136,8 @@ public class LevelGenerator : NhoxSingleton<LevelGenerator>
             enemy.transform.parent = enemyHolder;
             enemy.gameObject.SetActive(true);
         }
+
+        MissionManager.Instance.StartMission();
     }
 
     public Enemy GetRandomEnemy()

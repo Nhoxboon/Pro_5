@@ -29,7 +29,7 @@ public class PlayerInventory : NhoxBehaviour
 
         currentWeapon = weaponSlots[i];
         PlayerCtrl.Instance.PlayerAnim.WeaponEquipAnim();
-        CameraManager.Instance.ChangeCameraDistance(currentWeapon.CameraDistance);
+        // CameraManager.Instance.ChangeCameraDistance(currentWeapon.CameraDistance);
         
         UpdateWeaponUI();
     }

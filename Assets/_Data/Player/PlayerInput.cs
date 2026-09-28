@@ -4,9 +4,12 @@ using UnityEngine.InputSystem;
 public class PlayerInput : NhoxBehaviour
 {
     protected PlayerControls controls;
+    public PlayerControls Controls => controls;
 
     public Vector2 MoveInput { get; protected set; }
     public Vector2 MouseInput { get; protected set; }
+
+    public bool controlsEnabled {get; private set;}
 
     protected override void Awake()
     {
@@ -20,9 +23,12 @@ public class PlayerInput : NhoxBehaviour
         controls.Enable();
         controls.Player.UIMissionTooltipSwitch.performed +=
             _ => UIManager.Instance.UIInGame.SwitchMissionTooltip();
+        controls.Player.UIPause.performed += ctx => UIManager.Instance.PauseSwitch();
     }
 
     protected void OnDisable() => controls.Disable();
+
+    public void SetControlsEnabled(bool enabled) => controlsEnabled = enabled;
 
     protected void SetupInputEvents()
     {

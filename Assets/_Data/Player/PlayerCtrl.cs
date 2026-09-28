@@ -121,5 +121,6 @@ public class PlayerCtrl : NhoxSingleton<PlayerCtrl>
     {
         playerAnim.Animator.enabled = false;
         core.Ragdoll.RagdollActive(true);
+        GameManager.Instance.GameOver();
     }
 }

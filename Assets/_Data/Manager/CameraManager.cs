@@ -2,32 +2,18 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class CameraManager : NhoxBehaviour
+public class CameraManager : NhoxSingleton<CameraManager>
 {
-    private static CameraManager instance;
-    public static CameraManager Instance => instance;
-
     [SerializeField] protected CinemachineCamera cinemachineCamera;
     [SerializeField] protected CinemachinePositionComposer positionComposer;
 
+    [SerializeField] private bool canChangeCameraDistance;
     [SerializeField] protected float distanceChangeRate;
-    protected float targetCamDistance;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if (instance != null)
-        {
-            Debug.LogError("Only 1 instance of CameraManager allow to exist");
-            return;
-        }
-
-        instance = this;
-    }
+    [SerializeField] protected float targetCamDistance;
 
     protected void Update()
     {
-        // UpdateCameraDistance();
+        UpdateCameraDistance();
     }
 
     protected override void LoadComponents()
@@ -53,6 +39,9 @@ public class CameraManager : NhoxBehaviour
 
     protected void UpdateCameraDistance()
     {
+        if (!canChangeCameraDistance)
+            return;
+
         float currentDistance = positionComposer.CameraDistance;
         if (Math.Abs(targetCamDistance - currentDistance) > 0.01f)
             positionComposer.CameraDistance = Mathf.Lerp(positionComposer.CameraDistance, targetCamDistance,

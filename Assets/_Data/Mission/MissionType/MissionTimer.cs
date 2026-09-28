@@ -23,7 +23,9 @@ public class MissionTimer : Mission
         base.UpdateMission();
         currentTime -= Time.deltaTime;
         if (currentTime < 0)
-            UIManager.Instance.UIInGame.UIMission.UpdateMissionInfo("Mission Failed: Time's up!");
+        {
+            // GameManager.Instance.GameOver();
+        }
 
         string timeText = System.TimeSpan.FromSeconds(currentTime).ToString("mm':'ss");
 

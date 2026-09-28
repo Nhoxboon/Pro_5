@@ -30,7 +30,7 @@ public class MissionSelectBtn : ScaleButton
     protected override void OnClick()
     {
         MissionManager.Instance.SelectMission(myMission);
-        UIManager.Instance.SwitchToInGameUI();
+        UIManager.Instance.SwitchToWeaponSelectionUI();
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

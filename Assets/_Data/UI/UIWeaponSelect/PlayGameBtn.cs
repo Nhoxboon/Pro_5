@@ -5,7 +5,6 @@ public class PlayGameBtn : ScaleButton
 {
     protected override void OnClick()
     {
-        UIManager.Instance.SwitchToInGameUI();
-        GameManager.Instance.SetDefaultWeapons();
+        UIManager.Instance.StartTheGame();
     }
 }

@@ -10,13 +10,12 @@ public class MissionManager : NhoxSingleton<MissionManager>
         currentMission?.UpdateMission();
     }
 
-    protected void StartMission() => currentMission?.StartMission();
+    public void StartMission() => currentMission?.StartMission();
 
     public bool MissionCompleted() => currentMission != null && currentMission.MissionCompleted();
 
     public void SelectMission(Mission newMission)
     {
         currentMission = newMission;
-        StartMission();
     }
 }

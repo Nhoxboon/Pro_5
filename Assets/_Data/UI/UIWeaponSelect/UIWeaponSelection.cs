@@ -48,7 +48,7 @@ public class UIWeaponSelection : NhoxBehaviour
         List<WeaponDataSO> selectedData = new List<WeaponDataSO>();
         foreach (var weapon in selectedWeapons)
         {
-            if (weapon != null)
+            if (weapon != null && !weapon.IsEmpty())
                 selectedData.Add(weapon.WeaponData);
         }
 
