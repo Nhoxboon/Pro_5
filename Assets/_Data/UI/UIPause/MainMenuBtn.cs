@@ -4,6 +4,6 @@ public class MainMenuBtn : ScaleButton
 {
     protected override void OnClick()
     {
-        GameManager.Instance.RestartScene();
+        UIManager.Instance.RestartTheGame();
     }
 }
