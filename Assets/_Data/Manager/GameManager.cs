@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,15 +6,23 @@ public class GameManager : NhoxSingleton<GameManager>
 {
     public bool friendlyFire;
 
+    public bool quickStart;
+
     public void GameStart()
     {
         SetDefaultWeapons();
-        LevelGenerator.Instance.InitializeGeneration();
-
+        // LevelGenerator.Instance.InitializeGeneration();
         //Start selected mission in LevelGenerator script after we're done with level generation
     }
 
     public void RestartScene() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    public void GameCompleted()
+    {
+        UIManager.Instance.ShowVictoryScreen();
+        ControlsManager.Instance.controls.Player.Disable();
+        PlayerCtrl.Instance.Core.Stats.Health.SetInvincible(true);
+    }
 
     public void GameOver()
     {

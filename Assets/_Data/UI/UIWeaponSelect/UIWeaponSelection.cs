@@ -42,6 +42,8 @@ public class UIWeaponSelection : NhoxBehaviour
         warningText = transform.Find("WarningText").GetComponent<TextMeshProUGUI>();
         Debug.Log(transform.name + " LoadWarningTxt", gameObject);   
     }
+
+    public bool AtLeastOneWeaponSelected() => SelectedWeaponsData().Count > 0;
     
     public List<WeaponDataSO> SelectedWeaponsData()
     {

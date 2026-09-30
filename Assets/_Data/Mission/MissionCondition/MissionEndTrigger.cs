@@ -7,7 +7,7 @@ public class MissionEndTrigger : NhoxBehaviour
     {
         if (other.transform != PlayerCtrl.Instance.transform) return;
 
-        if(MissionManager.Instance.MissionCompleted())
-            Debug.Log("Mission Completed: Reached the end trigger!");
+        if (MissionManager.Instance.MissionCompleted())
+            GameManager.Instance.GameCompleted();
     }
 }

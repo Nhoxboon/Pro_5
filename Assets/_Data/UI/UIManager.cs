@@ -6,30 +6,28 @@ using UnityEngine.UI;
 
 public class UIManager : NhoxSingleton<UIManager>
 {
-    [Header("UI Menu")]
-    [SerializeField] protected UIMainMenu uiMainMenu;
+    [Header("UI Menu")] [SerializeField] protected UIMainMenu uiMainMenu;
     [SerializeField] protected UIInGame uiInGame;
     public UIInGame UIInGame => uiInGame;
     [SerializeField] protected UIUpgrades uiUpgrades;
     [SerializeField] protected UISettings uiSettings;
     [SerializeField] protected UICredits uiCredits;
 
-    [Header("Other UI")]
-    [SerializeField] protected UIMissionSelection uiMissionSel;
+    [Header("Other UI")] [SerializeField] protected UIMissionSelection uiMissionSel;
     [SerializeField] protected UIWeaponSelection uiWeaponSel;
     public UIWeaponSelection UIWeaponSel => uiWeaponSel;
 
     [SerializeField] protected UIComicPanel uiComicPanel;
+    [SerializeField] protected UIVictory uiVictory;
     [SerializeField] protected UIPause uiPause;
     [SerializeField] protected UIGameOver uiGameOver;
 
     [SerializeField] protected Transform[] uiElements;
 
-    [Header("Fade Image")]
-    [SerializeField] protected Image  fadeImage;
+    [Header("Fade Image")] [SerializeField]
+    protected Image fadeImage;
 
-    [Header("Switching UI")] 
-    protected Transform currentUI;
+    [Header("Switching UI")] protected Transform currentUI;
     protected Stack<Transform> uiHistory = new Stack<Transform>();
 
     protected override void Start()
@@ -37,6 +35,13 @@ public class UIManager : NhoxSingleton<UIManager>
         base.Start();
         AssignUIInput();
         StartCoroutine(ChangeImageAlpha(0, 1.5f, null));
+
+        //Note: Remove it when finish project
+        if(GameManager.Instance.quickStart)
+        {
+            LevelGenerator.Instance.InitializeGeneration();
+            StartTheGame();
+        }
     }
 
     #region LoadComponents
@@ -52,6 +57,7 @@ public class UIManager : NhoxSingleton<UIManager>
         LoadUIMissionSel();
         LoadUIWeaponSel();
         LoadUIComicPanel();
+        LoadUIVictory();
         LoadUIPause();
         LoadUIGameOver();
         LoadFadeImage();
@@ -109,9 +115,16 @@ public class UIManager : NhoxSingleton<UIManager>
 
     protected void LoadUIComicPanel()
     {
-        if(uiComicPanel != null) return;
+        if (uiComicPanel != null) return;
         uiComicPanel = GetComponentInChildren<UIComicPanel>(true);
         Debug.Log(transform.name + " LoadUIComicPanel", gameObject);
+    }
+
+    protected void LoadUIVictory()
+    {
+        if (uiVictory != null) return;
+        uiVictory = GetComponentInChildren<UIVictory>(true);
+        Debug.Log(transform.name + " LoadUIVictory", gameObject);
     }
 
     protected void LoadUIPause()
@@ -130,7 +143,7 @@ public class UIManager : NhoxSingleton<UIManager>
 
     protected void LoadFadeImage()
     {
-        if(fadeImage != null) return;
+        if (fadeImage != null) return;
         fadeImage = transform.Find("FadeImage").GetComponent<Image>();
         Debug.Log(transform.name + " LoadFadeImage", gameObject);
     }
@@ -146,12 +159,13 @@ public class UIManager : NhoxSingleton<UIManager>
         for (int i = 0; i < childCount; i++)
         {
             Transform child = transform.GetChild(i);
-            if(child.name == "FadeImage")
+            if (child.name == "FadeImage")
                 continue;
             uiElements[index] = child;
             index++;
         }
-        if(index < childCount)
+
+        if (index < childCount)
             Array.Resize(ref uiElements, index);
         Debug.Log(transform.name + " LoadUIElements", gameObject);
     }
@@ -223,13 +237,22 @@ public class UIManager : NhoxSingleton<UIManager>
         }
     }
 
+    public void ShowVictoryScreen()
+    {
+        StartCoroutine(ChangeImageAlpha(1, 1.5f, SwitchToVictoryUI));
+    }
+
     protected IEnumerator StartGameSequence()
     {
-        StartCoroutine(ChangeImageAlpha(1, 1, null));
-        yield return new WaitForSeconds(1);
+        //Note: Change back when finish project
+        // StartCoroutine(ChangeImageAlpha(1, 1, null));
+        // yield return new WaitForSeconds(1);
+
+        yield return null;
         SwitchTo(uiInGame.transform);
         GameManager.Instance.GameStart();
-        StartCoroutine(ChangeImageAlpha(0, 1, null));
+        StartCoroutine(ChangeImageAlpha(0, .1f, null));
+        // StartCoroutine(ChangeImageAlpha(0, 1, null));
     }
 
     protected IEnumerator ChangeImageAlpha(float targetAlpha, float duration, Action onComplete)
@@ -245,6 +268,7 @@ public class UIManager : NhoxSingleton<UIManager>
             fadeImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, alpha);
             yield return null;
         }
+
         fadeImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, targetAlpha);
         onComplete?.Invoke();
     }
@@ -256,4 +280,12 @@ public class UIManager : NhoxSingleton<UIManager>
     public void SwitchToComicPanelUI() => SwitchTo(uiComicPanel.transform);
     public void SwitchToMissionSelectionUI() => SwitchTo(uiMissionSel.transform);
     public void SwitchToWeaponSelectionUI() => SwitchTo(uiWeaponSel.transform);
+
+    public void SwitchToVictoryUI()
+    {
+        SwitchTo(uiVictory.transform);
+        Color color = fadeImage.color;
+        color.a = 0f;
+        fadeImage.color = color;
+    }
 }

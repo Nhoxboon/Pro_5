@@ -13,6 +13,7 @@ public class UISelectedWeapon : NhoxBehaviour
     protected override void Start()
     {
         base.Start();
+        weaponData = null;
         UpdateSlotInfo(null);
     }
 
