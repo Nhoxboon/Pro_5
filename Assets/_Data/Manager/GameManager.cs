@@ -20,7 +20,7 @@ public class GameManager : NhoxSingleton<GameManager>
     public void GameCompleted()
     {
         UIManager.Instance.ShowVictoryScreen();
-        ControlsManager.Instance.controls.Player.Disable();
+        ControlsManager.Instance.Controls.Player.Disable();
         PlayerCtrl.Instance.Core.Stats.Health.SetInvincible(true);
     }
 

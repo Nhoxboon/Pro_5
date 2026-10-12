@@ -174,7 +174,7 @@ public class UIManager : NhoxSingleton<UIManager>
 
     protected void AssignUIInput()
     {
-        PlayerControls controls = PlayerCtrl.Instance.PlayerInput.Controls;
+        PlayerControls controls = ControlsManager.Instance.Controls;
         controls.UI.UIPause.performed += ctx => PauseSwitch();
     }
 
