@@ -31326,7 +31326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8d530ffe6c4968843806085897955b9d, type: 2}
+  - {fileID: 2100000, guid: b0b4de3bd6e976e4f8b3adc6e72377ed, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -36690,6 +36690,37 @@ Transform:
   - {fileID: 485454648}
   m_Father: {fileID: 2095798110}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &645329083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 645329084}
+  m_Layer: 0
+  m_Name: CenterOfMass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &645329084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645329083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.219, z: 0.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 967721347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &646111401
 GameObject:
   m_ObjectHideFlags: 0
@@ -41226,7 +41257,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: 0.051, y: 7.928203, z: -3.092}
+  m_LocalPosition: {x: 342.81995, y: 6.9308753, z: -50.61694}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41487,9 +41518,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &967721346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41502,6 +41533,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3626897c736646fb9c5f0824c5a8f011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
+  rb: {fileID: 967721345}
+  wheels:
+  - {fileID: 4405024456416335700}
+  - {fileID: 5584370337377691686}
+  - {fileID: 8755348652257347009}
+  - {fileID: 93273642267246332}
+  turnSensitivity: 30
+  driveType: 0
+  centerOfMass: {fileID: 645329084}
+  carMass: 490
+  wheelMass: 37
+  frontWheelTraction: 1
+  backWheelTraction: 0.95
+  maxSpeed: 10
+  accelerationSpeed: 5
+  motorForce: 1700
+  frontBrakesSensitivity: 5
+  backBrakesSensitivity: 0
+  brakePower: 5000
+  frontDriftFactor: 0.55
+  backDriftFactor: 0.45
+  driftDuration: 1
 --- !u!4 &967721347
 Transform:
   m_ObjectHideFlags: 0
@@ -41516,6 +41569,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 503287594}
+  - {fileID: 645329084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &973630607
@@ -79427,7 +79481,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 702888910}
+    TrackingTarget: {fileID: 967721347}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -79459,7 +79513,7 @@ Transform:
   m_GameObject: {fileID: 2095698245}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: 0.051, y: 7.928203, z: -3.092}
+  m_LocalPosition: {x: 342.81995, y: 6.9308753, z: -50.61694}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -80150,8 +80204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarWheel
   axelType: 0
-  col: {fileID: 0}
-  model: {fileID: 0}
+  col: {fileID: 93273642267246333}
+  model: {fileID: 3696067}
 --- !u!146 &93273642267246333
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -80161,7 +80215,7 @@ WheelCollider:
   m_GameObject: {fileID: 33849934811284949}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0.15}
-  m_Radius: 0.26
+  m_Radius: 0.25
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -126123,7 +126177,7 @@ WheelCollider:
   m_GameObject: {fileID: 4233554155649356150}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0.15}
-  m_Radius: 0.26
+  m_Radius: 0.25
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -126143,7 +126197,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.95
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -132055,8 +132109,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarWheel
   axelType: 1
-  col: {fileID: 0}
-  model: {fileID: 0}
+  col: {fileID: 5584370337377691687}
+  model: {fileID: 365108795}
 --- !u!146 &5584370337377691687
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -132066,7 +132120,7 @@ WheelCollider:
   m_GameObject: {fileID: 5147951142600313212}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0.15}
-  m_Radius: 0.26
+  m_Radius: 0.25
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -132086,7 +132140,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.95
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -168485,8 +168539,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarWheel
   axelType: 0
-  col: {fileID: 0}
-  model: {fileID: 0}
+  col: {fileID: 8755348652257347010}
+  model: {fileID: 961604036}
 --- !u!146 &8755348652257347010
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -168496,7 +168550,7 @@ WheelCollider:
   m_GameObject: {fileID: 8755348652257347008}
   serializedVersion: 2
   m_Center: {x: 0, y: 0, z: 0.15}
-  m_Radius: 0.26
+  m_Radius: 0.25
   m_SuspensionSpring:
     spring: 35000
     damper: 4500

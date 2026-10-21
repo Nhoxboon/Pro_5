@@ -2,7 +2,7 @@
 
 public class ControlsManager : NhoxSingleton<ControlsManager>
 {
-    public PlayerControls Controls {get; private set;}
+    public PlayerControls Controls { get; private set; }
 
     protected override void Awake()
     {
@@ -14,6 +14,8 @@ public class ControlsManager : NhoxSingleton<ControlsManager>
     {
         base.Start();
         SwitchToCharacterControls();
+        //Note: Just for test car
+        SwitchToCarControls();
     }
 
     public void SwitchToCharacterControls()
