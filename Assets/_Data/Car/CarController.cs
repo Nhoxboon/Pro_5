@@ -1,11 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CarController : NhoxBehaviour
 {
     protected PlayerControls controls;
     protected float moveInput;
     protected float steerInput;
+
+    protected bool carEnabled;
 
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected CarWheel[] wheels;
@@ -25,10 +28,13 @@ public class CarController : NhoxBehaviour
     [SerializeField] protected float backWheelTraction = 1;
 
     [Header("Engine Settings")]
+    [Range(7, 12)]
+    [SerializeField] protected float maxSpeed = 10;
+    [Range(0.5f, 10)]
+    [SerializeField] protected float accelerationSpeed = 5;
+    [Range(1500f, 5000)]
+    [SerializeField] protected float motorForce = 1700f;
     protected float currentSpeed;
-    [Range(7, 12)] [SerializeField] protected float maxSpeed = 10;
-    [Range(0.5f, 5)] [SerializeField] protected float accelerationSpeed = 5;
-    [Range(1500f, 3000)] [SerializeField] protected float motorForce = 1700f;
 
     [Header("Brake Settings")]
     [Range(0, 10)]
@@ -42,10 +48,10 @@ public class CarController : NhoxBehaviour
     [Header("Drift Settings")]
     [Range(0, 1)]
     [SerializeField] protected float frontDriftFactor = 0.5f;
-
     [Range(0, 1)] [SerializeField] protected float backDriftFactor = 0.5f;
     [SerializeField] protected float driftDuration = 1f;
     protected float driftTimer;
+    protected bool isDrifting;
 
     protected override void Start()
     {
@@ -59,13 +65,17 @@ public class CarController : NhoxBehaviour
 
     protected void Update()
     {
+        if(!carEnabled) return;
+
         driftTimer -= Time.deltaTime;
         if (driftTimer <= 0f)
-            isBraking = false;
+            isDrifting = false;
     }
 
     protected void FixedUpdate()
     {
+        if(!carEnabled) return;
+
         AnimateWheels();
         ApplyDrive();
         ApplySteering();
@@ -93,9 +103,13 @@ public class CarController : NhoxBehaviour
     {
         if (rb != null) return;
         rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         centerOfMass = transform.Find("CenterOfMass");
         Debug.Log(transform.name + " LoadRigidbody", gameObject);
     }
+
+    public void ActivateCar(bool active) => carEnabled = active;
 
     protected void SetupDefaultValues()
     {
@@ -129,6 +143,7 @@ public class CarController : NhoxBehaviour
         controls.Car.Brake.performed += _ =>
         {
             isBraking = true;
+            isDrifting = true;
             driftTimer = driftDuration;
         };
         controls.Car.Brake.canceled += _ => isBraking = false;
@@ -147,7 +162,7 @@ public class CarController : NhoxBehaviour
 
     protected void HandleDrifting()
     {
-        if (isBraking)
+        if (isDrifting)
             ApplyDrift();
         else
             StopDrift();
@@ -224,5 +239,13 @@ public class CarController : NhoxBehaviour
     {
         foreach (CarWheel wheel in wheels)
             wheel.RestoreDefaultStiffness();
+    }
+
+    [ContextMenu("Focus camera and enable")]
+    public void TestThisCar()
+    {
+        ActivateCar(true);
+        CameraManager.Instance.ChangeCameraTarget(this.transform, 12f);
+        ControlsManager.Instance.SwitchToCarControls();
     }
 }

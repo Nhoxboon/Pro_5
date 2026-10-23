@@ -14,8 +14,6 @@ public class ControlsManager : NhoxSingleton<ControlsManager>
     {
         base.Start();
         SwitchToCharacterControls();
-        //Note: Just for test car
-        SwitchToCarControls();
     }
 
     public void SwitchToCharacterControls()
