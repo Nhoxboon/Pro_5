@@ -32,6 +32,12 @@ public class PlayerCamFollow : AimComponent
             Vector3.Lerp(cameraTarget.position, DesiredCameraPos(), camSensitivity * Time.deltaTime);
     }
 
+    public Transform GetAimCameraTarget()
+    {
+        cameraTarget.position = transform.position;
+        return cameraTarget;
+    }
+
     protected Vector3 DesiredCameraPos()
     {
         float actualMaxCameraDistance =

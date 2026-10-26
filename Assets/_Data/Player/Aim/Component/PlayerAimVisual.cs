@@ -46,4 +46,6 @@ public class PlayerAimVisual : AimComponent
         aimLaser.SetPosition(1, endPoint);
         aimLaser.SetPosition(2, endPoint + laserDir * laserTipLength);
     }
+
+    public void EnableAimVisuals(bool enable) => aimLaser.enabled = enable;
 }

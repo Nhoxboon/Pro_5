@@ -8,7 +8,7 @@ public class CarController : NhoxBehaviour
     protected float moveInput;
     protected float steerInput;
 
-    protected bool carEnabled;
+    public bool CarActive { get; private set; }
 
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected CarWheel[] wheels;
@@ -53,11 +53,13 @@ public class CarController : NhoxBehaviour
     protected float driftTimer;
     protected bool isDrifting;
 
+    [Header("Components")]
+    [SerializeField] protected CarInteraction carInteraction;
+
     protected override void Start()
     {
         base.Start();
         controls = ControlsManager.Instance.Controls;
-        ControlsManager.Instance.SwitchToCarControls();
 
         AssignInputEvents();
         SetupDefaultValues();
@@ -65,7 +67,7 @@ public class CarController : NhoxBehaviour
 
     protected void Update()
     {
-        if(!carEnabled) return;
+        if(!CarActive) return;
 
         driftTimer -= Time.deltaTime;
         if (driftTimer <= 0f)
@@ -74,7 +76,7 @@ public class CarController : NhoxBehaviour
 
     protected void FixedUpdate()
     {
-        if(!carEnabled) return;
+        if(!CarActive) return;
 
         AnimateWheels();
         ApplyDrive();
@@ -90,6 +92,7 @@ public class CarController : NhoxBehaviour
         base.LoadComponents();
         LoadCarWheels();
         LoadRigidbody();
+        LoadCarInteraction();
     }
 
     protected void LoadCarWheels()
@@ -109,7 +112,14 @@ public class CarController : NhoxBehaviour
         Debug.Log(transform.name + " LoadRigidbody", gameObject);
     }
 
-    public void ActivateCar(bool active) => carEnabled = active;
+    protected void LoadCarInteraction()
+    {
+        if(carInteraction != null) return;
+        carInteraction = GetComponentInChildren<CarInteraction>();
+        Debug.Log(transform.name + " LoadCarInteraction", gameObject);
+    }
+
+    public void ActivateCar(bool active) => CarActive = active;
 
     protected void SetupDefaultValues()
     {
@@ -147,6 +157,8 @@ public class CarController : NhoxBehaviour
             driftTimer = driftDuration;
         };
         controls.Car.Brake.canceled += _ => isBraking = false;
+
+        controls.Car.CarExit.performed += _ => carInteraction.GetOutOfTheCar();
     }
 
     protected void AnimateWheels()

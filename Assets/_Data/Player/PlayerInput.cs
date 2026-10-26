@@ -17,7 +17,12 @@ public class PlayerInput : NhoxBehaviour
         SetupInputEvents();
     }
 
-    public void SetControlsEnabled(bool enabled) => controlsEnabled = enabled;
+    public void SetControlsEnabled(bool enabled)
+    {
+        controlsEnabled = enabled;
+        PlayerCtrl.Instance.Core.Ragdoll.ColliderActive(enabled);
+        PlayerCtrl.Instance.PlayerAim.AimVisual.EnableAimVisuals(enabled);
+    }
 
     protected void SetupInputEvents()
     {

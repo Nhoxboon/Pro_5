@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Interactable : NhoxBehaviour
 {
-    protected MeshRenderer mr;
+    [SerializeField] protected MeshRenderer mr;
     [SerializeField] protected Material highlightMaterial;
-    protected Material defaultMaterial;
+    [SerializeField] protected Material defaultMaterial;
     
     protected PlayerInventory inventory;
 

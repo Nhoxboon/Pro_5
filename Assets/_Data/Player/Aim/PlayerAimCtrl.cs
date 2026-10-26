@@ -8,7 +8,10 @@ public class PlayerAimCtrl : NhoxBehaviour
     public PlayerAim Aim => aim;
     
     [SerializeField] protected PlayerCamFollow camFollow;
+    public PlayerCamFollow CamFollow => camFollow;
+
     [SerializeField] protected PlayerAimVisual aimVisual;
+    public PlayerAimVisual AimVisual => aimVisual;
 
     protected void Update()
     {
