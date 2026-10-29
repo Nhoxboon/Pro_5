@@ -11,6 +11,9 @@ public class Ragdoll : CoreComponent
     {
         base.Awake();
         RagdollActive(false);
+
+        foreach (var rb in ragdollRbs)
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     protected override void LoadComponents()

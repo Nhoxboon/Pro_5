@@ -134,6 +134,12 @@ public class Enemy : NhoxBehaviour
     protected virtual void EnemyDie()
     {
         enemyDrop.DropItems();
+        enemyAnimator.SetAnimator(false);
+        enemyMove.Agent.isStopped = true;
+        enemyMove.Agent.enabled = false;
+
+        core.Ragdoll.RagdollActive(true);
+
         StartCoroutine(DespawnCoroutine());
         if(this.TryGetComponent(out MissionObj_HuntTarget huntTarget))
             huntTarget.TargetKilled();

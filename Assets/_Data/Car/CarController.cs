@@ -11,6 +11,7 @@ public class CarController : NhoxBehaviour
     public bool CarActive { get; private set; }
 
     [SerializeField] protected Rigidbody rb;
+    public Rigidbody Rb => rb;
     [SerializeField] protected CarWheel[] wheels;
 
     [Range(30, 60)] [SerializeField] protected float turnSensitivity = 30;
@@ -59,6 +60,7 @@ public class CarController : NhoxBehaviour
     protected override void Start()
     {
         base.Start();
+        ActivateCar(false);
         controls = ControlsManager.Instance.Controls;
 
         AssignInputEvents();
@@ -119,7 +121,11 @@ public class CarController : NhoxBehaviour
         Debug.Log(transform.name + " LoadCarInteraction", gameObject);
     }
 
-    public void ActivateCar(bool active) => CarActive = active;
+    public void ActivateCar(bool active)
+    {
+        CarActive = active;
+        rb.constraints = !active ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
+    }
 
     protected void SetupDefaultValues()
     {

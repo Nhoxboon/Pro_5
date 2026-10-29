@@ -27,11 +27,6 @@ public class ERangeDeadState : EnemyState
         }
         
         interactionDisable = false;
-
-        enemy.EnemyAnimator.SetAnimator(false);
-        enemy.EnemyMove.Agent.isStopped = true;
-
-        enemy.Core.Ragdoll.RagdollActive(true);
         stateTimer = 1.5f; //Note: Uncomment if need to disable interaction with enemy
     }
 

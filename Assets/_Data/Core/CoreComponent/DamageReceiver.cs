@@ -32,4 +32,10 @@ public class DamageReceiver : CoreComponent
     {
         core.Stats.ShieldDurability.Decrease(value);
     }
+
+    //Note: Rigidbody is Kinematic when hit by car. Maybe should reset it if consider use again enemy from pool
+    protected void ResetHitboxes()
+    {
+
+    }
 }

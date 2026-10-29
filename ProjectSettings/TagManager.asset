@@ -21,8 +21,8 @@ TagManager:
   - Enemy's Ability
   - IntersectionCheck
   - ZoneLimit
-  - 
-  - 
+  - CarVsEnemy
+  - CarVsPlayer
   - 
   - 
   - 
