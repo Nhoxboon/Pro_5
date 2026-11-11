@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -67,6 +67,8 @@ public class CarInteraction : Interactable
     protected void GetIntoTheCar()
     {
         ControlsManager.Instance.SwitchToCarControls();
+        UIManager.Instance.UIInGame.SubscribeToPlayerCar(car);
+
         car.ActivateCar(true);
 
         defaultPlayerScale = player.localScale.x;
@@ -84,6 +86,8 @@ public class CarInteraction : Interactable
         player.parent = null;
         player.position = GetExitPoint();
         player.localScale = new Vector3(defaultPlayerScale, defaultPlayerScale, defaultPlayerScale);
+
+        UIManager.Instance.UIInGame.UnsubscribeFromCar();
 
         ControlsManager.Instance.SwitchToCharacterControls();
         CameraManager.Instance.ChangeCameraTarget(PlayerCtrl.Instance.PlayerAim.CamFollow.GetAimCameraTarget());

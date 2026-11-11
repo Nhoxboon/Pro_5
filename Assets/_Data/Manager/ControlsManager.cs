@@ -22,6 +22,7 @@ public class ControlsManager : NhoxSingleton<ControlsManager>
         Controls.UI.Disable();
         Controls.Car.Disable();
         PlayerCtrl.Instance?.PlayerInput.SetControlsEnabled(true);
+        UIManager.Instance?.UIInGame.SwitchToPlayerUI();
     }
 
     public void SwitchToUIControls()
@@ -38,5 +39,6 @@ public class ControlsManager : NhoxSingleton<ControlsManager>
         Controls.UI.Disable();
         Controls.Player.Disable();
         PlayerCtrl.Instance?.PlayerInput.SetControlsEnabled(false);
+        UIManager.Instance?.UIInGame.SwitchToCarUI();
     }
 }

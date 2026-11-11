@@ -25,7 +25,7 @@ public class CarDamageZone : NhoxBehaviour
 
     protected void OnTriggerEnter(Collider other)
     {
-        if(carCtrl.Rb.linearVelocity.magnitude > minSpeedToDamage)
+        if(carCtrl.Rb.linearVelocity.magnitude < minSpeedToDamage)
             return;
         ApplyDamageToTarget(other);
         ApplyForceToTarget(other);

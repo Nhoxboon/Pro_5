@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,6 +9,9 @@ public class CarController : NhoxBehaviour
     protected float steerInput;
 
     public bool CarActive { get; private set; }
+
+    public event Action<float> OnSpeedChanged;
+    public event Action<int, int> OnHealthChanged;
 
     [SerializeField] protected Rigidbody rb;
     public Rigidbody Rb => rb;
@@ -29,6 +32,7 @@ public class CarController : NhoxBehaviour
     [SerializeField] protected float backWheelTraction = 1;
 
     [Header("Engine Settings")]
+    protected float speed;
     [Range(7, 12)]
     [SerializeField] protected float maxSpeed = 10;
     [Range(0.5f, 10)]
@@ -56,6 +60,8 @@ public class CarController : NhoxBehaviour
 
     [Header("Components")]
     [SerializeField] protected CarInteraction carInteraction;
+    [SerializeField] protected CarHealthController carHealth;
+    public CarHealthController CarHealth => carHealth;
 
     protected override void Start()
     {
@@ -71,6 +77,8 @@ public class CarController : NhoxBehaviour
     {
         if(!CarActive) return;
 
+        speed = rb.linearVelocity.magnitude;
+        OnSpeedChanged?.Invoke(speed);
         driftTimer -= Time.deltaTime;
         if (driftTimer <= 0f)
             isDrifting = false;
@@ -95,6 +103,7 @@ public class CarController : NhoxBehaviour
         LoadCarWheels();
         LoadRigidbody();
         LoadCarInteraction();
+        LoadCarHealth();
     }
 
     protected void LoadCarWheels()
@@ -121,10 +130,30 @@ public class CarController : NhoxBehaviour
         Debug.Log(transform.name + " LoadCarInteraction", gameObject);
     }
 
+    protected void LoadCarHealth()
+    {
+        if(carHealth != null) return;
+        carHealth = GetComponentInChildren<CarHealthController>();
+        Debug.Log(transform.name + " LoadCarHealth", gameObject);
+    }
+
     public void ActivateCar(bool active)
     {
         CarActive = active;
         rb.constraints = !active ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
+    }
+
+    public void BrakeTheCar()
+    {
+        motorForce = 0f;
+        isDrifting = true;
+        frontDriftFactor = 0.9f;
+        backDriftFactor = 0.9f;
+    }
+
+    public void NotifyHealthChanged(int current, int max)
+    {
+        OnHealthChanged?.Invoke(current, max);
     }
 
     protected void SetupDefaultValues()
@@ -234,7 +263,14 @@ public class CarController : NhoxBehaviour
             float brakeSensitivity = frontBrakes ? frontBrakesSensitivity : backBrakesSensitivity;
 
             float newBrakeTorque = brakePower * brakeSensitivity * Time.fixedDeltaTime;
-            float currentBrakeTorque = isBraking ? newBrakeTorque : 0;
+
+            float currentBrakeTorque;
+            if (isBraking)
+                currentBrakeTorque = newBrakeTorque;
+            else if (moveInput == 0f)
+                currentBrakeTorque = newBrakeTorque * 0.3f; //// engine braking ~30% if no input
+            else
+                currentBrakeTorque = 0;
 
             wheel.Col.brakeTorque = currentBrakeTorque;
         }

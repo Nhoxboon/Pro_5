@@ -46,7 +46,7 @@ public class EnemyAxe : Projectile
     {
         SpawnFX();
         ProjectileSpawner.Instance.Despawn(gameObject);
-        if (!other.transform.TryGetComponent(out IDamageable damageable)) return;
+        if (!other.transform.TryGetDamageable(out IDamageable damageable)) return;
         damageable.TakeDamage(damage);
     }
 

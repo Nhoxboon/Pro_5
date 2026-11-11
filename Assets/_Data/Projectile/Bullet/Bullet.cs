@@ -57,7 +57,7 @@ public class Bullet : Projectile
     protected virtual void OnCollisionEnter(Collision other)
     {
         SpawnFX(other);
-        if (other.gameObject.TryGetComponent(out IDamageable damageable))
+        if (other.transform.TryGetDamageable(out IDamageable damageable))
             damageable.TakeDamage(damage);
 
         ApplyBulletImpactForEnemy(other);
