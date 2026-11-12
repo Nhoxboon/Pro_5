@@ -12,8 +12,8 @@ public class CarWheel : NhoxBehaviour
     public AxelType axelType;
     [SerializeField] protected WheelCollider col;
     public WheelCollider Col => col;
-    [SerializeField] protected MeshRenderer model;
-    public MeshRenderer Model => model;
+    [SerializeField] protected GameObject model;
+    public GameObject Model => model;
 
     protected float defaultSideStiffness;
 
@@ -34,7 +34,7 @@ public class CarWheel : NhoxBehaviour
     protected void LoadModel()
     {
         if (model != null) return;
-        model = GetComponentInChildren<MeshRenderer>();
+        model = GetComponentInChildren<MeshRenderer>().gameObject;
         Debug.Log(transform.name + " LoadModel", gameObject);
     }
 

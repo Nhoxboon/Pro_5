@@ -50,9 +50,10 @@ public class CameraManager : NhoxSingleton<CameraManager>
 
     public void ChangeCameraDistance(float distance) => targetCamDistance = distance;
 
-    public void ChangeCameraTarget(Transform target, float cameraDistance = 10)
+    public void ChangeCameraTarget(Transform target, float cameraDistance = 10, float newLookaheadTime = 0)
     {
         cinemachineCamera.Follow = target;
+        positionComposer.Lookahead.Time = newLookaheadTime;
         ChangeCameraDistance(cameraDistance);
     }
 }

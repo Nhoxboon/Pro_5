@@ -20,7 +20,7 @@ public class PlayerMovement : NhoxBehaviour
 
     protected void Update()
     {
-        if(PlayerCtrl.Instance.IsDead) return;
+        if(PlayerCtrl.Instance.IsDead || !PlayerCtrl.Instance.PlayerInput.controlsEnabled) return;
         ApplyMovement();
         ApplyRotation();
     }

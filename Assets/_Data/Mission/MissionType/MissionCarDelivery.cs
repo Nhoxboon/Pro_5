@@ -16,8 +16,8 @@ public class MissionCarDelivery : Mission
 
         carDelivered = false;
         MissionObj_CarToDeliver.OnCarDelivery += CarDeliveryCompleted;
-        Car[] cars = FindObjectsByType<Car>(FindObjectsSortMode.None);
-        foreach (Car car in cars)
+        CarController[] cars = FindObjectsByType<CarController>(FindObjectsSortMode.None);
+        foreach (CarController car in cars)
             car.AddComponent<MissionObj_CarToDeliver>();
     }
 
