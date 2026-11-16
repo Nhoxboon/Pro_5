@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class FriendlyFireToggle : NhoxBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class FriendlyFireToggle : NhoxBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     [SerializeField] protected Toggle friendlyFireToggle;
     [SerializeField] protected TextMeshProUGUI toolTipTxt;
@@ -46,4 +46,6 @@ public class FriendlyFireToggle : NhoxBehaviour, IPointerEnterHandler, IPointerE
     {
         toolTipTxt?.gameObject.SetActive(false);
     }
+
+    public void OnPointerDown(PointerEventData eventData) => AudioManager.Instance.PlayUISfx(UISfx.PointerDown);
 }

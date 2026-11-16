@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler
+public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     [Header("Hover Settings")] [SerializeField]
     protected float scaleSpeed = 3f;
@@ -63,6 +63,7 @@ public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitH
     {
         targetScale = defaultScale * scaleRate;
         ChangeBtnColor(Color.yellow);
+        AudioManager.Instance.PlayUISfx(UISfx.PointerEnter);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
@@ -70,6 +71,8 @@ public abstract class ScaleButton : BaseBtn, IPointerEnterHandler, IPointerExitH
         targetScale = defaultScale;
         ChangeBtnColor(Color.white);
     }
+
+    public void OnPointerDown(PointerEventData eventData) => AudioManager.Instance.PlayUISfx(UISfx.PointerDown);
 
     protected void ChangeBtnColor(Color newColor)
     {
