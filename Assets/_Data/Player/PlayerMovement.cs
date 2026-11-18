@@ -47,7 +47,10 @@ public class PlayerMovement : NhoxBehaviour
         ApplyGravity();
 
         if (movementDirection.magnitude > 0)
+        {
+            PlayFootStepsSFX();
             charCtrl.Move(movementDirection * (Speed * Time.deltaTime));
+        }
     }
 
     protected void ApplyGravity()
@@ -70,5 +73,13 @@ public class PlayerMovement : NhoxBehaviour
         Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
         transform.parent.rotation =
             Quaternion.Slerp(transform.parent.rotation, desiredRotation, turnSpeed * Time.deltaTime);
+    }
+
+    protected void PlayFootStepsSFX()
+    {
+        if(isRunning)
+            PlayerCtrl.Instance.PlayerSFX.PlayRunSFX();
+        else
+            PlayerCtrl.Instance.PlayerSFX.PlayWalkSFX();
     }
 }

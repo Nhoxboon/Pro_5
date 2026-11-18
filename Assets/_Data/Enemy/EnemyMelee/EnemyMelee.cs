@@ -19,7 +19,9 @@ public class EnemyMelee : Enemy
     public EnemyBasicVisuals EnemyVisuals => enemyVisuals;
     [SerializeField] protected EMeleeAbility enemyAbility;
     public EMeleeAbility EnemyAbility => enemyAbility;
-    
+    [SerializeField] protected EMeleeSFX enemySFX;
+    public EMeleeSFX EnemySFX => enemySFX;
+
     public EnemyMeleeType meleeType;
     public EnemyMeleeWeaponType WeaponType { get; protected set; }
 
@@ -62,6 +64,7 @@ public class EnemyMelee : Enemy
         base.LoadComponents();
         LoadEnemyVisuals();
         LoadEnemyAbility();
+        LoadEnemySFX();
         LoadShield();
     }
     
@@ -77,6 +80,13 @@ public class EnemyMelee : Enemy
         if(enemyAbility != null) return;
         enemyAbility = GetComponentInChildren<EMeleeAbility>();
         Debug.Log(transform.name + " LoadEnemyAbility", gameObject);
+    }
+
+    protected void LoadEnemySFX()
+    {
+        if(enemySFX != null) return;
+        enemySFX = GetComponentInChildren<EMeleeSFX>();
+        Debug.Log(transform.name + " LoadEnemySFX", gameObject);
     }
 
     protected void LoadShield()

@@ -45,7 +45,11 @@ public class PlayerInput : NhoxBehaviour
     protected void SetupMovementInput(PlayerCtrl instance)
     {
         controls.Player.Movement.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
-        controls.Player.Movement.canceled += ctx => MoveInput = Vector2.zero;
+        controls.Player.Movement.canceled += ctx =>
+        {
+            PlayerCtrl.Instance.PlayerSFX.StopFootstepsSFX();
+            MoveInput = Vector2.zero;
+        };
 
         controls.Player.Run.performed += ctx => instance.PlayerMovement.SetRunning(true);
         controls.Player.Run.canceled += ctx => instance.PlayerMovement.SetRunning(false);
@@ -67,7 +71,7 @@ public class PlayerInput : NhoxBehaviour
 
     protected void SetupReloadInput(PlayerCtrl instance)
     {
-        controls.Player.Reload.performed += _ => ReloadAction(instance);
+        controls.Player.Reload.performed += _ => instance.PlayerAttack.ReloadAction();
     }
 
     protected void SetupEquipInput(PlayerCtrl instance)
@@ -79,12 +83,5 @@ public class PlayerInput : NhoxBehaviour
         controls.Player.EquipSlot5.performed += _ => instance.PlayerInventory.EquipWeapon(4);
 
         controls.Player.DropCurrentWeapon.performed += _ => instance.PlayerInventory.DropWeapon();
-    }
-
-    protected void ReloadAction(PlayerCtrl instance)
-    {
-        if (!instance.PlayerAttack.CurrentWeapon.CanReload() || !instance.PlayerAttack.WeaponReady) return;
-        instance.PlayerAttack.SetWeaponReady(false);
-        instance.PlayerAnim.ReloadAnim();
     }
 }

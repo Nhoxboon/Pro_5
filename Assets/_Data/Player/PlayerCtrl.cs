@@ -29,6 +29,9 @@ public class PlayerCtrl : NhoxSingleton<PlayerCtrl>
 
     [SerializeField] protected PlayerInteraction playerInteraction;
     public PlayerInteraction PlayerInteraction => playerInteraction;
+
+    [SerializeField] protected PlayerSFX playerSFX;
+    public PlayerSFX PlayerSFX => playerSFX;
     
     public bool IsDead => core.Stats.Health.CurrentValue == 0;
 
@@ -52,6 +55,7 @@ public class PlayerCtrl : NhoxSingleton<PlayerCtrl>
         LoadPlayerWeaponVisual();
         LoadPlayerInventory();
         LoadPlayerInteraction();
+        LoadPlayerSFX();
     }
     
     protected void LoadCore()
@@ -115,6 +119,13 @@ public class PlayerCtrl : NhoxSingleton<PlayerCtrl>
         if (playerInteraction != null) return;
         playerInteraction = GetComponentInChildren<PlayerInteraction>();
         Debug.Log(transform.name + " LoadPlayerInteraction", gameObject);
+    }
+
+    protected void LoadPlayerSFX()
+    {
+        if(playerSFX != null) return;
+        playerSFX = GetComponentInChildren<PlayerSFX>();
+        Debug.Log(transform.name + " LoadPlayerSFX", gameObject);
     }
     
     protected void PlayerDie()

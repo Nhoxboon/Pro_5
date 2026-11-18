@@ -23,16 +23,15 @@ public class AudioManager : NhoxSingleton<AudioManager>
     {
         if (!playBgm && bgmSource.isPlaying)
             StopAllBGM();
-        else if (!bgmSource.isPlaying)
+        if (playBgm && bgmSource.clip != bgmClips[bgmIndex] && !bgmSource.isPlaying)
             PlayRandomBGM();
     }
 
-    public void PlaySFX(AudioSource sfx, bool randomPitch = false)
+    public void PlaySFX(AudioSource sfx, bool randomPitch = false, float minPitch = 0.85f, float maxPitch = 1.1f)
     {
-        if (!sfx.clip) return;
         if (sfx.isPlaying) sfx.Stop();
 
-        sfx.pitch = randomPitch ? Random.Range(0.9f, 1.1f) : 1f;
+        sfx.pitch = randomPitch ? Random.Range(minPitch, maxPitch) : 1f;
         sfx.Play();
     }
 
@@ -55,6 +54,7 @@ public class AudioManager : NhoxSingleton<AudioManager>
 
     public void PlayRandomBGM()
     {
+        StopAllBGM();
         int randomIndex = Random.Range(0, bgmClips.Length);
         PlayBGM(randomIndex);
     }

@@ -6,6 +6,8 @@ public class PlayerAnimationEvent : NhoxBehaviour
     {
         var instance = PlayerCtrl.Instance;
         instance.PlayerAnim.RestoreRigWeight();
+        instance.PlayerWeaponVisual.CurrentWeaponModel().reloadSfx.Stop();
+
         instance.PlayerAttack.CurrentWeapon.RefillBullets();
         instance.PlayerAttack.SetWeaponReady(true);
         instance.PlayerAttack.CurrentWeapon.NotifyAmmoChanged();

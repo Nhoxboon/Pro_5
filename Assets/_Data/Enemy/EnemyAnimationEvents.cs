@@ -34,7 +34,12 @@ public class EnemyAnimationEvents : NhoxBehaviour
         enemyRange.EnemyVisuals.EnableSecondaryWeaponModel(false);
     }
     
-    public void BeginMeleeAttack() => enemy.EnemyAttack.EnableMeleeAttack(true);
+    public void BeginMeleeAttack()
+    {
+        enemy?.EnemyAttack.EnableMeleeAttack(true);
+        if(enemy is EnemyMelee enemyMelee)
+            enemyMelee.EnemySFX.PlayMeleeAttackSFX();
+    }
     
     public void FinishMeleeAttack() => enemy.EnemyAttack.EnableMeleeAttack(false);
     

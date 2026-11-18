@@ -24,10 +24,11 @@ public class UIManager : NhoxSingleton<UIManager>
 
     [SerializeField] protected Transform[] uiElements;
 
-    [Header("Fade Image")] [SerializeField]
-    protected Image fadeImage;
+    [Header("Fade Image")]
+    [SerializeField] protected Image fadeImage;
 
-    [Header("Switching UI")] protected Transform currentUI;
+    [Header("Switching UI")]
+    protected Transform currentUI;
     protected Stack<Transform> uiHistory = new Stack<Transform>();
 
     protected override void Start()
@@ -244,15 +245,18 @@ public class UIManager : NhoxSingleton<UIManager>
 
     protected IEnumerator StartGameSequence()
     {
-        //Note: Change back when finish project
-        // StartCoroutine(ChangeImageAlpha(1, 1, null));
-        // yield return new WaitForSeconds(1);
+        bool isQuickStart = GameManager.Instance.quickStart;
+        if (!isQuickStart)
+        {
+            StartCoroutine(ChangeImageAlpha(1, 1, null));
+            yield return new WaitForSeconds(1);
+        }
 
         yield return null;
         SwitchTo(uiInGame.transform);
         GameManager.Instance.GameStart();
-        StartCoroutine(ChangeImageAlpha(0, .1f, null));
-        // StartCoroutine(ChangeImageAlpha(0, 1, null));
+
+        StartCoroutine(isQuickStart ? ChangeImageAlpha(0, .1f, null) : ChangeImageAlpha(0, 1, null));
     }
 
     protected IEnumerator ChangeImageAlpha(float targetAlpha, float duration, Action onComplete)

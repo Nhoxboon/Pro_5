@@ -52,6 +52,7 @@ public class PlayerAttack : NhoxBehaviour
         CurrentWeapon.bulletsInMagazine--;
         CurrentWeapon.NotifyAmmoChanged();
 
+        AudioManager.Instance.PlaySFX(PlayerCtrl.Instance.PlayerWeaponVisual.CurrentWeaponModel().fireSfx);
 
         var prefab =
             ProjectileSpawner.Instance.Spawn(bulletName, GunPoint().position,
@@ -109,5 +110,19 @@ public class PlayerAttack : NhoxBehaviour
         enemyMelee?.ActivateDodge();
     }
 
-    public void SetWeaponReady(bool ready) => weaponReady = ready;
+    public void ReloadAction()
+    {
+        PlayerCtrl instance = PlayerCtrl.Instance;
+        if (!instance.PlayerAttack.CurrentWeapon.CanReload() || !instance.PlayerAttack.WeaponReady) return;
+        instance.PlayerWeaponVisual.CurrentWeaponModel().reloadSfx.Play();
+        instance.PlayerAttack.SetWeaponReady(false);
+        instance.PlayerAnim.ReloadAnim();
+    }
+
+    public void SetWeaponReady(bool ready)
+    {
+        weaponReady = ready;
+        if (ready)
+            PlayerCtrl.Instance.PlayerSFX.PlayWeaponReadySFX();
+    }
 }
